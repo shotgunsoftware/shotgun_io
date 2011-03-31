@@ -215,26 +215,25 @@ class ShotgunIO (object):
         self.shotgun_url = shotgun_url
         self.shotgun_script = shotgun_script
         self.shotgun_key = shotgun_key
-        timer['connect_start'] = time.time()
-        self._sg = self._shotgun_connect()
-        timer['connect_end'] = time.time()
+        self._sg = None
 
         self.version_as_json = None
         self.version_as_dict = None
         self.version_translated = None
 
 
-
     def _shotgun_connect(self):
         """
         Instantiate Shotgun class for connecting to the Shotgun server
         """
+        timer['connect_start'] = time.time()
         try:
-            sg = shotgun_api3.Shotgun(self.shotgun_url, self.shotgun_script, self.shotgun_key)
+            self._sg = shotgun_api3.Shotgun(self.shotgun_url, self.shotgun_script, self.shotgun_key)
         except Exception, e:
             bail("Unable to connect to Shotgun: %s" % e)
         else:
-            return sg
+            timer['connect_end'] = time.time()
+            return True
 
 
 
@@ -286,6 +285,8 @@ class ShotgunIO (object):
                     # from the API. So when we do, add that logic here.
                     pass
 
+            if not self._sg:
+                self._shotgun_connect()
             try:
                 entities = self._sg.find(entity_config[entity_type]['entity_type'], filters=filters, fields=entity_config[entity_type]['fields'], order=entity_config[entity_type]['order'])
             except Exception, e:
@@ -309,6 +310,8 @@ class ShotgunIO (object):
         ##TODO: The filtering could be more intelligent.
         """
         sorted_fields = {}
+        if not self._sg:
+            self._shotgun_connect()
         try:
             fields = self._sg.schema_field_read('Version')
         except Exception, e:
@@ -336,6 +339,8 @@ class ShotgunIO (object):
         
         """
         sorted_fields = {}
+        if not self._sg:
+            self._shotgun_connect()
         try:
             status_field = self._sg.schema_field_read('Version','sg_status_list')
         except Exception, e:
@@ -514,6 +519,8 @@ class ShotgunIO (object):
         version_data = self._translateVersionDataRush(version_hash)
 
         # create version
+        if not self._sg:
+            self._shotgun_connect()
         try:
             version = self._sg.create('Version', version_data)
         except Exception, e:
@@ -549,6 +556,8 @@ class ShotgunIO (object):
     #     version_data = self._translateVersionDataRush(version_hash)
 
     #     # update version
+    #     if not self._sg:
+    #         self._shotgun_connect()
     #     try:
     #         version = self._sg.update('Version', vid, version_data)
     #     except Exception, e:
