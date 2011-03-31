@@ -81,6 +81,13 @@ version_field_map = {
     'entity': 'entity',
 }
 
+version_name_templates = [
+    '${project}_${shot}_${task}_v',
+    '${project}/${shot}/${task}/${user} v',
+    '${project} ${shot} ${task} ${jobid}',
+    '${shot}_${task} ${jobid}',
+    ]
+
 version_status_map = {
     VERSION_STATUS_SUBMITTED: 'na',
     VERSION_STATUS_FAILED: 'na',
@@ -106,6 +113,14 @@ socket.setdefaulttimeout(10)
 def bail(errmsg=''):
     logging.error(errmsg)
     sys.exit(1)
+
+
+def validate_list_option(option):
+    non_entity_options = ['version_name_templates']
+    if option in entity_config.keys() or option in non_entity_options:
+        return True
+    else:
+        bail("-l (--list) option must be a valid option:\n%s" % (entity_config.keys()+non_entity_options))
 
 
 def isEntityHash(value, allow_none=True):
@@ -223,6 +238,21 @@ class ShotgunIO (object):
 
 
 
+
+    def listVersionNameTemplates(self):
+        """Return a list of the defined Version name templates
+
+        The first entry in the list is the default. If the first
+        entry is blank, then there is no default set.
+
+        Allows tokens like ${project} or ${shot} that can be used
+        for string replacement based on choices in the submit tool. 
+        """
+        return "\n".join(version_name_templates)
+        # return "%s\n" % (n) for n in version_name_templates
+
+
+
     def listEntities(self, entity_type, **kwargs):
         """
         Retrieve a list of entities from Shotgun and return them in a hash format.
@@ -263,6 +293,8 @@ class ShotgunIO (object):
                 bail("Error retrieving %s list from Shotgun: %s" % (entity_type, e))
             else:
                 timer['listEntities_end'] = time.time()
+                entities = formatRushEntities(entity_type, entities)
+                
                 return entities
 
     
@@ -613,20 +645,18 @@ if __name__ == '__main__':
     
     # list entities
     if options.list:
+        validate_list_option(options.list)
         io = ShotgunIO(options.shotgun_url, options.shotgun_script, options.shotgun_key)
-        if options.list not in entity_config.keys():
-            bail("-l (--list) option must be a valid option:\n%s" % entity_config.keys())
+        if options.list == 'version_name_templates':
+            print io.listVersionNameTemplates()
+        elif entity_config[options.list]['project_required'] and \
+            options.project_id == None:
+            bail("-l (--list) option '%s' requires a project id: -p (--project_id)" % options.list)
+        elif options.list in ['tasks'] and options.user_id == None:
+            bail("-l (--list) option '%s' requires a user id: -u (--user_id)" % options.list)
         else:
-            if entity_config[options.list]['project_required'] and \
-                options.project_id == None:
-                bail("-l (--list) option '%s' requires a project id: -p (--project_id)" % options.list)
-            elif options.list in ['tasks'] and options.user_id == None:
-                bail("-l (--list) option '%s' requires a user id: -u (--user_id)" % options.list)
-
-            else:
-                entities = io.listEntities(options.list, project_id=options.project_id, user_id=options.user_id)
-                entities = formatRushEntities(options.list, entities)
-                print entities
+            entities = io.listEntities(options.list, project_id=options.project_id, user_id=options.user_id)
+            print entities
 
     # list fields
     elif options.fields:
