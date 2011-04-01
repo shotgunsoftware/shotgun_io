@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# ./shotgun_io.py -C "{\"user\":\"32 kp\",\"task\":\"2,4,Shot,2 Demo Project | Shot 1 | Match Move\",\"name\":\"Demo Project_Shot 1_Match Move v3 kp contrail.123\",\"description\":\"fixing penetration for blah.\n- this was done\n- this still needs work\n-b lah\",\"jobid\":\"contrail.123\", \"job_status\":\"0\"}"
+# ./shotgun_io.py -U "{\"version_id\":\"5\",\"first_frame\":\"1\",\"last_frame\":\"100\",\"frame_range\":\"1-50 61-70,2 80 90 100\",\"frame_count\":\"58\",\"frames_path\":\"/path/to/frames/image.#.jpg\",\"movie_path\":\"/path/to/movie/popcorn.mov\",\"jobid\":\"contrail.123\", \"job_status\":\"1\"}"
+
 import time # for benchmarking
 timer = { 'start': time.time() }
 # ====================================
@@ -68,9 +71,9 @@ version_field_map = {
     'name': 'code',
     'shot': 'entity',
     'description': 'description',
-    'status': 'sg_status_list',
-    'frames': 'sg_path_to_frames',
-    'movie': 'sg_path_to_movie',
+    'job_status': 'sg_status_list',
+    'frames_path': 'sg_path_to_frames',
+    'movie_path': 'sg_path_to_movie',
     'first_frame': 'sg_first_frame',
     'last_frame': 'sg_last_frame',
     'frame_count': 'frame_count',
@@ -152,18 +155,6 @@ def isInt(value, allow_zero=False):
             result = value != 0
 
     return result
-
-def printList(listval):
-    if not isinstance(listval, list):
-        return    
-    for i in listval:
-        print i
-
-def printDict(dictval):
-    if not isinstance(dictval, dict):
-        return    
-    for k,v in dictval.iteritems():
-        print "%s %s" % (k,v)
 
 def formatRushEntities(listtype, vals):
     timer['reformat_rush_start'] = time.time()
@@ -263,12 +254,16 @@ class ShotgunIO (object):
         entities = []
         # special case: combine two calls and return combo
         if entity_type == "assetsandshots":
+            kwargs['no_format']=True
             for t in ['shots','assets']:
                 entities += self.listEntities(t, **kwargs)
+            entities = formatRushEntities(entity_type, entities)
             return entities
         elif entity_type == "projectsandtasks":
+            kwargs['no_format']=True
             for t in ['projects','tasks']:
                 entities += self.listEntities(t, **kwargs)
+            entities = formatRushEntities(entity_type, entities)
             return entities
         else:
             filters = entity_config[entity_type]['filters']
@@ -294,9 +289,11 @@ class ShotgunIO (object):
                 bail("Error retrieving %s list from Shotgun: %s" % (entity_type, e))
             else:
                 timer['listEntities_end'] = time.time()
-                entities = formatRushEntities(entity_type, entities)
+                if 'no_format' in kwargs and kwargs['no_format']:
+                    return entities
                 
-                return entities
+                return formatRushEntities(entity_type, entities)
+                
 
     
 
@@ -346,7 +343,6 @@ class ShotgunIO (object):
         except Exception, e:
             bail("Error retrieving list of valid status values for Versions from Shotgun: %s" % (e))
         
-        pprint.pprint(status_field['sg_status_list']['properties']['valid_values']['value'])
         return status_field['sg_status_list']['properties']['valid_values']['value']
 
 
@@ -381,7 +377,7 @@ class ShotgunIO (object):
         elif field == 'description':
             isok, msg = (isString(value, True), "'%s' key value (%s) is not a valid string" % (field, value))
 
-        elif field == 'status':
+        elif field == 'job_status':
             isok, msg = (isInt(value, True), "'%s' key value (%s) is not a valid integer" % (field, value))
             if isok:
                 isok, msg = (value in version_status_map, "'%s' key value (%s) is not in defined valid statuses (%s)" % (field, value, version_status_map.keys()))
@@ -389,10 +385,10 @@ class ShotgunIO (object):
                 valid_version_statuses = self.listVersionStatusValues()
                 isok, msg = (version_status_map[value] in valid_version_statuses, "'%s' key value %d (%s) is not enabled in Shotgun on the Version entity. Valid statuses are: %s" % (field, value, version_status_map[value], valid_version_statuses))
 
-        elif field == 'frames':
+        elif field == 'frames_path':
             isok, msg = (isString(value, True), "'%s' key value (%s) is not a valid string" % (field, value))
         
-        elif field == 'movie':
+        elif field == 'movie_path':
             isok, msg = (isString(value, True), "'%s' key value (%s) is not a valid string" % (field, value))
 
         elif field == 'first_frame':
@@ -435,12 +431,10 @@ class ShotgunIO (object):
         """
         version_data = {}
         for f, v in version_hash.iteritems():
-            if f == "user":
-                user = int(v.split(' ')[0])
-                self._validateVersionData(f, user)
-                version_data[ version_field_map[f] ] = {'type':'HumanUser', 'id': user}
-
-            elif f == 'task':
+             # task is a special case that contains multiple id values
+             ##TODO: this would be better if we could recursively call this method to assign translate 
+             #       each key individually. 
+            if f == 'task':
                 keys = v.split(' ')[0]
                 task_id, project_id, entity_type, entity_id = keys.split(",")
                 task_id = int(task_id)
@@ -457,29 +451,38 @@ class ShotgunIO (object):
                 # entity
                 if entity_type != '' and entity_id != '':
                     version_data[ version_field_map['entity'] ] = {'type':entity_type, 'id': int(entity_id)}
-
-            elif f == 'shot':
-                shot = int(v.split(' ')[0])
-                self._validateVersionData(f, shot)
-                version_data[ version_field_map[f] ] = {'type':'Shot', 'id': shot}
-
-            elif f == 'project':
-                project = int(v.split(' ')[0])
-                self._validateVersionData(f, project)
-                version_data[ version_field_map[f] ] = {'type':'Project', 'id': project}
-
-            elif f == 'status':
-                status = int(v)
-                self._validateVersionData(f, status)
-                version_data[ version_field_map[f] ] = version_status_map[v]
-
-            elif f in version_field_map:
-                version_data[ version_field_map[f] ] = v
             else:
-                # if we've hit this, there's no field translation so 
-                # the config tells us we're not storing this information
-                # and we ignore nicely.
-                pass
+                # integer values
+                if f in ['user','shot','project','first_frame','last_frame','frame_count','entity_id', 'job_status']:
+                    value = int(v.split(' ')[0])
+                else:
+                    value = v
+
+                # we have the value, now validate it
+                self._validateVersionData(f, value)
+                
+                if f == "user":
+                    version_data[ version_field_map[f] ] = {'type':'HumanUser', 'id': value}
+
+                elif f == 'shot':
+                    version_data[ version_field_map[f] ] = {'type':'Shot', 'id': value}
+
+                elif f == 'project':
+                    version_data[ version_field_map[f] ] = {'type':'Project', 'id': value}
+
+                elif f == 'job_status':
+                    self._validateVersionData(f, value)
+                    version_data[ version_field_map[f] ] = version_status_map[value]
+                
+                # data is fine as is
+                elif f in version_field_map:
+                    version_data[ version_field_map[f] ] = value
+
+                else:
+                    # if we've hit this, there's no field translation so 
+                    # the config tells us we're not storing this information
+                    # and we ignore nicely.
+                    pass
         
         return version_data
 
@@ -516,7 +519,7 @@ class ShotgunIO (object):
                 bail("Unable to create Version in Shotgun. Missing required Shotgun field '%s'" % f)
                 
         # translate data
-        version_data = self._translateVersionDataRush(version_hash)
+        # version_data = self._translateVersionDataRush(version_hash)
 
         # create version
         if not self._sg:
@@ -531,39 +534,38 @@ class ShotgunIO (object):
 
     # Will probably be any unknown amount of info defined by the _translateVersionDataRush method and dump
     # anything extra out. Will always require a Version id.
-    # UNIMPLEMENTED (haven't tested yet... need validation work.)
-    # def updateVersion(self, version_hash):
-    #     """
-    #     Update existing Version entity in Shotgun with the provided JSON-encoded Version data
+    def updateVersion(self, version_hash):
+        """
+        Update existing Version entity in Shotgun with the provided JSON-encoded Version data
 
-    #     performs JSON decoding, validation, and data translation to the expected Shotgun format
-    #     based on the integration environment. Requires 'id' key with integer value that corresponds
-    #     to the id of the Version entity to update in Shotgun.
+        performs JSON decoding, validation, and data translation to the expected Shotgun format
+        based on the integration environment. Requires 'id' key with integer value that corresponds
+        to the id of the Version entity to update in Shotgun.
 
-    #     ##TODO: remove hard-coded Rush format in favor of a dynamic translation module provided
-    #             at runtime.
-    #     """
-    #     # turn JSON string into valid dictionary hash
-    #     version_hash = self._decodeVersionHash(version_hash)
+        ##TODO: remove hard-coded Rush format in favor of a dynamic translation module provided
+                at runtime.
+        """
+        # turn JSON string into valid dictionary hash
+        version_hash = self._decodeVersionHash(version_hash)
 
-    #     # check required fields
-    #     if 'id' not in version_hash:
-    #         bail("Unable to update Version in Shotgun. Missing required field 'id' in Version hash")
+        # translate data
+        version_data = self._translateVersionDataRush(version_hash)
+
+        # check required fields
+        if 'version_id' not in version_hash:
+            bail("Unable to update Version in Shotgun. Missing required field 'version_id' in Version hash")
         
-    #     vid = int(version_hash['id'])
+        vid = int(version_hash['version_id'])
 
-    #     # translate data
-    #     version_data = self._translateVersionDataRush(version_hash)
-
-    #     # update version
-    #     if not self._sg:
-    #         self._shotgun_connect()
-    #     try:
-    #         version = self._sg.update('Version', vid, version_data)
-    #     except Exception, e:
-    #         bail("Error updating Version in Shotgun: %s" % msg)
+        # update version
+        if not self._sg:
+            self._shotgun_connect()
+        try:
+            version = self._sg.update('Version', vid, version_data)
+        except Exception, e:
+            bail("Error updating Version in Shotgun: %s" % e)
         
-    #     return version
+        return version
 
 class ShotgunIoOptionParser(optparse.OptionParser):
     """error(msg : string)
@@ -640,9 +642,9 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
 
     #DEBUG hard-coding the auth info so we don't have to provide it while we're testing
-    options.shotgun_url = "https://2-3.shotgunstudio.com"
+    options.shotgun_url = "https://rush.shotgunstudio.com"
     options.shotgun_script = "rush"
-    options.shotgun_key = "af27a9bb101efaad39c682dee4a0579b2e1c71e1"
+    options.shotgun_key = "6b9b9fd56e8b6ce34bdb35db52f18c983bc536c8"
 
     # check minimum options for connecting to Shotgun
     if options.shotgun_url == None:
@@ -688,12 +690,10 @@ if __name__ == '__main__':
         # pprint.pprint(version)
 
     # update Version in Shotgun with provided fields/values
-    # UNIMPLEMENTED
     elif options.update_version:
         io = ShotgunIO(options.shotgun_url, options.shotgun_script, options.shotgun_key)
         version = io.updateVersion(options.update_version)
         print version['id']
-        # pprint.pprint(version)
 
     else:
         bail("invalid option combination '%s'. Yeah... this error sucks right now but this is just a placeholder... we'll make it better." % sys.argv)
