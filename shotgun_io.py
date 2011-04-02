@@ -487,14 +487,32 @@ class ShotgunIO (object):
         return version_data
 
 
-    def _decodeVersionHash(self, version_hash):
+    def _decodeVersionHash(self, version_data):
         """
         convert JSON string representation of Version into Python object.
         """
-        try:
-            return json.loads(version_hash)
-        except ValueError, e:
-            bail("invalid JSON format provided for Version: %s" % e)
+        fp = None
+        # input is stdin
+        if version_data == "-":
+            version_data = "$STDIN" # for error messages
+            fp = sys.stdin
+        # input is file
+        elif os.path.isfile(version_data):
+            try:
+                fp = open(version_data)
+            except IOError, e:
+                bail("unable to open input file %s: %s" % (os.path.abspath(version_data), e))
+        if fp:    
+            try:
+                return json.load(fp)
+            except ValueError, e:
+                bail("invalid JSON format in file %s: %s" % (os.path.abspath(version_data), e))
+        else:
+            # input was provided as an argument
+            try:
+                return json.loads(version_data)
+            except ValueError, e:
+                bail("invalid JSON format provided as argument: %s" % e)
 
 
     def createVersion(self, version_hash):
