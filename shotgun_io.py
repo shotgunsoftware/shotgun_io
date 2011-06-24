@@ -541,7 +541,8 @@ class ShotgunIOBase(object):
         return self.output.format_output("thumbnail_id", result)
 
 
-
+    def process_logfiles(self, logfiles):
+        return "not implemented yet dummy!"
 
 
 
