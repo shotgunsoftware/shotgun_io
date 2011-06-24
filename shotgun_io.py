@@ -391,7 +391,7 @@ class ShotgunIOBase(object):
         out = self.output.format_output('scenepath_parse', ret)
 
         return out
-        
+
 
     def get_next_version_number(self):
         """
@@ -541,7 +541,8 @@ class ShotgunIOBase(object):
         return self.output.format_output("thumbnail_id", result)
 
 
-
+    def process_logfiles(self, logfiles):
+        return "This is unimplemented dummy!"
 
 
 
