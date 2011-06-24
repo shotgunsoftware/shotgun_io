@@ -1,7 +1,137 @@
 #!/usr/bin/env python
 
-class OutputCmdLine (object):
+class OutputDefault (object):
     def __init__(self): 
+        self.value = None        
+
+    
+    def format_user(self, vals):
+        out = vals
+
+        return out
+
+    
+    def format_users(self, vals):
+        out = vals
+
+        return out
+
+
+    def format_tasks(self, vals):
+        out = vals
+        
+        return out
+
+
+    def format_projects(self, vals):
+        out = vals
+        
+        return out
+
+
+    def format_projectsandtasks(self, vals):
+        out = vals
+        
+        return out
+
+
+    def format_shots(self, vals):
+        out = vals
+        
+        return out
+
+
+    def format_assets(self, vals):
+        out = vals
+        
+        return out
+
+
+    def format_assetsandshots(self, vals):
+        out = vals
+        
+        return out
+
+
+    def format_version_fields(self, vals):
+        out = vals
+
+        return out
+
+
+    def format_version_statuses(self, vals):
+        out = vals
+        
+        return out
+
+
+    def format_version_name_templates(self, vals):
+        out = vals
+        
+        return out
+
+
+    def format_thumbnail_id(self, vals):
+        out = vals
+        
+        return out
+
+
+    def format_scenepath_parse(self, vals):
+        out = vals
+        
+        return out
+
+
+    def format_output(self, listtype, vals):
+        if listtype == 'user':
+            out = self.format_user(vals)
+
+        if listtype == 'users':
+            out = self.format_users(vals)
+
+        elif listtype == 'tasks':
+            out = self.format_tasks(vals)
+
+        elif listtype == 'projects':
+            out = self.format_projects(vals)
+
+        elif listtype == 'projectsandtasks':
+            out = self.format_projectsandtasks(vals)
+
+        elif listtype == 'shots':
+            out = self.format_shots(vals)
+
+        elif listtype == 'assets':
+            out = self.format_assets(vals)
+
+        elif listtype == 'assetsandshots':
+            out = self.format_assetsandshots(vals)
+       
+        elif listtype == 'version_fields':
+            out = self.format_version_fields(vals)
+       
+        elif listtype == 'version_statuses':
+            out = self.format_version_statuses(vals)
+       
+        elif listtype == 'version_name_templates':
+            out = self.format_version_name_templates(vals)
+       
+        elif listtype == 'thumbnail_id':
+            out = self.format_thumbnail_id(vals)
+
+        elif listtype == 'scenepath_parse':
+            out = self.format_scenepath_parse(vals)
+
+        return out
+
+
+
+
+
+class OutputCmdLine (OutputDefault):
+    def __init__(self): 
+        super(OutputCmdLine, self).__init__()
         self.value = None        
 
     
@@ -99,148 +229,53 @@ class OutputCmdLine (object):
         return out
 
 
-    def format_output(self, listtype, vals):
-        if listtype == 'user':
-            out = self.format_user(vals)
+    def format_scenepath_parse(self, vals):
+        out = ""
+        if vals:
+            out = "\n".join( [v.strip() for v in vals] )
 
-        if listtype == 'users':
-            out = self.format_users(vals)
+        return out
 
-        elif listtype == 'tasks':
-            out = self.format_tasks(vals)
 
-        elif listtype == 'projects':
-            out = self.format_projects(vals)
+    # def format_output(self, listtype, vals):
+    #     if listtype == 'user':
+    #         out = self.format_user(vals)
 
-        elif listtype == 'projectsandtasks':
-            out = self.format_projectsandtasks(vals)
+    #     if listtype == 'users':
+    #         out = self.format_users(vals)
 
-        elif listtype == 'shots':
-            out = self.format_shots(vals)
+    #     elif listtype == 'tasks':
+    #         out = self.format_tasks(vals)
 
-        elif listtype == 'assets':
-            out = self.format_assets(vals)
+    #     elif listtype == 'projects':
+    #         out = self.format_projects(vals)
 
-        elif listtype == 'assetsandshots':
-            out = self.format_assetsandshots(vals)
+    #     elif listtype == 'projectsandtasks':
+    #         out = self.format_projectsandtasks(vals)
+
+    #     elif listtype == 'shots':
+    #         out = self.format_shots(vals)
+
+    #     elif listtype == 'assets':
+    #         out = self.format_assets(vals)
+
+    #     elif listtype == 'assetsandshots':
+    #         out = self.format_assetsandshots(vals)
        
-        elif listtype == 'version_fields':
-            out = self.format_version_fields(vals)
+    #     elif listtype == 'version_fields':
+    #         out = self.format_version_fields(vals)
        
-        elif listtype == 'version_statuses':
-            out = self.format_version_statuses(vals)
+    #     elif listtype == 'version_statuses':
+    #         out = self.format_version_statuses(vals)
        
-        elif listtype == 'version_name_templates':
-            out = self.format_version_name_templates(vals)
+    #     elif listtype == 'version_name_templates':
+    #         out = self.format_version_name_templates(vals)
 
-        return out
+    #     elif listtype == 'thumbnail_id':
+    #         out = self.format_thumbnail_id(vals)
 
-
-
-
-class OutputDefault (object):
-    def __init__(self): 
-        self.value = None        
-
-    
-    def format_user(self, vals):
-        out = vals
-
-        return out
-
-    
-    def format_users(self, vals):
-        out = vals
-
-        return out
+    #     return out
 
 
-    def format_tasks(self, vals):
-        out = vals
-        
-        return out
 
 
-    def format_projects(self, vals):
-        out = vals
-        
-        return out
-
-
-    def format_projectsandtasks(self, vals):
-        out = vals
-        
-        return out
-
-
-    def format_shots(self, vals):
-        out = vals
-        
-        return out
-
-
-    def format_assets(self, vals):
-        out = vals
-        
-        return out
-
-
-    def format_assetsandshots(self, vals):
-        out = vals
-        
-        return out
-
-
-    def format_version_fields(self, vals):
-        out = vals
-
-        return out
-
-
-    def format_version_statuses(self, vals):
-        out = vals
-        
-        return out
-
-
-    def format_version_name_templates(self, vals):
-        out = vals
-        
-        return out
-
-
-    def format_output(self, listtype, vals):
-        if listtype == 'user':
-            out = self.format_user(vals)
-
-        if listtype == 'users':
-            out = self.format_users(vals)
-
-        elif listtype == 'tasks':
-            out = self.format_tasks(vals)
-
-        elif listtype == 'projects':
-            out = self.format_projects(vals)
-
-        elif listtype == 'projectsandtasks':
-            out = self.format_projectsandtasks(vals)
-
-        elif listtype == 'shots':
-            out = self.format_shots(vals)
-
-        elif listtype == 'assets':
-            out = self.format_assets(vals)
-
-        elif listtype == 'assetsandshots':
-            out = self.format_assetsandshots(vals)
-       
-        elif listtype == 'version_fields':
-            out = self.format_version_fields(vals)
-       
-        elif listtype == 'version_statuses':
-            out = self.format_version_statuses(vals)
-       
-        elif listtype == 'version_name_templates':
-            out = self.format_version_name_templates(vals)
-
-        return out
