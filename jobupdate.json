@@ -1,0 +1,13 @@
+{
+    "first_frame":"1",
+    "last_frame":"100",
+    "frame_count":"100",
+    "frame_range":"1-100",
+    "frames_path":"/path/to/frames/image.#.jpg",
+    "job_id":"contrail.123", 
+    "job_status":"1",
+    "version_id":"10",
+    "foo":"bar",
+    "total_render_time":"360",
+    "avg_frame_time":"60"
+}
