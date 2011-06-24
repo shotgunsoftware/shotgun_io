@@ -1,8 +1,27 @@
 #!/usr/bin/env python
+import os
+import sys
 import re
+import logging
+try:
+    import simplejson as json
+except ImportError:
+    try:
+        import json
+    except ImportError:
+        python_version = "%d.%d.%d" % (sys.version_info[0], sys.version_info[1], sys.version_info[2])
+        msg = "No supported JSON module is installed. It's a standard module as of Python 2.6. If you are " \
+                "running an earlier version of Python (yours is v%s), you can download and install the "\
+                "simplejson module from http://pypi.python.org/pypi/simplejson. If you have a package "\
+                "manager on your system you can use something like `apt-get install python-simplejson` "\
+                "or if you have the setuptools module installed in Python, just type `easy_install simplejson`" % python_version
+        logging.error(msg)
 
 
-class InputCmdLine (object):
+
+
+
+class InputDefault (object):
     def __init__(self, config): 
         self._config = config # okay to pass this in from the parent?
         
@@ -13,8 +32,8 @@ class InputCmdLine (object):
             config.get('version_values', 'status_failed')
         ]
         self.version_name_force_lowercase = config.get('version_values', 'version_name_force_lowercase')
-        self.version_name_space_token = config.get('version_values', 'version_name_replace_spaces')
-        self.version_name_replace_spaces = (self.version_name_space_token is not None)
+        self.version_name_replace_spaces = config.get('version_values', 'version_name_replace_spaces')
+        self.version_name_space_token = config.get('version_values', 'version_name_space_token')
 
         self.raw_input = None
         self.shotgun_input = {}        
@@ -173,6 +192,13 @@ class InputCmdLine (object):
         self._shotgun_format_version_id(v) 
 
 
+    def _input_format_thumbnail(self, value):
+        if value is None or value.strip() == '':
+            raise ValueError("Input data for 'thumbnail' must be a non-empty string path to a valid file. (provided value '%s')" % (value))
+        
+        self._shotgun_format_thumbnail(value) 
+
+
     def _shotgun_format_user(self, value):
         self.shotgun_input[ self._config.get('version_fields', 'user') ] = {'type':'HumanUser', 'id': value}
 
@@ -226,7 +252,12 @@ class InputCmdLine (object):
         self.shotgun_input[ self._config.get('version_fields', 'name') ] = value
 
 
-    def extract_version_data(self):
+    def _shotgun_format_thumbnail(self, value):
+        # thumbnail field is non-negotiable ;)
+        self.shotgun_input['thumbnail'] = value
+
+
+    def extract_version_data(self, version_data):
         """
         Translation method to convert Version data provided by render queue to the common Shotgun format.
 
@@ -238,11 +269,38 @@ class InputCmdLine (object):
         enabled in the config will be silently ignored
 
         """
+        self._decode_version_hash(version_data)
         for field, value in self.raw_input.iteritems():
-            if field in ['name','user','project','task','shot','first_frame','last_frame','frame_count','job_status','total_render_time','avg_frame_time','version_id']:
+            if field in ['name','user','project','task','shot','first_frame','last_frame','frame_count','job_status','total_render_time','avg_frame_time','version_id','thumbnail']:
                 getattr(self, '_input_format_%s' % field)(value)
             # ignore everything else
             else:
                 pass   
 
+    def _decode_version_hash(self, version_data):
+        """
+        convert JSON string representation of Version into Python object.
+        """        
+        fp = None
+        # input is stdin
+        if version_data == "-":
+            version_data = "$STDIN" # for error messages
+            fp = sys.stdin
+        # input is file
+        elif os.path.isfile(version_data):
+            try:
+                fp = open(version_data)
+            except IOError, e:
+                logging.error("unable to open input file %s: %s" % (os.path.abspath(version_data), e))
+        if fp:    
+            try:
+                self.raw_input = json.load(fp)
+            except ValueError, e:
+                logging.error("invalid JSON format in file %s: %s" % (os.path.abspath(version_data), e))
+        else:
+            # input was provided as an argument
+            try:
+                self.raw_input = json.loads(version_data)
+            except ValueError, e:
+                logging.error("invalid JSON format provided as argument: %s" % e)
     
