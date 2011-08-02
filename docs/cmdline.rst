@@ -1,7 +1,7 @@
 ##################
 Command line usage
 ##################
-:mod:`shotgun_io` supports a simple command line interface. 
+``shotgun_io`` supports a simple command line interface. 
 
 All normal output is sent to STDOUT and exits with a return code of ``0``. 
 Any errors that are generated are send to STDERR and the script will exit with a 
@@ -36,7 +36,6 @@ Available entity types
 * ``assets`` *requires project id* ``-p``
 * ``tasks`` *requires user id* ``-u``
 * ``shotsandassets`` *requires user id* ``-u``
-* ``projectsandtasks`` *requires user id* ``-u``
 
 Additional switches
 -------------------

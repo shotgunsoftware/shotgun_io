@@ -51,10 +51,6 @@ entity_queries = {
         'project_required': True,
         'user_required': False,
     },
-    'projectsandtasks': {
-        'project_required': False,
-        'user_required': True,
-    },
 }
 
 """Defines the default query filter used by validate_user()

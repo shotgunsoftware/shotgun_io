@@ -501,10 +501,6 @@ class ShotgunIOBase(object):
             for t in ['shots','assets']:
                 entities += self.get_entities(t, project_id=project_id,
                                               no_format=True)
-        elif entity_type == "projectsandtasks":
-            for t in ['projects','tasks']:
-                entities += self.get_entities(t, user_id=user_id, 
-                                              no_format=True)
         else:
             filters = io_entity_queries.entity_queries[entity_type]['filters']
             # check if we need to inject project or user filters
