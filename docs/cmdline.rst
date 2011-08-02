@@ -595,28 +595,6 @@ spaces in the pathname for Windows paths (but not recommended).
     {"movie_path":"//otherserver/path/to/movie.low.mov"}
     {"movie_path":"F:/path/to/SubDirectory/movie.mp4"}
 
-thumbnail_path
-^^^^^^^^^^^^^^
-Full absolute path to the image to upload as the thumbnal for the Version in 
-Shotgun. Shotgun does automatic thumbail processing (using ImageMagick) so 
-resizing the image before assigning it as the thumbnail is not necessary. Most 
-image formats that ImageMagick supports will work fine. Formats that are not 
-supported will not cause problems as Shotgun will attempt to make a thumbnail 
-from of the image and if it fails, will continue on without complaint. 
-
-.. todo:: EXR files are not currently supported, however we will be working on
-    adding this to our builds shortly. 
-
-* **data_type**: `str`
-* **required on create?**: no 
-* **required on update?**: no 
-
-**Examples**::
-
-    {"thumbnail_path":"/server/path/to/thumbnail.jpg"}
-    {"thumbnail_path":"//otherserver/path/to/thumbnail.jpg"}
-    {"thumbnail_path":"F:/path/to/SubDirectory/thumbnail.jpg"}
-
 job_id
 ^^^^^^
 Render job id as defined by the render queue manager. Spaces are okay.

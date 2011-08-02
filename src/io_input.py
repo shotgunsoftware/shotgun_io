@@ -215,20 +215,6 @@ class InputDefault(object):
             raise ValueError("Input data for 'version_id' must be an integer. (provided value: %s is a %s)" % (value, type(value)))            
         self._shotgun_format_version_id(value) 
 
-    
-    def _input_format_thumbnail(self, value):
-        try:
-            file_path = value.strip()
-        except AttributeError:
-            raise ValueError("Input data for 'thumbnail' must be a non-empty string path to a valid file. (provided value: %s)" % (value))
-        
-        try:
-            open(file_path)
-        except IOError:
-            raise ValueError("Input data for 'thumbnail' is not a valid file. (provided value: %s)" % (value))
-        
-        self.thumbnail_path = value
-
 
     def _shotgun_format_description(self, value):
         self.shotgun_input[ self._config.get('version_fields', 'description') ] = value
