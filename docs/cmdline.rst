@@ -45,13 +45,66 @@ Additional switches
 * ``-u --user_id``
     user id for listing entity types that require a user id for context
 
-**Example**::
+Return values
+-------------------
+It can be assumed when parsing the output from any of these ``-l`` commands that
+the leftmost output is unique identifier information like ids etc. used for 
+creating and updating Shotgun information. Anything to the right of the first
+whitespace is display information only (ie. Project names, Task names, etc.)
+
+Generally the values returned are in the format ``id name`` where ``id`` is the
+Shotgun id of the entity and ``name`` is the display name. The ``id`` is what you 
+need to store for creating and updating Version values in Shotgun. There is a 
+single space separating the ``id`` and the ``name``.
+
+The exception to the general format is the output for Tasks. Since there are several
+pieces of information provided in a Task, the format is 
+``task_id,project_id,entity_type,entity_id project_name | entity name | task name``
+Again, there is a single space separating unique identifiers from the display name
+
+**General Example**::
 
     $ shotgun_io.py -l projects
     65 Demo Animation Project
     66 Awesome VFX Project
     70 Test Project 1
 
+**General Output Breakdown**::
+
+    70 Test Project 1
+    \/|\____________/
+    1 2      3
+
+1. Project id
+2. Space delimiting id output and display output
+3. Project name
+
+**Task Example**::
+
+    $ shotgun_io.py -l tasks -u 39
+    55,4,Asset,3 Demo Project | Asset 1 | Rig
+    134,4,Asset,620 Demo Project | Asset 10 | Rig
+    138,4,Asset,621 Demo Project | Asset 11 | Rig
+    142,4,Asset,622 Demo Project | Asset 12 | Rig
+    146,4,Asset,623 Demo Project | Asset 13 | Rig
+
+**Task Output Breakdown**::
+
+    147,4,Asset,623 Demo Project | Asset 13 | Surface Prep
+    \_/ | \___/ \_/|\___________/  \______/   \__________/
+     1  2   3    4 5      6            7           8
+                    \____________________________________/
+                                      9
+1. Task id
+2. Project id
+3. Entity type
+4. Entity id
+5. Space delimiting id output and display output
+6. Project name
+7. Entity name
+8. Task name
+9. Complete Task name with Project and Entity context for menu
+    
 Get Version fields
 ==================
 ``-f --fields``
