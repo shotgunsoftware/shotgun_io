@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 import os
 import sys
 import re
@@ -26,7 +27,7 @@ class InputDefault(object):
             'name', 'description', 'user', 'project', 'task', 'shot', 
             'first_frame', 'last_frame', 'frame_count', 'frame_range', 
             'job_status', 'total_render_time', 'avg_frame_time', 'version_id', 
-            'thumbnail', 'movie_path', 'frames_path', 'job_id'
+            'movie_path', 'frames_path', 'job_id'
             ]
         self._version_schema = None
 
@@ -36,8 +37,8 @@ class InputDefault(object):
             config.get('version_values', 'status_complete'), 
             config.get('version_values', 'status_failed')
         ]
-        self.version_name_force_lowercase = config.get('version_values', 'version_name_force_lowercase')
-        self.version_name_replace_spaces = config.get('version_values', 'version_name_replace_spaces')
+        self.version_name_force_lowercase = config.getboolean('version_values', 'version_name_force_lowercase')
+        self.version_name_replace_spaces = config.getboolean('version_values', 'version_name_replace_spaces')
         self.version_name_space_token = config.get('version_values', 'version_name_space_token')
 
         self.raw_input = None
@@ -56,8 +57,6 @@ class InputDefault(object):
                 return True
         return False
         
-
-
     def _input_format_name(self, value):
         try:
             v = value.strip()
@@ -68,7 +67,6 @@ class InputDefault(object):
                 raise ValueError("Input data for 'version_name' must be a non-empty string. (provided value: %s)" % (value))       
         self._shotgun_format_name(value) 
 
-
     def _input_format_description(self, value):
         try:
             v = value.strip()
@@ -76,8 +74,6 @@ class InputDefault(object):
             raise ValueError("Input data for 'description' must be a string. (provided value: %s)" % (value))
         self._shotgun_format_description(v) 
 
-
-    # @@TODO allow for local file links.
     def _input_format_frames_path(self, value):
         try:
             v = value.strip()
@@ -91,7 +87,6 @@ class InputDefault(object):
         self.thumbnail_path = value
         self._shotgun_format_frames_path(value) 
 
-
     # @@TODO document movie_upload if we use it or use of file/link fields
     def _input_format_movie_path(self, value):
         try:
@@ -101,23 +96,23 @@ class InputDefault(object):
         else:
             if v == '':
                 raise ValueError("Input data for 'movie_path' must be a non-empty string. (provided value: %s)" % (value))       
-        if self._config.get('version_fields', 'upload_movie'):
+        # must have movie uploads enabled and the movie_path field must be an
+        # entity field
+        if self._config.getboolean('version_fields', 'upload_movie') and \
+            self._is_url_field( self._config.get('version_fields', 'movie_path') ):
             self.movie_upload = v
         else:
             self._shotgun_format_movie_path(value) 
-
 
     def _input_format_user(self, value):
         if not isinstance(value, int):
             raise ValueError("Input data for 'user' must be an integer. (provided value: %s is a %s)" % (value, type(value)))        
         self._shotgun_format_user(value) 
 
-
     def _input_format_project(self, value):
         if not isinstance(value, int):
             raise ValueError("Input data for 'project' must be an integer. (provided value: %s is a %s)" % (value, type(value)))        
         self._shotgun_format_project(value) 
-
 
     # @@TODO if we have the Task we should get the Project and entity from it in the main script if not provided
     def _input_format_task(self, value):
@@ -125,7 +120,6 @@ class InputDefault(object):
             raise ValueError("Input data for 'task' must be an integer. (provided value: %s is a %s)" % (value, type(value)))
         self._shotgun_format_task(value)
         
-
     def _input_format_shot(self, value):
         error_msg = "Input data for 'shot' must be an dictionary with non-empty 'type' and 'id' keys. (provided value: %s)"
         if not isinstance(value, dict):
@@ -151,24 +145,20 @@ class InputDefault(object):
 
         self._shotgun_format_shot(value)
 
-
     def _input_format_first_frame(self, value):
         if not isinstance(value, int) or value is None:
             raise ValueError("Input data for 'first_frame' must None or an integer. (provided value: %s is a %s)" % (value, type(value)))        
         self._shotgun_format_first_frame(value) 
-
 
     def _input_format_last_frame(self, value):
         if not isinstance(value, int) or value is None:
             raise ValueError("Input data for 'last_frame' must None or an integer. (provided value: %s is a %s)" % (value, type(value)))            
         self._shotgun_format_last_frame(value) 
 
-
     def _input_format_frame_count(self, value):
         if not isinstance(value, int) or value is None:
             raise ValueError("Input data for 'frame_count' must be an integer. (provided value: %s is a %s)" % (value, type(value)))            
         self._shotgun_format_frame_count(value) 
-
 
     def _input_format_frame_range(self, value):
         try:
@@ -178,14 +168,12 @@ class InputDefault(object):
         else:
             self._shotgun_format_frame_range(v) 
 
-
     def _input_format_job_status(self, value):
         if not isinstance(value, int) or value is None:
             raise ValueError("Input data for 'job_status' must be an integer. (provided value: %s is a %s)" % (value, type(value)))            
         if not value in range(0,4):
             raise ValueError("Input data for 'job_status' must be an integer between 0 and 3. (provided value: %s)" % (value))        
         self._shotgun_format_job_status(value) 
-
 
     def _input_format_job_id(self, value):
         try:
@@ -194,18 +182,15 @@ class InputDefault(object):
             raise ValueError("Input data for 'job_id' must be a string. (provided value: %s)" % (value))
         self._shotgun_format_job_id(v) 
 
-
     def _input_format_total_render_time(self, value):
         if not isinstance(value, int) or value is None:
             raise ValueError("Input data for 'total_render_time' must be an integer. (provided value: %s is a %s)" % (value, type(value)))            
         self._shotgun_format_total_render_time(value) 
 
-
     def _input_format_avg_frame_time(self, value):
         if not isinstance(value, int) or value is None:
             raise ValueError("Input data for 'avg_frame_time' must be an integer. (provided value: %s is a %s)" % (value, type(value)))           
         self._shotgun_format_avg_frame_time(value) 
-
 
     def _input_format_version_id(self, value):
         # can't assign a version id when creating
@@ -215,76 +200,59 @@ class InputDefault(object):
             raise ValueError("Input data for 'version_id' must be an integer. (provided value: %s is a %s)" % (value, type(value)))            
         self._shotgun_format_version_id(value) 
 
-
     def _shotgun_format_description(self, value):
         self.shotgun_input[ self._config.get('version_fields', 'description') ] = value
-
 
     def _shotgun_format_user(self, value):
         self.shotgun_input[ self._config.get('version_fields', 'user') ] = {'type':'HumanUser', 'id': value}
 
-
     def _shotgun_format_project(self, value):
         self.shotgun_input[ self._config.get('version_fields', 'project') ] = {'type':'Project', 'id': value}
-
 
     def _shotgun_format_task(self, value):
         self.shotgun_input[ self._config.get('version_fields', 'task') ] = {'type':'Task', 'id': value}
 
-
     def _shotgun_format_shot(self, value):
         self.shotgun_input[ self._config.get('version_fields', 'shot') ] = value
-
 
     def _shotgun_format_first_frame(self, value):
         self.shotgun_input[ self._config.get('version_fields', 'first_frame') ] = value
 
-
     def _shotgun_format_last_frame(self, value):
         self.shotgun_input[ self._config.get('version_fields', 'last_frame') ] = value
-
 
     def _shotgun_format_frame_count(self, value):
         self.shotgun_input[ self._config.get('version_fields', 'frame_count') ] = value
 
-
     def _shotgun_format_frame_range(self, value):
         self.shotgun_input[ self._config.get('version_fields', 'frame_range') ] = value
-
 
     def _shotgun_format_job_status(self, value):
         self.shotgun_input[ self._config.get('version_fields', 'job_status') ] = self.version_statuses[value]
 
-
     def _shotgun_format_total_render_time(self, value):
         self.shotgun_input[ self._config.get('version_fields', 'total_render_time') ] = value
 
-
     def _shotgun_format_avg_frame_time(self, value):
         self.shotgun_input[ self._config.get('version_fields', 'avg_frame_time') ] = value
-
 
     def _shotgun_format_frames_path(self, value):
         if self._is_url_field( self._config.get('version_fields', 'frames_path') ):
             value = { 'local_path': value }
         self.shotgun_input[ self._config.get('version_fields', 'frames_path') ] = value
 
-
     def _shotgun_format_job_id(self, value):
         self.shotgun_input[ self._config.get('version_fields', 'job_id') ] = value
-
 
     def _shotgun_format_movie_path(self, value):
         if self._is_url_field( self._config.get('version_fields', 'movie_path') ):
             value = { 'local_path': value }
         self.shotgun_input[ self._config.get('version_fields', 'movie_path') ] = value
 
-
     def _shotgun_format_version_id(self, value):
         # id field is non-negotiable ;)
         self.shotgun_input['id'] = value
 
-    
     def _shotgun_format_name(self, value):
         if self.version_name_replace_spaces:
             value = re.sub('\s+', self.version_name_space_token, value)
@@ -306,7 +274,6 @@ class InputDefault(object):
                     "Check the version_fields section of your shotgun_io.conf "\
                     "file to ensure all of the field names are valid" % k)
        
-
     def extract_version_data(self, version_data):
         """
         Translation method to convert Version data provided by render queue to the common Shotgun format.
@@ -324,7 +291,6 @@ class InputDefault(object):
             if field in self._valid_version_keys:
                 getattr(self, '_input_format_%s' % field)(value)
                 setattr(self, field, value)
-
             # ignore everything else
             else:
                 pass
@@ -376,7 +342,6 @@ class InputCmdLine(InputDefault):
             raise ValueError("Input data for 'version_name' must be a non-empty string. (provided value: %s)" % (value))        
         self._shotgun_format_name(value) 
 
-
     def _input_format_user(self, value):
         try:
             v = int(value.split(' ')[0])
@@ -384,14 +349,12 @@ class InputCmdLine(InputDefault):
             raise ValueError("Input data for 'user' must be an integer. (provided value: %s is a %s)" % (value, type(value)))        
         self._shotgun_format_user(v) 
 
-
     def _input_format_project(self, value):
         try:
             v = int(value.split(' ')[0])
         except ValueError:
             raise ValueError("Input data for 'project' must be an integer. (provided value: %s is a %s)" % (value, type(value)))        
         self._shotgun_format_project(v) 
-
 
     def _input_format_task(self, value):
         try:
@@ -428,7 +391,6 @@ class InputCmdLine(InputDefault):
                 raise ValueError("Fourth comma-separated value for 'task' (entity_id) must be an integer. (provided value: %s is a %s)" % (value, type(entity_id)))
         self._shotgun_format_shot({'type':et, 'id':eid})
         
-
     def _input_format_shot(self, value):
         # string values need to be pattern matched still (for the advanced project/shot workflow)
         if isinstance(value, str) or isinstance(value, unicode):
@@ -446,7 +408,6 @@ class InputCmdLine(InputDefault):
             raise ValueError("Input data for 'shot' must be an integer. (provided value: %s is a %s)" % (value, type(value)))        
         self._shotgun_format_shot(({'type':entity_type, 'id':entity_id}))
 
-
     def _input_format_first_frame(self, value):
         if value is not None:
             try:
@@ -454,7 +415,6 @@ class InputCmdLine(InputDefault):
             except ValueError:
                 raise ValueError("Input data for 'first_frame' must be an integer. (provided value: %s is a %s)" % (value, type(value)))        
         self._shotgun_format_first_frame(v) 
-
 
     def _input_format_last_frame(self, value):
         if value is not None:
@@ -464,7 +424,6 @@ class InputCmdLine(InputDefault):
                 raise ValueError("Input data for 'last_frame' must be an integer. (provided value: %s is a %s)" % (value, type(value)))            
         self._shotgun_format_last_frame(v) 
 
-
     def _input_format_frame_count(self, value):
         if value is not None:
             try:
@@ -472,7 +431,6 @@ class InputCmdLine(InputDefault):
             except ValueError:
                 raise ValueError("Input data for 'first_frame' must be an integer. (provided value: %s is a %s)" % (value, type(value)))            
         self._shotgun_format_frame_count(v) 
-
 
     def _input_format_job_status(self, value):
         if value is not None:
@@ -484,7 +442,6 @@ class InputCmdLine(InputDefault):
                 raise ValueError("Input data for 'job_status' must be an integer between 0 and 3. (provided value: %s)" % (value))        
         self._shotgun_format_job_status(v) 
 
-
     def _input_format_total_render_time(self, value):
         if value is not None:
             try:
@@ -492,7 +449,6 @@ class InputCmdLine(InputDefault):
             except ValueError:
                 raise ValueError("Input data for 'total_render_time' must be an integer. (provided value: %s is a %s)" % (value, type(value)))           
         self._shotgun_format_total_render_time(v) 
-
 
     def _input_format_avg_frame_time(self, value):
         if value is not None:
@@ -502,14 +458,12 @@ class InputCmdLine(InputDefault):
                 raise ValueError("Input data for 'avg_frame_time' must be an integer. (provided value: %s is a %s)" % (value, type(value)))           
         self._shotgun_format_avg_frame_time(v) 
 
-
     def _input_format_version_id(self, value):
         try:
             v = int(value)
         except (TypeError, ValueError):
             raise ValueError("Input data for 'version_id' must be an integer. (provided value: %s is a %s)" % (value, type(value)))           
         self._shotgun_format_version_id(v) 
-
 
     def _validate_shotgun_input(self):
         # strip out any fields that are set in the config but are blank 
