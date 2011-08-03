@@ -1,0 +1,603 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>API usage &mdash; shotgun_io v0.9 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="shotgun_io v0.9 documentation" href="index.html" />
+    <link rel="next" title="Integrating your company’s render manager" href="softwarecos.html" />
+    <link rel="prev" title="Command line usage" href="cmdline.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="softwarecos.html" title="Integrating your company’s render manager"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="cmdline.html" title="Command line usage"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">shotgun_io v0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="api-usage">
+<h1>API usage<a class="headerlink" href="#api-usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="shotgunio-factory">
+<h2>ShotgunIO Factory<a class="headerlink" href="#shotgunio-factory" title="Permalink to this headline">¶</a></h2>
+<p>While this class is the main class that gets called when creating a new instance,
+it will normally return a <tt class="xref py py-class docutils literal"><span class="pre">ShotgunIOBase</span></tt> instance which contains all of
+the default behavior for ShotgunIO.</p>
+<p>However, you may specify a custom module in the config that will override this
+default behavior, in which case this will return a <tt class="xref py py-class docutils literal"><span class="pre">ShotgunIOCustom</span></tt>
+instance which you (hopefully) have defined in your custom module. More info on
+that in the Customizing &lt;customizing&gt;_ section.</p>
+<span class="target" id="module-shotgun_io"></span><dl class="class">
+<dt id="shotgun_io.ShotgunIO">
+<em class="property">class </em><tt class="descclassname">shotgun_io.</tt><tt class="descname">ShotgunIO</tt><a class="headerlink" href="#shotgun_io.ShotgunIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Factory for ShotgunIO instance.</p>
+<p>A wrapper around the Shotgun API for creating and updating Versions and 
+managing Shotgun communication specific to render queue workflow.</p>
+<p>Provides an easy way to get lists of entities from Shotgun for populating
+submit UI menus. Manages the input and output formatting of data as well as 
+validation for creating and updating Versions in Shotgun.</p>
+<p>Can be imported and instantiated directly or can be called standalone via 
+commandline. If a &#8216;custom_module&#8217; is defined in shotgun_io.conf, attempts to 
+import the specified file and instantiate the ShotgunIOCustom class instead.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> &#8211; ConfigParser instance holding configuration options loaded 
+from shotgun_io.conf</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">ShotgunIO instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="shotguniobase-class">
+<h2>ShotgunIOBase Class<a class="headerlink" href="#shotguniobase-class" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="shotgun_io.ShotgunIOBase">
+<em class="property">class </em><tt class="descclassname">shotgun_io.</tt><tt class="descname">ShotgunIOBase</tt><big>(</big><em>config</em><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper around the Shotgun API for creating and updating Versions and 
+managing Shotgun communication specific to render queue workflow.</p>
+<p>Provides an easy way to get lists of entities from Shotgun for populating
+submit UI menus. Manages the input and output formatting of data as well as 
+validation for creating and updating Versions in Shotgun</p>
+<p>Can be imported and instantiated directly or can be called standalone via 
+commandline.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> &#8211; ConfigParser instance holding configuration options loaded 
+from shotgun_io.conf</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">ShotgunIOBase instance</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.create_version">
+<tt class="descname">create_version</tt><big>(</big><em>version_data</em><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.create_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>create new Version entity in Shotgun from the provided Version data</p>
+<p>If the <tt class="docutils literal"><span class="pre">version_data</span></tt> is a JSON <cite>str</cite>, this will automatically 
+perform JSON decoding prior to validation, and data translation of the
+data to the expected Shotgun API format based on the integration 
+environment.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>version_data</strong> (<cite>str</cite> or <cite>dict</cite>) &#8211; structured data representing field/value pairs for
+creating the new Version. Input formats can vary depending on
+implementation. Eg. this can be a <cite>str</cite> JSON string or a Python
+<cite>dict</cite></td>
+</tr>
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="#shotgun_io.ShotgunIOError" title="shotgun_io.ShotgunIOError"><tt class="xref py py-class docutils literal"><span class="pre">ShotgunIOError</span></tt></a> if validation fails or Shotgun query 
+fails.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.get_config">
+<tt class="descname">get_config</tt><big>(</big><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current config option settings as defined in the conf 
+file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of current config settings as key value pairs</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><cite>dict</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.get_entities">
+<tt class="descname">get_entities</tt><big>(</big><em>entity_type</em>, <em>project_id=None</em>, <em>user_id=None</em>, <em>no_format=False</em><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_entities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve a list of entities of <cite>entity_type</cite> from Shotgun</p>
+<p>The config file holds several settings for how this query is executed
+including filters, fields returned, sorting options, and whether the 
+project_id and user_id is required. These settings are controlled by 
+the studio to match their workflow. Vendors can assume that the
+settings will define the details for the studio and shouldn&#8217;t 
+concern themselves with them.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>entity_type</strong> (<cite>str</cite>) &#8211; type of entities to query Shotgun for</li>
+<li><strong>project_id</strong> (<cite>int</cite>) &#8211; id of the project to limit the query to. This is
+required for certain entity types (like Shots and Assets)</li>
+<li><strong>user_id</strong> (<cite>int</cite>) &#8211; id of the user to limit the query to. This is 
+required for certain entity types (like Tasks)</li>
+<li><strong>no_format</strong> (<cite>bool</cite>) &#8211; used internally</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of Shotgun entity dictionaries matching the default 
+settings defined in the config</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><cite>list</cite></p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#shotgun_io.ShotgunIOError" title="shotgun_io.ShotgunIOError"><tt class="xref py py-class docutils literal"><span class="pre">ShotgunIOError</span></tt></a> if the validation fails or the Shotgun 
+query fails</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">io</span><span class="o">.</span><span class="n">get_entities</span><span class="p">(</span><span class="s">&quot;tasks&quot;</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="mi">55</span><span class="p">)</span>
+<span class="go">[{&#39;content&#39;: &#39;Anm&#39;,</span>
+<span class="go">  &#39;entity&#39;: {&#39;id&#39;: 860, &#39;name&#39;: &#39;bunny_010_0010&#39;, &#39;type&#39;: &#39;Shot&#39;},</span>
+<span class="go">  &#39;id&#39;: 557,</span>
+<span class="go">  &#39;project&#39;: {&#39;id&#39;: 65, &#39;name&#39;: &#39;Demo Animation Project&#39;, &#39;type&#39;: &#39;Project&#39;},</span>
+<span class="go">  &#39;type&#39;: &#39;Task&#39;}]        </span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.get_entities_from_file_path">
+<tt class="descname">get_entities_from_file_path</tt><big>(</big><em>scene_path</em><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_entities_from_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attemps to match a Project and Shot name automatically from the scene 
+file path based on regex definitions in the shotgun_io config.</p>
+<p>This method is a good candidate for overriding in 
+<tt class="xref py py-class docutils literal"><span class="pre">ShotgunIOCustom</span></tt> since there&#8217;s often varying logic that needs to
+be implemented for each studio.</p>
+<p>Currently just returns strings for project and shot which can then
+be used to lookup their entity ids in Shotgun. Returns None if no match 
+was found.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This method is not implemented</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>scene_path</strong> &#8211; full path to the scene path</td>
+</tr>
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body">NotImplementedError</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple with project and shot</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><cite>tuple</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.get_next_version_number">
+<tt class="descname">get_next_version_number</tt><big>(</big><em>entity</em>, <em>task=None</em><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_next_version_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the next Version number based on the pending Version
+that is about to be created.</p>
+<p>The logic used depends on what the setting for <tt class="docutils literal"><span class="pre">version_numbering</span></tt> is
+in the config.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the config specifies Task-based numbering and no Task
+is provided, it will fall back on global numbering.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>entity</strong> (<cite>dict</cite>) &#8211; Shotgun entity the Version is for. The format is the 
+standard Shotgun entity hash format with a required &#8216;type&#8217; and &#8216;id&#8217;
+key in the dictionary. Eg. <tt class="docutils literal"><span class="pre">{'type':'Shot',</span> <span class="pre">'id':123}</span></tt></li>
+<li><strong>task</strong> (<cite>dict</cite> or <cite>None</cite>) &#8211; Task entity required for Task-based or Pipline Step-based
+numbering. Format is the standard Shotgun entity hash format with 
+a required &#8216;type&#8217; and &#8216;id&#8217; key in the dictionary. Eg. 
+<tt class="docutils literal"><span class="pre">{'type':'Task',</span> <span class="pre">'id':456}</span></tt></li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the next Version number for the Version contained in this 
+instance</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><cite>int</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.get_projects">
+<tt class="descname">get_projects</tt><big>(</big><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_projects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve a list of valid Projects from Shotgun</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of Projects as dicts with keys <tt class="docutils literal"><span class="pre">id</span></tt> and <tt class="docutils literal"><span class="pre">name</span></tt></td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><cite>list</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.get_tasks">
+<tt class="descname">get_tasks</tt><big>(</big><em>user_id</em><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve a list of valid Tasks from Shotgun for user</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user_id</strong> &#8211; Shotgun id of user</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of Tasks as dicts with keys <tt class="docutils literal"><span class="pre">id</span></tt>, <tt class="docutils literal"><span class="pre">project_id</span></tt>, <tt class="docutils literal"><span class="pre">entity_type</span></tt>, <tt class="docutils literal"><span class="pre">entity_id</span></tt>, <tt class="docutils literal"><span class="pre">name</span></tt></td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><cite>list</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.get_users">
+<tt class="descname">get_users</tt><big>(</big><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_users" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve a list of valid HumanUsers from Shotgun</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of HumanUsers as dicts with keys <tt class="docutils literal"><span class="pre">id</span></tt> and <tt class="docutils literal"><span class="pre">name</span></tt></td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><cite>list</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.get_version_fields">
+<tt class="descname">get_version_fields</tt><big>(</big><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_version_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dict of Version fields whose values are editable
+categorized by field type.</p>
+<p>This may be useful for introspecting whether specified field names 
+defined during setup or configuration of the integration when done
+interactively.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">dictionary of the editable fields for the Version entity in 
+Shotgun grouped by field type</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><cite>dict</cite></td>
+</tr>
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="#shotgun_io.ShotgunIOError" title="shotgun_io.ShotgunIOError"><tt class="xref py py-class docutils literal"><span class="pre">ShotgunIOError</span></tt></a> if the Shotgun query fails</td>
+</tr>
+<tr class="field"><th class="field-name">Todo :</th><td class="field-body">The filtering could be more intelligent at filtering out 
+additional fields that don&#8217;t make sense</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">io</span><span class="o">.</span><span class="n">get_version_fields</span><span class="p">()</span>
+<span class="go">{&#39;checkbox&#39;: [&#39;sg_frames_have_slate&#39;, &#39;sg_movie_has_slate&#39;],</span>
+<span class="go"> &#39;date&#39;: [&#39;sg_render_datestamp&#39;],</span>
+<span class="go"> &#39;date_time&#39;: [&#39;sg_render_timestamp&#39;],</span>
+<span class="go"> &#39;entity&#39;: [&#39;entity&#39;,</span>
+<span class="go">            &#39;project&#39;,</span>
+<span class="go">            &#39;sg_task&#39;,</span>
+<span class="go">            &#39;task_template&#39;,</span>
+<span class="go">            &#39;user&#39;],</span>
+<span class="go"> &#39;float&#39;: [&#39;sg_frames_aspect_ratio&#39;, &#39;sg_movie_aspect_ratio&#39;],</span>
+<span class="go"> &#39;list&#39;: [&#39;sg_version_type&#39;],</span>
+<span class="go"> &#39;multi_entity&#39;: [&#39;notes&#39;,</span>
+<span class="go">                  &#39;playlists&#39;,</span>
+<span class="go">                  &#39;sg_storyboard_link&#39;,</span>
+<span class="go">                  &#39;task_sg_versions_tasks&#39;,</span>
+<span class="go">                  &#39;tasks&#39;],</span>
+<span class="go"> &#39;number&#39;: [&#39;frame_count&#39;,</span>
+<span class="go">            &#39;sg_avg_frame_time&#39;,</span>
+<span class="go">            &#39;sg_first_frame&#39;,</span>
+<span class="go">            &#39;sg_last_frame&#39;,</span>
+<span class="go">            &#39;sg_total_render_time&#39;],</span>
+<span class="go"> &#39;status_list&#39;: [&#39;sg_status_list&#39;],</span>
+<span class="go"> &#39;tag_list&#39;: [&#39;tag_list&#39;],</span>
+<span class="go"> &#39;text&#39;: [&#39;code&#39;,</span>
+<span class="go">          &#39;description&#39;,</span>
+<span class="go">          &#39;frame_range&#39;,</span>
+<span class="go">          &#39;sg_department&#39;,</span>
+<span class="go">          &#39;sg_job_id&#39;,</span>
+<span class="go">          &#39;sg_path_to_frames&#39;,</span>
+<span class="go">          &#39;sg_path_to_movie&#39;],</span>
+<span class="go"> &#39;url&#39;: [&#39;sg_link_to_frames&#39;,</span>
+<span class="go">         &#39;sg_link_to_movie&#39;,</span>
+<span class="go">         &#39;sg_uploaded_movie&#39;]}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.get_version_name_templates">
+<tt class="descname">get_version_name_templates</tt><big>(</big><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_version_name_templates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of the Version name templates defined in the config.</p>
+<p>The first entry in the list is the default. If the first
+entry is blank, then there is no default set.</p>
+<p>Allows tokens like ${project} or ${shot} that can be used
+for string replacement in the submit UI.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of Version name templates defined in the config</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><cite>list</cite></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">io</span><span class="o">.</span><span class="n">get_version_name_templates</span><span class="p">()</span>
+<span class="go">[&#39;&#39;, &#39;${project}_${shot}_${task}&#39;, &#39; ${shot}_${task} ${jobid}&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.get_version_status_values">
+<tt class="descname">get_version_status_values</tt><big>(</big><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_version_status_values" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Returns a list of valid status values for the Version Status field </dt>
+<dd>in Shotgun</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of short codes for the configured status field in Shotgun</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><cite>list</cite></td>
+</tr>
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="#shotgun_io.ShotgunIOError" title="shotgun_io.ShotgunIOError"><tt class="xref py py-class docutils literal"><span class="pre">ShotgunIOError</span></tt></a> if the Shotgun query fails</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">io</span><span class="o">.</span><span class="n">get_version_status_values</span><span class="p">()</span>
+<span class="go">[&#39;na&#39;, &#39;queued&#39;, &#39;ren&#39;, &#39;rev&#39;, &#39;vwd&#39;, &#39;fail&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.get_workflow">
+<tt class="descname">get_workflow</tt><big>(</big><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_workflow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current configured workflow option as defined in the conf 
+file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name of the workflow currently enabled</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><cite>str</cite></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">io</span><span class="o">.</span><span class="n">get_workflow</span><span class="p">()</span>
+<span class="go">task</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.update_version">
+<tt class="descname">update_version</tt><big>(</big><em>version_data</em><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.update_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update existing Version entity in Shotgun from the provided Version 
+data.</p>
+<p>If the <tt class="docutils literal"><span class="pre">version_data</span></tt> is a JSON <cite>str</cite>, this will automatically 
+perform JSON decoding prior to validation, and data translation of the
+data to the expected Shotgun API format based on the integration 
+environment.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>version_data</strong> (<cite>str</cite> or <cite>dict</cite>) &#8211; structured data representing field/value pairs for
+creating the new Version. Input formats can vary depending on
+implementation. Eg. this can be a <cite>str</cite> JSON string or a Python
+<cite>dict</cite>. Requires <tt class="docutils literal"><span class="pre">id</span></tt> key with integer value that 
+corresponds to the id of the Version entity to  update in Shotgun.</td>
+</tr>
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="#shotgun_io.ShotgunIOError" title="shotgun_io.ShotgunIOError"><tt class="xref py py-class docutils literal"><span class="pre">ShotgunIOError</span></tt></a> if validation fails or Shotgun query 
+fails.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.upload_movie">
+<tt class="descname">upload_movie</tt><big>(</big><em>version_id</em>, <em>movie_path</em><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.upload_movie" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload file located at movie_path to Version with 
+version_id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.upload_thumbnail">
+<tt class="descname">upload_thumbnail</tt><big>(</big><em>version_id</em>, <em>frames_path</em><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.upload_thumbnail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload file located at thumb_path as thumbnail for Version with 
+version_id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.validate_user">
+<tt class="descname">validate_user</tt><big>(</big><em>username</em><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.validate_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if given username string is a valid active user in Shotgun.</p>
+<p>If the username is active and valid, returns the id of the HumanUser 
+entity in Shotgun. If the username is invalid, returns None.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">io</span><span class="o">.</span><span class="n">validate_user</span><span class="p">(</span><span class="s">&quot;zoe&quot;</span><span class="p">)</span>
+<span class="go">42</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">io</span><span class="o">.</span><span class="n">validate_user</span><span class="p">(</span><span class="s">&quot;franny&quot;</span><span class="p">)</span>
+<span class="go">shotgun_io.py ERROR: User &#39;franny&#39; is invalid.</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>username</strong> (<cite>str</cite>) &#8211; the login to lookup in Shotgun</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Shotgun id for the user or None if username wasn&#8217;t found</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><cite>int</cite> or <cite>NoneType</cite></td>
+</tr>
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="#shotgun_io.ShotgunIOError" title="shotgun_io.ShotgunIOError"><tt class="xref py py-class docutils literal"><span class="pre">ShotgunIOError</span></tt></a> if the Shotgun query fails</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="shotgunioerror-class">
+<h2>ShotgunIOError Class<a class="headerlink" href="#shotgunioerror-class" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="shotgun_io.ShotgunIOError">
+<em class="property">class </em><tt class="descclassname">shotgun_io.</tt><tt class="descname">ShotgunIOError</tt><a class="headerlink" href="#shotgun_io.ShotgunIOError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base for all ShotgunIO Errors</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">API usage</a><ul>
+<li><a class="reference internal" href="#shotgunio-factory">ShotgunIO Factory</a></li>
+<li><a class="reference internal" href="#shotguniobase-class">ShotgunIOBase Class</a></li>
+<li><a class="reference internal" href="#shotgunioerror-class">ShotgunIOError Class</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cmdline.html"
+                        title="previous chapter">Command line usage</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="softwarecos.html"
+                        title="next chapter">Integrating your company&#8217;s render manager</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/api.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="softwarecos.html" title="Integrating your company’s render manager"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="cmdline.html" title="Command line usage"
+             >previous</a> |</li>
+        <li><a href="index.html">shotgun_io v0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Shotgun Software.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

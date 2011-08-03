@@ -1,0 +1,180 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>shotgun_io &mdash; shotgun_io v0.9 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="shotgun_io v0.9 documentation" href="#" />
+    <link rel="next" title="Configuration" href="configuration.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="configuration.html" title="Configuration"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">shotgun_io v0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="shotgun-io">
+<h1>shotgun_io<a class="headerlink" href="#shotgun-io" title="Permalink to this headline">¶</a></h1>
+<p>This software was originally developed by <a class="reference external" href="http://shotgunsoftware.com">Shotgun
+Software</a> with support from <a class="reference external" href="http://seriss.com/people/erco/">Greg Ercolano</a>.</p>
+<p>This software is provided under the BSD License that can be found in the LICENSE
+file or here: <a class="reference external" href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.org/licenses/bsd-license.php</a></p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The purpose of <a class="reference internal" href="api.html#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> is to provide a simplified wrapper around the
+Shotgun API to facilitate integrating render queues with Shotgun. By removing
+the Shotgun-specific code from the render queue itself, it requires less effort
+for vendors to add support for the integration, and makes it easy for studios
+to configure and update the integration piece independently of their render
+queue system. <a class="reference internal" href="api.html#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> is the &#8220;go-between&#8221; sitting in the middle of your
+Shotgun instance and your render queue system.</p>
+<p>Should Shotgun add new features to it&#8217;s product, the render queue companies are
+not burdoned with going back and re-implementing lots of new hooks and code to
+take advantage of them, rather shotgun_io can be updated by a studio and will
+automatically be able to take advantage of new features while still communicating
+the same way with the render queue systems as it always did.</p>
+<p>Additionally, <a class="reference internal" href="api.html#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> enables studios to customize the way the integration
+functions to match their specific workflow through configuration options or
+more advanced method overrides.</p>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#installation-of-the-config-file">Installation of the config file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#shotgun-server-settings">Shotgun server settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#version-fields">Version fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#version-values">Version values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#advanced">Advanced</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="customizing.html">Customizing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="customizing.html#enabling-your-custom-module">Enabling your custom module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cmdline.html">Command line usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cmdline.html#available-commands">Available Commands</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Python api usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#shotgunio-factory">ShotgunIO Factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#shotguniobase-class">ShotgunIOBase Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#shotgunioerror-class">ShotgunIOError Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="softwarecos.html">Integrating your render manager</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="softwarecos.html#enabling-shotgun-integration">Enabling Shotgun integration</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">shotgun_io</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="configuration.html"
+                        title="next chapter">Configuration</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="configuration.html" title="Configuration"
+             >next</a> |</li>
+        <li><a href="#">shotgun_io v0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Shotgun Software.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

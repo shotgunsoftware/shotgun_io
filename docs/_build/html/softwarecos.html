@@ -1,0 +1,412 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Integrating your company’s render manager &mdash; shotgun_io v0.9 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="shotgun_io v0.9 documentation" href="index.html" />
+    <link rel="prev" title="API usage" href="api.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="api.html" title="API usage"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">shotgun_io v0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-shotgun_io">
+<span id="integrating-your-company-s-render-manager"></span><h1>Integrating your company&#8217;s render manager<a class="headerlink" href="#module-shotgun_io" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> is intended to be the hub for managing communication between
+render queue software and Shotgun. It wraps the Shotgun API to provide render
+specific commands and utilities to make integrating with Shotgun simple while
+allowing studios the flexibility to customize the integration without requiring
+them to touch any of the render queue code.</p>
+<p>Customizations such as Shotgun authentication information, naming conventions,
+etc. are all part of the <a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> package so you don&#8217;t need to worry
+about how to handle these types of configuration and customization options.</p>
+<p>Integrating with Shotgun involves the following steps:</p>
+<ul class="simple">
+<li>enabling/disabling Shotgun integration</li>
+<li>adding Shotgun-specific menu options to submit windows</li>
+<li>creating/updating Versions in Shotgun</li>
+<li>passing job log information to <strong>shotgun_io</strong> for any custom processing</li>
+</ul>
+<div class="section" id="enabling-shotgun-integration">
+<h2>Enabling Shotgun integration<a class="headerlink" href="#enabling-shotgun-integration" title="Permalink to this headline">¶</a></h2>
+<p>In order to use <a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a>, your software will need to know where it
+lives on the file system. This (and optionally other information) lives in the
+<tt class="docutils literal"><span class="pre">.shotgun</span></tt> file. The <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file can live wherever a studio wants it
+to be. Therefore, in order to find where the <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file lives, you can
+assume there is a <strong>SHOTGUN_CONFIG</strong> environment variable that points to the
+location of the file.</p>
+<div class="section" id="shotgun-config-environment-variable">
+<h3>SHOTGUN_CONFIG environment variable<a class="headerlink" href="#shotgun-config-environment-variable" title="Permalink to this headline">¶</a></h3>
+<p>Studios are responsible for setting up a <strong>SHOTGUN_CONFIG</strong> environment variable
+that points to the location of the <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file. Therefore, the first step
+for setting up integration is to look for this environment variable. If it
+doesn&#8217;t exist, integration cannot be enabled.</p>
+<p>If it does exist, it should be a single absolute path to an existing readable
+<tt class="docutils literal"><span class="pre">.shotgun</span></tt> file. The format should look something like any of the following:</p>
+<div class="highlight-python"><pre>SHOTGUN_CONFIG=/usr/local/etc/shotgun/.shotgun
+SHOTGUN_CONFIG=Z:\\fileserver\tools\.shotgun
+SHOTGUN_CONFIG=\\fileserver\tools\.shotgun</pre>
+</div>
+</div>
+<div class="section" id="shotgun-file">
+<h3>.shotgun file<a class="headerlink" href="#shotgun-file" title="Permalink to this headline">¶</a></h3>
+<p>If the environment variable exists, the next step is to test that the file
+exists and is readable. If the file does not exist or is not readable, the
+integration cannot be enabled.</p>
+<p>Inside the file there should be at least 2 settings:</p>
+<ul class="simple">
+<li><strong>enabled</strong>: valid options are <tt class="docutils literal"><span class="pre">0</span></tt> to indicate the integration is not enabled, or <tt class="docutils literal"><span class="pre">1</span></tt> to indicate the integration is enabled</li>
+<li><strong>shotgun_io_path</strong>: the absolute path to the directory where <a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> lives.</li>
+</ul>
+<p>Example <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file contents:</p>
+<div class="highlight-python"><pre>enabled=1
+shotgun_io_path=/usr/local/etc/shotgun/shotgun_io/src</pre>
+</div>
+<div class="section" id="handling-additional-variables">
+<h4>Handling additional variables<a class="headerlink" href="#handling-additional-variables" title="Permalink to this headline">¶</a></h4>
+<p>If you need to use additional settings aside from the default variables in
+<tt class="docutils literal"><span class="pre">.shotgun</span></tt>, you may do so in a custom vendor-specific file named
+<tt class="docutils literal"><span class="pre">.shotgun_vendorname</span></tt>. Additional vendor-specific variables <em>cannot</em> be stored
+in the default <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file. Decide on what the standard suffix will be for your
+product and stick with it. For example, if your product name is &#8220;awesomesauce&#8221;,
+you would look for a file named <tt class="docutils literal"><span class="pre">.shotgun_awesomesauce</span></tt> in the location
+specified by the <strong>SHOTGUN_CONFIG</strong> environment_variable.</p>
+<p>It is up to you if you require a custom <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file or if you will use the
+standard one by default, and only use your custom one if it exists. For example,
+if you require the following additional variables</p>
+<ul class="simple">
+<li><strong>favorite_color</strong></li>
+<li><strong>lucky_number</strong></li>
+</ul>
+<p>Your vendor-specific file would be <tt class="docutils literal"><span class="pre">.shotgun_awesomesauce</span></tt> and would look like
+this:</p>
+<div class="highlight-python"><pre>ENABLED: 1
+shotgunio_path: /usr/local/etc/shotgun/shotgun_io/src
+favorite_color: orange
+lucky_number: 21</pre>
+</div>
+<p>This overall structure lets studios to use multiple render management systems
+with Shotgun integration but keeps any additional variables required by other
+systems hidden.</p>
+</div>
+</div>
+<div class="section" id="adding-shotgun-info-to-submit-windows">
+<h3>Adding Shotgun info to submit windows<a class="headerlink" href="#adding-shotgun-info-to-submit-windows" title="Permalink to this headline">¶</a></h3>
+<div class="admonition-todo admonition " id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">add a set of generic screens to show the desired UI and workflow.</p>
+</div>
+<p>There are only a couple of bits of Shotgun information that the artist will need
+to provide when submitting a job in order for the results to show up as a new
+Version entity in Shotgun.</p>
+<ul class="simple">
+<li><strong>User name</strong>: their username in Shotgun</li>
+<li><strong>Task</strong>: the Task in Shotgun that they are working on for this job</li>
+<li><strong>Version name</strong>: the name of the Version in Shotgun</li>
+<li><strong>Description</strong>: an optional freeform text field for any additional info</li>
+</ul>
+<p>From this information, <a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> can then figure out the Project and
+Shot that the Task is for, assemble the correct Version name (with appropriate
+Version number if configured for the studio), all enough to create the Version
+in Shotgun (though the render manager will likely provide additional information
+from the job as well).</p>
+<p>We realize the UI framework for each piece of software is different, and has
+varying features and limitations. So the following info is provided as a
+guideline towards what we believe is a good example for usability.</p>
+<p>The Shotgun info should be grouped together in a single area, preferably
+requiring minimal clicks as artists don&#8217;t like to mess around with more than
+they need to. All of the fields should begin <em>disabled</em> until the artist has
+provided their username and validated it. Once their username is validated, the
+remaining fields should become enabled and where applicable, filled with the
+valid information provided by <a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a>.</p>
+<div class="section" id="username">
+<h4>Username<a class="headerlink" href="#username" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><strong>field_type</strong>: textbox with a button labeled &#8220;Connect&#8221; to the right</li>
+</ul>
+<p>The artist should be able to type in their Shotgun username and either click
+on the &#8220;Connect&#8221; button or hit the &lt;return&gt; key. This will initiate a call to
+<a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> to validate the user. The <a class="reference internal" href="api.html#shotgun_io.ShotgunIOBase.validate_user" title="shotgun_io.ShotgunIOBase.validate_user"><tt class="xref py py-func docutils literal"><span class="pre">ShotgunIOBase.validate_user()</span></tt></a> method
+can be used for this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">io</span><span class="o">.</span><span class="n">validate_user</span><span class="p">(</span><span class="s">&#39;stewie&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the user&#8217;s id is returned this indicates the user is valid. The rest of the
+field should now be enabled. The Task menu should now be populated with all of
+the Tasks for the user. This can be done with <a class="reference internal" href="api.html#shotgun_io.ShotgunIOBase.get_entities" title="shotgun_io.ShotgunIOBase.get_entities"><tt class="xref py py-func docutils literal"><span class="pre">ShotgunIOBase.get_entities()</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">io</span><span class="o">.</span><span class="n">get_entities</span><span class="p">(</span><span class="s">&#39;tasks&#39;</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="task">
+<h4>Task<a class="headerlink" href="#task" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><strong>field_type</strong>: dropdown list</li>
+</ul>
+<p><a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> will return a list of Tasks for the user which should populate
+this dropdown menu for the artist to choose from. Because an artist could have
+several Tasks in Shotgun with the same name, we provide some context that can
+be used to help differentiate the Tasks from one another in the form of the
+Project and Shot.</p>
+<p>Each task returned by <a class="reference internal" href="api.html#shotgun_io.ShotgunIOBase.get_entities" title="shotgun_io.ShotgunIOBase.get_entities"><tt class="xref py py-func docutils literal"><span class="pre">ShotgunIOBase.get_entities()</span></tt></a> has enough info in
+it to get the context.</p>
+<ul class="simple">
+<li><strong>task name</strong> is represented by <tt class="docutils literal"><span class="pre">content</span></tt></li>
+<li><strong>project name</strong> is represented by <tt class="docutils literal"><span class="pre">project['name']</span></tt></li>
+<li><strong>entity name</strong> is represented by <tt class="docutils literal"><span class="pre">entity['name']</span></tt></li>
+</ul>
+<p>The Tasks should be listed in the menu in the following format:
+<tt class="docutils literal"><span class="pre">project</span> <span class="pre">name</span> <span class="pre">&gt;</span> <span class="pre">entity</span> <span class="pre">name</span> <span class="pre">&gt;</span> <span class="pre">task</span> <span class="pre">name</span></tt></p>
+<p>When the artist selects a task, you need to store the associated ids for each.
+In addition to the <em>id</em>, you also need to store the <em>type</em> of entity since a job
+can be submitted for a Shot, Asset, Element or any other type of entity in
+Shotgun:</p>
+<ul class="simple">
+<li><strong>task id</strong> (represented by <tt class="docutils literal"><span class="pre">id</span></tt>)</li>
+<li><strong>project id</strong> (represented by <tt class="docutils literal"><span class="pre">project['id']</span></tt>)</li>
+<li><strong>entity id</strong> (represented by <tt class="docutils literal"><span class="pre">entity['id']</span></tt>)</li>
+<li><strong>entity_type</strong> (represented by <tt class="docutils literal"><span class="pre">entity['type']</span></tt>)</li>
+</ul>
+</div>
+<div class="section" id="version-name">
+<h4>Version Name<a class="headerlink" href="#version-name" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><strong>field_type</strong>: editable dropdown list</li>
+</ul>
+<p>An editable dropdown list is one where you can choose from a list of options, but can also edit that selection after you make it.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If your UI doesn&#8217;t allow for an editable dropdown list you can use a combination of a dropdown list and an additional text field that shows the result.</p>
+</div>
+<p>In the <strong>shotgun_io.conf</strong> file, studio admins can define a set of Version name
+templates so that artists don&#8217;t have to name Versions manually. These templates
+can contain tokens used for string replacement based on the values the artist
+has chosen in the submit window. Valid tokens include:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">tokens</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">${project}</span></tt></td>
+<td>name of the project in Shotgun</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">${shot}</span></tt></td>
+<td>name of the entity in Shotgun</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">${task}</span></tt></td>
+<td>name of the task in Shotgun</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">${user}</span></tt></td>
+<td>username in Shotgun</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">${jobid}</span></tt></td>
+<td>job_id as defined by render queue manager</td>
+</tr>
+</tbody>
+</table>
+<p>You can get the list of defined templates using:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">io</span><span class="o">.</span><span class="n">get_version_name_templates</span><span class="p">()</span>
+<span class="go">[&#39;&#39;, &#39;${project}_${shot}_${task}&#39;, &#39; ${shot}_${task} ${jobid}&#39;]</span>
+</pre></div>
+</div>
+<p>The first option in the list is the default option an should be selected by
+default in the UI. If the first option is an empty string, then there is no
+default assigned, and the user should be required to choose an option.</p>
+<p>Before displaying the options in the menu, the tokens should be replaced by
+their actual values. If there is no value for the token, then simply use an
+empty string. The artist should never see the actual token in its <tt class="docutils literal"><span class="pre">${token}</span></tt>
+form.</p>
+<p>If the UI is unable to handle updating the display values in the menu, it should
+display the tokens minus the <tt class="docutils literal"><span class="pre">${}</span></tt>. So <tt class="docutils literal"><span class="pre">${project}_${shot}</span></tt> would become
+<tt class="docutils literal"><span class="pre">project_shot</span></tt>.</p>
+<p>For example, let&#8217;s say user <tt class="docutils literal"><span class="pre">stewie</span></tt> is submitting a job for task
+<tt class="docutils literal"><span class="pre">Demo</span> <span class="pre">Project</span> <span class="pre">&gt;</span> <span class="pre">100_010</span> <span class="pre">&gt;</span> <span class="pre">Anim</span></tt>. The table below shows you the version name
+templates and the default value that should be displayed in the menu.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="49%" />
+<col width="51%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">template value</th>
+<th class="head">actual value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">${project}_${shot}_${task}</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">Demo</span> <span class="pre">Project_100_010_Anim</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">${shot}_${task}</span> <span class="pre">(${user})</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">100_010_Anim</span> <span class="pre">(stewie)</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">${project}/${shot}/${jobid}/${user}</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">Demo</span> <span class="pre">Project/100_010/${jobid}/stewie</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Notice in the last example we have actually broken the rule for showing raw
+tokens in the menu display. We won&#8217;t know the value for the <tt class="docutils literal"><span class="pre">${jobid}</span></tt> token
+until the job is submitted so this is the one exception to that rule.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">While tokens <em>should</em> always have values for replacement, it is possible they may not. For example, Tasks can be without any link in Shotgun which would mean their entity value would be <tt class="xref docutils literal"><span class="pre">None</span></tt>. This is an important consideration in ensuring your code does not generate an error. In this case, any tokens that don&#8217;t have a value would simply be replaced with an empty string.</p>
+</div>
+<p>If you are using a separate text field for allowing the user to edit the version
+name value, selecting a new version name template should overwrite the value
+in the editable field.</p>
+<div class="section" id="version-numbering">
+<h5>Version numbering<a class="headerlink" href="#version-numbering" title="Permalink to this headline">¶</a></h5>
+<p>Version numbering is handled automatically by <a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a>. The studio
+admins are responsible for configuring their own installation&#8217;s version
+numbering scheme. Therefore you don&#8217;t need to care about that at all, which we
+hope is nice.</p>
+</div>
+</div>
+<div class="section" id="description">
+<h4>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><strong>field_type</strong>: text box</li>
+</ul>
+<p>The description field is a freeform text box that allows the artist to enter in
+any additional info they wish about the Version. There&#8217;s no requirement to fill
+this field in with info nor does it depend on any other input from the artist.</p>
+<p>The render manager can provide the following additional information:</p>
+<ul class="simple">
+<li><strong>frames_path</strong></li>
+<li><strong>movie_path</strong></li>
+<li><strong>thumbnail_path</strong></li>
+<li><strong>first_frame</strong></li>
+<li><strong>last_frame</strong></li>
+<li><strong>frame_count</strong></li>
+<li><strong>frame_range</strong></li>
+<li><strong>status</strong></li>
+<li><strong>total_render_time</strong></li>
+<li><strong>avg_frame_time</strong></li>
+</ul>
+<p>To see a full description of the valid fields allowed when creating and updating
+Versions in Shotgun, see the section <a class="reference internal" href="cmdline.html#valid-fields"><em>Valid fields and formatting</em></a>.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Integrating your company&#8217;s render manager</a><ul>
+<li><a class="reference internal" href="#enabling-shotgun-integration">Enabling Shotgun integration</a><ul>
+<li><a class="reference internal" href="#shotgun-config-environment-variable">SHOTGUN_CONFIG environment variable</a></li>
+<li><a class="reference internal" href="#shotgun-file">.shotgun file</a><ul>
+<li><a class="reference internal" href="#handling-additional-variables">Handling additional variables</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-shotgun-info-to-submit-windows">Adding Shotgun info to submit windows</a><ul>
+<li><a class="reference internal" href="#username">Username</a></li>
+<li><a class="reference internal" href="#task">Task</a></li>
+<li><a class="reference internal" href="#version-name">Version Name</a><ul>
+<li><a class="reference internal" href="#version-numbering">Version numbering</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#description">Description</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="api.html"
+                        title="previous chapter">API usage</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/softwarecos.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="api.html" title="API usage"
+             >previous</a> |</li>
+        <li><a href="index.html">shotgun_io v0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Shotgun Software.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

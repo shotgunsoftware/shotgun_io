@@ -1,0 +1,634 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuration &mdash; shotgun_io v0.9 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="shotgun_io v0.9 documentation" href="index.html" />
+    <link rel="next" title="Customizing shotgun_io" href="customizing.html" />
+    <link rel="prev" title="shotgun_io" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="customizing.html" title="Customizing shotgun_io"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="shotgun_io"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">shotgun_io v0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>Configuration of <tt class="docutils literal"><span class="pre">shotgun_io</span></tt> is controlled by a single <tt class="docutils literal"><span class="pre">shotgun_io.conf</span></tt>
+file which comes pre-filled with default values suitable for most studios to
+use out of the box. Most of the settings are relatively self-explanitory. This
+documentation is largely duplicated in the file itself.</p>
+<p>The file defines things like the url for your Shotgun server, script name, and
+API key, field names to use, as well as some additional naming options.</p>
+<div class="section" id="installation-of-the-config-file">
+<h2>Installation of the config file<a class="headerlink" href="#installation-of-the-config-file" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">shotgun_io.conf</span></tt> file must live either in the same directory as
+<tt class="docutils literal"><span class="pre">shotgun_io.py</span></tt> or in the <tt class="docutils literal"><span class="pre">/etc</span></tt> directory. It will look for the conf file
+in the current directory first, then in the <tt class="docutils literal"><span class="pre">/etc</span></tt> directory.</p>
+</div>
+<div class="section" id="shotgun-server-settings">
+<h2>Shotgun server settings<a class="headerlink" href="#shotgun-server-settings" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="url">
+<h3>url<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h3>
+<p>The url location of your Shotgun server:</p>
+<div class="highlight-python"><pre>url: https://myserver.shotgunstudio.com</pre>
+</div>
+</div>
+<div class="section" id="script-name">
+<h3>script_name<a class="headerlink" href="#script-name" title="Permalink to this headline">¶</a></h3>
+<p>The script name used for API access. For more information, see <a class="reference external" href="https://github.com/shotgunsoftware/python-api/wiki/Setting-Up-Shotgun-for-API-Access">Setting up
+Shotgun for API Access</a>:</p>
+<div class="highlight-python"><pre>script_name: shotgun_io</pre>
+</div>
+</div>
+<div class="section" id="application-key">
+<h3>application_key<a class="headerlink" href="#application-key" title="Permalink to this headline">¶</a></h3>
+<p>The 40 character hex application key used for API access. For more information,
+see <a class="reference external" href="https://github.com/shotgunsoftware/python-api/wiki/Setting-Up-Shotgun-for-API-Access">Setting up Shotgun for API Access</a>:</p>
+<div class="highlight-python"><pre>application_key: 12345abcdef8992841c5045bbd404c6833c169f1</pre>
+</div>
+</div>
+</div>
+<div class="section" id="version-fields">
+<h2>Version fields<a class="headerlink" href="#version-fields" title="Permalink to this headline">¶</a></h2>
+<p>Define what field each piece of information will be stored in inside
+of Shotgun. The conf file comes pre-filled with defaults that should
+match most typical Shotgun server setups out of the box. There are some fields
+that are not standard fields that would require adding a new field to your
+Shotgun instance in order to use them. These options are not enabled by
+default.</p>
+<p>If you don&#8217;t want to store a particular piece of information, simply leave
+it empty:</p>
+<div class="highlight-python"><pre>no_value_here:</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Shotgun fields specified below must be configured as valid data types (ie.
+you can only store text values in fields that are configured as text fields).</p>
+</div>
+<div class="section" id="name">
+<h3>name<a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h3>
+<p>Field that holds the Version name provided by the Artist in the submit dialog.
+(Example value: <tt class="docutils literal"><span class="pre">demo_100_010_anim_v001</span></tt>)</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is almost <em>always</em> going to be <tt class="docutils literal"><span class="pre">code</span></tt> and should only be
+different if you have a unique workflow.</p>
+</div>
+<ul class="simple">
+<li><strong>Valid data types</strong>: text</li>
+<li><strong>Required?</strong>: yes</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>name: code</pre>
+</div>
+</div>
+<div class="section" id="shot">
+<h3>shot<a class="headerlink" href="#shot" title="Permalink to this headline">¶</a></h3>
+<p>Field that links to the entity the submitted Version is for. This could be a
+Shot or an Asset entity type. We name it &#8220;shot&#8221; for simplicity.</p>
+<ul class="simple">
+<li><strong>Valid data types</strong>: entity</li>
+<li><strong>Required?</strong>: yes</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>shot: entity</pre>
+</div>
+</div>
+<div class="section" id="job-status">
+<h3>job_status<a class="headerlink" href="#job-status" title="Permalink to this headline">¶</a></h3>
+<p>Field that stores the status of the render job. The status will be translated
+and updated in Shotgun on the Version entity. See the &#8216;version_status&#8217; section below.</p>
+<ul class="simple">
+<li><strong>Valid data types</strong>: status_list, list, text</li>
+<li><strong>Required?</strong>: no</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>job_status: sg_status_list</pre>
+</div>
+</div>
+<div class="section" id="frames-path">
+<h3>frames_path<a class="headerlink" href="#frames-path" title="Permalink to this headline">¶</a></h3>
+<p>Field that stores the full path to the location of rendered frames in sequence
+notation (ie. <tt class="docutils literal"><span class="pre">/path/to/frames.#.jpg</span></tt>).</p>
+<ul class="simple">
+<li><strong>Valid data types</strong>: text, file/link</li>
+<li><strong>Required?</strong>: no</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>frames_path: sg_path_to_frames</pre>
+</div>
+</div>
+<div class="section" id="movie-path">
+<h3>movie_path<a class="headerlink" href="#movie-path" title="Permalink to this headline">¶</a></h3>
+<p>Field that stores the full path to the location of the proxy movie (ie.
+<tt class="docutils literal"><span class="pre">/path/to/movie.mov</span></tt>)</p>
+<ul class="simple">
+<li><strong>Valid data types</strong>: text, file/link</li>
+<li><strong>Required?</strong>: no</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>movie_path: sg_path_to_movie</pre>
+</div>
+</div>
+<div class="section" id="upload-movie">
+<h3>upload_movie<a class="headerlink" href="#upload-movie" title="Permalink to this headline">¶</a></h3>
+<p>If &#8216;movie_path&#8217; is a file/link field, setting this to <tt class="docutils literal"><span class="pre">yes</span></tt> will upload the
+proxy movie to store in Shotgun instead of linking to it locally.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This has no effect if the <tt class="docutils literal"><span class="pre">movie_path</span></tt> field is not a file/link (url) field.</p>
+</div>
+<ul class="simple">
+<li><strong>Required?</strong>: no</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>upload_movie: yes</pre>
+</div>
+</div>
+<div class="section" id="first-frame">
+<h3>first_frame<a class="headerlink" href="#first-frame" title="Permalink to this headline">¶</a></h3>
+<p>Field that stores the lowest frame number rendered by the job.</p>
+<ul class="simple">
+<li><strong>Valid data types</strong>: number, float, text</li>
+<li><strong>Required?</strong>: no</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>first_frame: sg_first_frame</pre>
+</div>
+</div>
+<div class="section" id="last-frame">
+<h3>last_frame<a class="headerlink" href="#last-frame" title="Permalink to this headline">¶</a></h3>
+<p>Field that stores the highest frame number rendered by the job.</p>
+<ul class="simple">
+<li><strong>Valid data types</strong>: number, float, text</li>
+<li><strong>Required?</strong>: no</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>last_frame: sg_last_frame</pre>
+</div>
+</div>
+<div class="section" id="frame-count">
+<h3>frame_count<a class="headerlink" href="#frame-count" title="Permalink to this headline">¶</a></h3>
+<p>Field that stores the count of all of the rendered frames in the job.</p>
+<ul class="simple">
+<li><strong>Valid data types</strong>: number, float, text</li>
+<li><strong>Required?</strong>: no</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>frame_count: frame_count</pre>
+</div>
+</div>
+<div class="section" id="frame-range">
+<h3>frame_range<a class="headerlink" href="#frame-range" title="Permalink to this headline">¶</a></h3>
+<p>Field that stores the frame range specified in the render job. The values can be a
+simple format (eg. <tt class="docutils literal"><span class="pre">1-100</span></tt>), a complex format (eg. <tt class="docutils literal"><span class="pre">1-100,2</span></tt>) or a mixture
+of formats separated by a single space (eg. <tt class="docutils literal"><span class="pre">1-100,2</span> <span class="pre">200</span> <span class="pre">300</span> <span class="pre">351-400</span></tt>)</p>
+<ul class="simple">
+<li><strong>Valid data types</strong>: text</li>
+<li><strong>Required?</strong>: no</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>frame_range: frame_range</pre>
+</div>
+</div>
+<div class="section" id="user">
+<h3>user<a class="headerlink" href="#user" title="Permalink to this headline">¶</a></h3>
+<p>Field that links to the user who submitted the job and is creating the Version
+in Shotgun.</p>
+<ul class="simple">
+<li><strong>Valid data types</strong>: entity (HumanUser)</li>
+<li><strong>Required?</strong>: yes</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>user: user</pre>
+</div>
+</div>
+<div class="section" id="project">
+<h3>project<a class="headerlink" href="#project" title="Permalink to this headline">¶</a></h3>
+<p>Field that links to the Project the Version belongs to.</p>
+<ul class="simple">
+<li><strong>Valid data types</strong>: entity (Project)</li>
+<li><strong>Required?</strong>: yes</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>project: project</pre>
+</div>
+</div>
+<div class="section" id="task">
+<h3>task<a class="headerlink" href="#task" title="Permalink to this headline">¶</a></h3>
+<p>Field that links to the Task in Shotgun the Version was created from. This is a
+highly recommended workflow used to track the Versions generated for each Task.</p>
+<p>Note that this is different from linking a Version to a shot (or entity).</p>
+<ul class="simple">
+<li><strong>Valid data types</strong>: entity (Task)</li>
+<li><strong>Required?</strong>: no</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>task: sg_task</pre>
+</div>
+</div>
+<div class="section" id="job-id">
+<h3>job_id<a class="headerlink" href="#job-id" title="Permalink to this headline">¶</a></h3>
+<p>Field that stores the render manager assigned id for the job.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">this is a non-standard Shotgun field and is disabled by default. If
+you want to store this information, you&#8217;ll need to create a field in Shotgun
+and then enable this in the config file.</p>
+</div>
+<ul class="simple">
+<li><strong>Valid data types</strong>: text</li>
+<li><strong>Required?</strong>: no</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>job_id: sg_job_id</pre>
+</div>
+</div>
+<div class="section" id="total-render-time">
+<h3>total_render_time<a class="headerlink" href="#total-render-time" title="Permalink to this headline">¶</a></h3>
+<p>Field that stores the total render time in seconds (wall clock time) it took to
+complete the job.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">this is a non-standard Shotgun field and is disabled by default. If
+you want to store this information, you&#8217;ll need to create a field in Shotgun
+and then enable this in the config file.</p>
+</div>
+<ul class="simple">
+<li><strong>Valid data types</strong>: number, float, text</li>
+<li><strong>Required?</strong>: no</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>total_render_time: sg_total_render_time</pre>
+</div>
+</div>
+<div class="section" id="avg-frame-time">
+<h3>avg_frame_time<a class="headerlink" href="#avg-frame-time" title="Permalink to this headline">¶</a></h3>
+<p>Field that stores the average render time in seconds it took to render each
+frame in the job.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">this is a non-standard Shotgun field and is disabled by default. If
+you want to store this information, you&#8217;ll need to create a field in Shotgun
+and then enable this in the config file.</p>
+</div>
+<ul class="simple">
+<li><strong>Valid data types</strong>: number, float, text</li>
+<li><strong>Required?</strong>: no</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>avg_frame_time: sg_avg_frame_time</pre>
+</div>
+</div>
+</div>
+<div class="section" id="version-values">
+<h2>Version values<a class="headerlink" href="#version-values" title="Permalink to this headline">¶</a></h2>
+<p>Settings to control the format and values of information stored in Shotgun.</p>
+<div class="section" id="version-name-templates">
+<h3>version_name_templates<a class="headerlink" href="#version-name-templates" title="Permalink to this headline">¶</a></h3>
+<p>Comma-separated Version name templates to present to the Artist in the
+submit dialog dropdown menu. The first entry in this list will be selected
+by default. If you don&#8217;t want to specify a default, Insert a comma at the
+beginning of the list (eg. <tt class="docutils literal"><span class="pre">,</span> <span class="pre">${project}_${shot}_${task}_v,</span> <span class="pre">...</span></tt>)</p>
+<p>You can use the following tokens for automatic string replacement where available:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">${project}</span></tt>: The name of the Project the Version is linked to in Shotgun (eg. <tt class="docutils literal"><span class="pre">Demo</span> <span class="pre">Project</span></tt>)</li>
+<li><tt class="docutils literal"><span class="pre">${shot}</span></tt>: The display name of the Shot or Asset the Version is for  (eg. <tt class="docutils literal"><span class="pre">100_Intro_010</span></tt>)</li>
+<li><tt class="docutils literal"><span class="pre">${task}</span></tt>: The name of the Task linked to the Version (eg. <tt class="docutils literal"><span class="pre">anim</span></tt>)</li>
+<li><tt class="docutils literal"><span class="pre">${user}</span></tt>: login of the user creating the Version (eg. <tt class="docutils literal"><span class="pre">stewie</span></tt>)</li>
+<li><tt class="docutils literal"><span class="pre">${jobid}</span></tt>: the id of the render job assigned by the render manager (eg. <tt class="docutils literal"><span class="pre">shadow_999_010_1234</span></tt>)</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>version_name_templates: ,${project}_${shot}_${task}, ${project}/${shot}/${task}/${user}, ${project} ${shot} ${task} ${jobid}, ${shot}_${task} ${jobid}</pre>
+</div>
+</div>
+<div class="section" id="version-name-replace-spaces">
+<h3>version_name_replace_spaces<a class="headerlink" href="#version-name-replace-spaces" title="Permalink to this headline">¶</a></h3>
+<p>If you want to replace spaces in the Version name, set this to <tt class="docutils literal"><span class="pre">yes</span></tt> and
+provide the <a class="reference internal" href="#version-name-space-token">version_name_space_token</a> below</p>
+<p>Example:</p>
+<div class="highlight-python"><pre>version_name_replace_spaces: yes</pre>
+</div>
+</div>
+<div class="section" id="version-name-space-token">
+<h3>version_name_space_token<a class="headerlink" href="#version-name-space-token" title="Permalink to this headline">¶</a></h3>
+<p>If you want to replace spaces in the Version name with another character, specify
+it here. Leave this blank to simply remove spaces.</p>
+<p>Example:</p>
+<div class="highlight-python"><pre>version_name_space_token: _</pre>
+</div>
+</div>
+<div class="section" id="version-name-force-lowercase">
+<h3>version_name_force_lowercase<a class="headerlink" href="#version-name-force-lowercase" title="Permalink to this headline">¶</a></h3>
+<p>If you want to force Version names to be all lowercase, set this to <tt class="docutils literal"><span class="pre">yes</span></tt></p>
+<p>Example:</p>
+<div class="highlight-python"><pre>version_name_force_lowercase: yes</pre>
+</div>
+</div>
+<div class="section" id="version-numbering">
+<h3>version_numbering<a class="headerlink" href="#version-numbering" title="Permalink to this headline">¶</a></h3>
+<p>Controls how Shotgun automatically adds Version numbers to submitted Versions.</p>
+<p><tt class="docutils literal"><span class="pre">task</span></tt> will increment Version #s per Task:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">MyProject_100_010_bglayout_v1</span>
+<span class="n">MyProject_100_010_anim_v1</span>
+<span class="n">MyProject_100_010_bglayout_v2</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">pipeline_step</span></tt> will increment Version #s per Pipeline Step:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">MyProject_100_010_layout_v1</span>
+<span class="n">MyProject_100_010_anim_v1</span>
+<span class="n">MyProject_100_010_layout_v2</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">global</span></tt> will increment Version #s independent of Task so there will only be
+a single Version with that #:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">MyProject_100_010_layout_v1</span><span class="p">,</span>
+<span class="n">MyProject_100_010_layout_v1</span>
+<span class="n">MyProject_100_010_anim_v2</span>
+<span class="n">MyProject_100_010_layout_v3</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><strong>Valid values</strong>: task, pipeline_step, global</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>version_numbering: task</pre>
+</div>
+</div>
+<div class="section" id="version-number-format">
+<h3>version_number_format<a class="headerlink" href="#version-number-format" title="Permalink to this headline">¶</a></h3>
+<p>Formatting for version number. Standard string formating tokens can be used here
+as well as any plain string characters</p>
+<p>Example:</p>
+<div class="highlight-python"><pre>version_number_format: _v%03d</pre>
+</div>
+<p>Will add on an appropriate version number suffix to the Version name:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">_v003</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="status-submitted">
+<h3>status_submitted<a class="headerlink" href="#status-submitted" title="Permalink to this headline">¶</a></h3>
+<p>When a job is first submitted, the Version is created in Shotgun with this
+status. Must be the short code of a valid enabled status value for the field
+specified for <a class="reference internal" href="#job-status">job_status</a> above.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These values are set to default status values in order to be compatible
+out of the box.</p>
+</div>
+<p>Example:</p>
+<div class="highlight-python"><pre>status_submitted: na</pre>
+</div>
+</div>
+<div class="section" id="status-ip">
+<h3>status_ip<a class="headerlink" href="#status-ip" title="Permalink to this headline">¶</a></h3>
+<p>When a job is started, the associated Version record in Shotgun will be updated
+with this status value. Must be the short code of a valid enabled status value
+for the field specified for job_status above.</p>
+<p>Example:</p>
+<div class="highlight-python"><pre>status_ip: ren</pre>
+</div>
+</div>
+<div class="section" id="status-complete">
+<h3>status_complete<a class="headerlink" href="#status-complete" title="Permalink to this headline">¶</a></h3>
+<p>When a job is finishes without error, the associated Version record in Shotgun
+will be updated with this status value. Must be the short code of a valid
+enabled status value for the field specified for job_status above.</p>
+<p>Example:</p>
+<div class="highlight-python"><pre>status_complete: rev</pre>
+</div>
+</div>
+<div class="section" id="status-failed">
+<h3>status_failed<a class="headerlink" href="#status-failed" title="Permalink to this headline">¶</a></h3>
+<p>When a job is finishes with errors, the associated Version record in Shotgun
+will be updated with this status value. Must be the short code of a valid
+enabled status value for the field specified for job_status above.</p>
+<p>Example:</p>
+<div class="highlight-python"><pre>status_failed: fail</pre>
+</div>
+</div>
+<div class="section" id="scenefile-path-regexes">
+<h3>scenefile_path_regexes<a class="headerlink" href="#scenefile-path-regexes" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">this is unimplemented and will probably be removed or changed</p>
+</div>
+<p>Regexes for trying to automatically match project and shot in scenefile path.
+Each regex pattern must have 2 groups. The first will always be the Project
+the second must be the Shot/Asset</p>
+<p>If a match is found for the Project and Shot/Asset, shotgun_io will lookup
+the Tasks for the user for that Shot/Asset. If there is a single Task, that
+Task should be the default Task selected in the submit UI. Otherwise the menu
+will display all active Tasks for that user.</p>
+<p>Example:</p>
+<div class="highlight-python"><pre>scenefile_path_regexes: ^/\w*/\w*/\w*/\w*/(\w*)/(\w*), ^/\w*/\w*/something/\w*/(\w*)/(\w*)</pre>
+</div>
+</div>
+<div class="section" id="scenefile-path-project-field">
+<h3>scenefile_path_project_field<a class="headerlink" href="#scenefile-path-project-field" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">this is unimplemented and will probably be removed or changed</p>
+</div>
+<p>Field name in Shotgun to match the project on.</p>
+<p>Example:</p>
+<div class="highlight-python"><pre>scenefile_path_project_field: project</pre>
+</div>
+</div>
+<div class="section" id="scenefile-path-shot-field">
+<h3>scenefile_path_shot_field<a class="headerlink" href="#scenefile-path-shot-field" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">this is unimplemented and will probably be removed or changed</p>
+</div>
+<p>Field name in Shotgun to match the shot on.</p>
+<p>Example:</p>
+<div class="highlight-python"><pre>scenefile_path_shot_field: code</pre>
+</div>
+</div>
+</div>
+<div class="section" id="advanced">
+<h2>Advanced<a class="headerlink" href="#advanced" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="workflow">
+<h3>workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h3>
+<p>The workflow defines how the artist will choose the Shotgun entity the
+submitted job is for. The default workflow is <tt class="docutils literal"><span class="pre">task</span></tt>. The artist will choose
+the Task they are working on for this job and the Version created will be
+linked to the entity the Task is linked to. The <tt class="docutils literal"><span class="pre">project_shot</span></tt> workflow adds
+menus to the Shotgun section of  submit windows for the artist to manually select
+the Project and Shot/Asset the job is for.</p>
+<ul class="simple">
+<li><strong>valid options</strong>: <tt class="docutils literal"><span class="pre">task</span></tt> (default), <tt class="docutils literal"><span class="pre">project_shot</span></tt></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>workflow: task</pre>
+</div>
+</div>
+<div class="section" id="custom-module">
+<span id="id2"></span><h3>custom_module<a class="headerlink" href="#custom-module" title="Permalink to this headline">¶</a></h3>
+<p>You may subclass <a class="reference internal" href="api.html#shotgun_io.ShotgunIOBase" title="shotgun_io.ShotgunIOBase"><tt class="xref py py-class docutils literal"><span class="pre">shotgun_io.ShotgunIOBase</span></tt></a> and override any of the methods in it as a custom
+module. Specify the module name here (ie. without the .py extention). This file
+must be in the same directory as <a class="reference internal" href="api.html#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> (or in your $PYTHONPATH).</p>
+<p>Example:</p>
+<div class="highlight-python"><pre>custom_module: shotgun_io_custom</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Configuration</a><ul>
+<li><a class="reference internal" href="#installation-of-the-config-file">Installation of the config file</a></li>
+<li><a class="reference internal" href="#shotgun-server-settings">Shotgun server settings</a><ul>
+<li><a class="reference internal" href="#url">url</a></li>
+<li><a class="reference internal" href="#script-name">script_name</a></li>
+<li><a class="reference internal" href="#application-key">application_key</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#version-fields">Version fields</a><ul>
+<li><a class="reference internal" href="#name">name</a></li>
+<li><a class="reference internal" href="#shot">shot</a></li>
+<li><a class="reference internal" href="#job-status">job_status</a></li>
+<li><a class="reference internal" href="#frames-path">frames_path</a></li>
+<li><a class="reference internal" href="#movie-path">movie_path</a></li>
+<li><a class="reference internal" href="#upload-movie">upload_movie</a></li>
+<li><a class="reference internal" href="#first-frame">first_frame</a></li>
+<li><a class="reference internal" href="#last-frame">last_frame</a></li>
+<li><a class="reference internal" href="#frame-count">frame_count</a></li>
+<li><a class="reference internal" href="#frame-range">frame_range</a></li>
+<li><a class="reference internal" href="#user">user</a></li>
+<li><a class="reference internal" href="#project">project</a></li>
+<li><a class="reference internal" href="#task">task</a></li>
+<li><a class="reference internal" href="#job-id">job_id</a></li>
+<li><a class="reference internal" href="#total-render-time">total_render_time</a></li>
+<li><a class="reference internal" href="#avg-frame-time">avg_frame_time</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#version-values">Version values</a><ul>
+<li><a class="reference internal" href="#version-name-templates">version_name_templates</a></li>
+<li><a class="reference internal" href="#version-name-replace-spaces">version_name_replace_spaces</a></li>
+<li><a class="reference internal" href="#version-name-space-token">version_name_space_token</a></li>
+<li><a class="reference internal" href="#version-name-force-lowercase">version_name_force_lowercase</a></li>
+<li><a class="reference internal" href="#version-numbering">version_numbering</a></li>
+<li><a class="reference internal" href="#version-number-format">version_number_format</a></li>
+<li><a class="reference internal" href="#status-submitted">status_submitted</a></li>
+<li><a class="reference internal" href="#status-ip">status_ip</a></li>
+<li><a class="reference internal" href="#status-complete">status_complete</a></li>
+<li><a class="reference internal" href="#status-failed">status_failed</a></li>
+<li><a class="reference internal" href="#scenefile-path-regexes">scenefile_path_regexes</a></li>
+<li><a class="reference internal" href="#scenefile-path-project-field">scenefile_path_project_field</a></li>
+<li><a class="reference internal" href="#scenefile-path-shot-field">scenefile_path_shot_field</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced">Advanced</a><ul>
+<li><a class="reference internal" href="#workflow">workflow</a></li>
+<li><a class="reference internal" href="#custom-module">custom_module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">shotgun_io</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="customizing.html"
+                        title="next chapter">Customizing shotgun_io</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/configuration.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="customizing.html" title="Customizing shotgun_io"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="shotgun_io"
+             >previous</a> |</li>
+        <li><a href="index.html">shotgun_io v0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Shotgun Software.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>
