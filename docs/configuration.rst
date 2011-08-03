@@ -55,7 +55,6 @@ it empty::
 
 .. note:: The Shotgun fields specified below must be configured as valid data types (ie. 
     you can only store text values in fields that are configured as text fields).  
-    We list the valid types in the comments preceding each entry.
 
 name
 ====
