@@ -846,18 +846,55 @@ generate an error if it is for a valid key.</p>
 </ul>
 </div>
 </div>
+<div class="section" id="delete-version">
+<h3>Delete Version<a class="headerlink" href="#delete-version" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">-D</span> <span class="pre">--delete_version</span></tt></p>
+<dl class="function">
+<dt>
+<tt class="descname">shotgun_io.py -D &lt;version_id&gt;</tt></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt>
+<tt class="descname">shotgun_io.py --delete_version &lt;version_id&gt;</tt></dt>
+<dd></dd></dl>
+
+<p>Deletes an existing Version in Shotgun with the id <tt class="docutils literal"><span class="pre">version_id</span></tt>.</p>
+<p>This command doesn not have any output by default. A warning is issued to STDERR
+if the Version exists but is <em>already</em> deleted, but will still return a <tt class="docutils literal"><span class="pre">0</span></tt>
+exit code.</p>
+<div class="section" id="id4">
+<h4>Return Values<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Returns exit code <tt class="docutils literal"><span class="pre">0</span></tt> on success if Version was deleted or the Version was already deleted.</li>
+<li>Returns exit code <tt class="docutils literal"><span class="pre">1</span></tt> on failure with error message on STDERR if the Version with <tt class="docutils literal"><span class="pre">version_id</span></tt> does not exist. Nothing on STDOUT.</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python"><pre>$ shotgun_io.py -D 123</pre>
+</div>
+</div>
+</div>
 <div class="section" id="process-logfiles">
 <h3>Process logfiles<a class="headerlink" href="#process-logfiles" title="Permalink to this headline">¶</a></h3>
 <p><tt class="docutils literal"><span class="pre">-x</span> <span class="pre">--logfiles</span></tt></p>
 <dl class="function">
 <dt>
-<tt class="descname">shotgun_io.py -x /path/to/logfiles/for/job</tt></dt>
+<tt class="descname">shotgun_io.py -x /path/to/logfiles/for/job -v &lt;version_id&gt;</tt></dt>
 <dd></dd></dl>
 
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">this is currently unimplemented but should be sent when the job completes.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">requires the additional <tt class="docutils literal"><span class="pre">-v</span></tt> switch for the <tt class="docutils literal"><span class="pre">version_id</span></tt> value.</p>
 </div>
+<p>This command should always be run at the successful completion of every job. It
+will call any additional processing methods that are enabled for the vendor&#8217;s
+software. This may do nothing, or may do lots of things.</p>
+<p>Shotgun may provide additional functionality through this hook which will be
+maintained by Shotgun. In addition, individual studios may also hook into this
+call to enable additional custom processing they require.</p>
+<p>Because of the &#8220;black box&#8221; nature of this command, vendors do not need to concern
+themselves with the output or response of it. You can simply issue the command
+and trust that anything else that is going to happen is out of your hands :)</p>
 </div>
 </div>
 </div>
@@ -912,6 +949,10 @@ generate an error if it is for a valid key.</p>
 <li><a class="reference internal" href="#update-version">Update Version</a><ul>
 <li><a class="reference internal" href="#id2">Return Values</a></li>
 <li><a class="reference internal" href="#id3">Required Fields</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#delete-version">Delete Version</a><ul>
+<li><a class="reference internal" href="#id4">Return Values</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#process-logfiles">Process logfiles</a></li>

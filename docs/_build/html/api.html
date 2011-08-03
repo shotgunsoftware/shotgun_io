@@ -136,6 +136,33 @@ fails.</td>
 </dd></dl>
 
 <dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.delete_version">
+<tt class="descname">delete_version</tt><big>(</big><em>version_id</em><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.delete_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete existing Version entity in Shotgun with the provided Version 
+id.</p>
+<p>Deletes (or &#8216;retires&#8217; in Shotgun lingo) the Version with id 
+<tt class="docutils literal"><span class="pre">version_id</span></tt>. Only useful for cases where a user cancels or dumps
+a render job and the associated Version in Shotgun would be irrelevant.
+Deleting the Version ensures there is no extra cruft lying around.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>version_id</strong> &#8211; Shotgun id of the Version to be deleted.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><cite>True</cite> if the Version was deleted. <cite>False</cite> if no Version with 
+id <tt class="docutils literal"><span class="pre">version_id</span></tt> exists</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">if the <tt class="docutils literal"><span class="pre">version_id</span></tt> does not exist, the Shotgun API spits
+out an error response to STDERR</p>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="shotgun_io.ShotgunIOBase.get_config">
 <tt class="descname">get_config</tt><big>(</big><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the current config option settings as defined in the conf 
@@ -198,37 +225,6 @@ query fails</p>
 <span class="go">  &#39;type&#39;: &#39;Task&#39;}]        </span>
 </pre></div>
 </div>
-</dd></dl>
-
-<dl class="method">
-<dt id="shotgun_io.ShotgunIOBase.get_entities_from_file_path">
-<tt class="descname">get_entities_from_file_path</tt><big>(</big><em>scene_path</em><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_entities_from_file_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Attemps to match a Project and Shot name automatically from the scene 
-file path based on regex definitions in the shotgun_io config.</p>
-<p>This method is a good candidate for overriding in 
-<tt class="xref py py-class docutils literal"><span class="pre">ShotgunIOCustom</span></tt> since there&#8217;s often varying logic that needs to
-be implemented for each studio.</p>
-<p>Currently just returns strings for project and shot which can then
-be used to lookup their entity ids in Shotgun. Returns None if no match 
-was found.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This method is not implemented</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>scene_path</strong> &#8211; full path to the scene path</td>
-</tr>
-<tr class="field"><th class="field-name">Raises :</th><td class="field-body">NotImplementedError</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple with project and shot</td>
-</tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><cite>tuple</cite></td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
