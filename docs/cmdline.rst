@@ -726,12 +726,49 @@ When updating a Version, the following fields are *required* in the
 * ``version_id``
 
 
+Delete Version
+==============
+``-D --delete_version``
+
+.. function:: shotgun_io.py -D <version_id>
+.. function:: shotgun_io.py --delete_version <version_id>
+
+Deletes an existing Version in Shotgun with the id ``version_id``.
+
+This command doesn not have any output by default. A warning is issued to STDERR 
+if the Version exists but is *already* deleted, but will still return a ``0`` 
+exit code.
+
+Return Values
+-------------
+* Returns exit code ``0`` on success if Version was deleted or the Version was already deleted.
+* Returns exit code ``1`` on failure with error message on STDERR if the Version with ``version_id`` does not exist. Nothing on STDOUT.
+
+**Example**::
+
+    $ shotgun_io.py -D 123
+
+
 Process logfiles
 =====================
 ``-x --logfiles``
 
-.. function:: shotgun_io.py -x /path/to/logfiles/for/job
+.. function:: shotgun_io.py -x /path/to/logfiles/for/job -v <version_id>
 
-.. warning:: this is currently unimplemented but should be sent when the job completes.
+.. note:: requires the additional ``-v`` switch for the ``version_id`` value.
+
+This command should always be run at the successful completion of every job. It
+will call any additional processing methods that are enabled for the vendor's 
+software. This may do nothing, or may do lots of things.
+
+Shotgun may provide additional functionality through this hook which will be 
+maintained by Shotgun. In addition, individual studios may also hook into this 
+call to enable additional custom processing they require.
+
+Because of the "black box" nature of this command, vendors do not need to concern
+themselves with the output or response of it. You can simply issue the command
+and trust that anything else that is going to happen is out of your hands :)
+
+
 
  
