@@ -35,12 +35,6 @@ and updating Versions in Shotgun with render job specific information.
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# ./shotgun_io.py -C "{\"user\":\"32 kp\",\"task\":\"2,4,Shot,2 Demo Project | Shot 1 | Match Move\",\"name\":\"Demo Project Shot_1 Match Move kp\",\"description\":\"fixing penetration for blah.\n- this was done\n- this still needs work\n-b lah\",\"job_id\":\"contrail.123\", \"job_status\":\"0\"}"
-# ./shotgun_io.py -U "{\"version_id\":\"5\",\"first_frame\":\"1\",\"last_frame\":\"100\",\"frame_range\":\"1-50 61-70,2 80 90 100\",\"frame_count\":\"58\",\"frames_path\":\"/path/to/frames/image.#.jpg\",\"movie_path\":\"/path/to/movie/popcorn.mov\",\"job_id\":\"contrail.123\", \"job_status\":\"1\"}"
-# ./shotgun_io.py -C "{\"user\":\"55 kp\",\"task\":\"557,65,Shot,860 Demo Animation Project | bunny_010_0010 | Anm\",\"name\":\"Demo Project bunny_010_0010 Anm kp\",\"description\":\"testing new input/output classes.\n- this was done\n- this still needs work\n-b lah\",\"job_id\":\"fakejobby 101\", \"job_status\":0}"
-# ./shotgun_io.py -U "{\"version_id\":6074, \"job_status\":1}
-# ./shotgun_io.py -U "{\"version_id\":6084, \"job_status\":2, \"thumbnail\":\"/Users/kp/foobar.jpg/\"}
-
 import sys
 import os
 import socket
@@ -74,7 +68,7 @@ __author__ = "KP"
 __copyright__ = "Copyright 2011, Shotgun Software"
 __credits__ = ["Greg Ercolano", "Kennedy Behrman"]
 __license__ = "BSD"
-__version__ = "0.92"
+__version__ = "0.93"
 __maintainer__ = "KP"
 __email__ = "kp@shotgunsoftware.com"
 __status__ = "Development"
@@ -188,11 +182,6 @@ class ShotgunIOBase(object):
         self.version_number_format = self._config.get('version_values', 
                                                       'version_number_format', 
                                                       1)
-        
-        # scenefile regex options (not implmented)
-        self.scenefile_path_regexes = self._config.getlist(
-                                                    'version_values', 
-                                                    'scenefile_path_regexes')
 
         # input and output validation and formatting
         self.input = io_input.InputDefault(self._config) 
@@ -295,8 +284,6 @@ class ShotgunIOBase(object):
         :returns: Shotgun id for the user or None if username wasn't found
         :rtype: `int` or `NoneType`
         :raises: :class:`ShotgunIOError` if the Shotgun query fails
-        
-        :todo: move hardcoded queries into config.
         """
         self._shotgun_connect()
         io_entity_queries.validate_user['filters'].append(
@@ -400,9 +387,6 @@ class ShotgunIOBase(object):
         :returns: list of short codes for the configured status field in Shotgun
         :rtype: `list`
         :raises: :class:`ShotgunIOError` if the Shotgun query fails
-
-        :todo: The filtering could be more intelligent at filtering out 
-            additional fields that don't make sense
 
         >>> io.get_version_status_values()
         ['na', 'queued', 'ren', 'rev', 'vwd', 'fail']
@@ -929,7 +913,7 @@ def check_options(option, opt_str, value, parser):
         'logfiles', 'templates', 'getconfig'
         ]
     boolean_options = [
-        'fields', 'statuses', 'logfiles', 'templates', 'getconfig', 'workflow'
+        'fields', 'statuses', 'templates', 'getconfig', 'workflow'
         ]
 
     for o in exclusive_options:
@@ -960,10 +944,11 @@ def read_options():
     parser.add_option("-f", "--fields", dest="fields", action="callback", callback=check_options, help="return a list of valid fields and field types on the Version entity for storing information.")
     parser.add_option("-t", "--statuses", dest="statuses", action="callback", callback=check_options, help="return a list of valid status values for Versions")
     parser.add_option("-x", "--logfiles", type="string", default=None, action="callback", callback=check_options, help="path to logfiles for processing")
+    parser.add_option("-v", "--version_id", type="int", default=None, help="Shotgun Version id required for -x (--logfiles) option to process logfiles")
     parser.add_option("-m", "--templates", dest="templates", action="callback", callback=check_options, help="return a list of Version name templates defined in shotgun_io.conf")
     parser.add_option("-w", "--workflow", dest="workflow", action="callback", callback=check_options, help="return the current workflow setting defined in the config (default is 'task')")
     parser.add_option("--getconfig", dest="getconfig", action="callback", callback=check_options, help="display the current config values from shotgun_io.conf")
-    # parser.add_option("-r", "--file_path", type="string", default=None, help="UNIMPLEMENTED: return entity from scene file path")
+
     return parser
 
 
@@ -1020,15 +1005,13 @@ def main():
 
     # process logfiles
     elif options.logfiles:
+        if options.version_id is None:
+            raise ShotgunIOError("-x (--logfiles) option also requires a Version id: -v (--version_id)")
         print io.process_logfiles(options.logfiles)
 
     # list version name templates
     elif options.templates:
         print io.get_version_name_templates()
-
-    # parse scenefile path
-    # elif options.file_path:
-    #     print io.get_entities_from_file_path(options.file_path)
 
     # get config vals
     elif options.getconfig:
@@ -1041,7 +1024,10 @@ def main():
     else:
         parser.print_help
         if len(sys.argv) > 1:
-            raise ShotgunIOError("invalid option combination '%s'. Yeah... this error sucks right now but this is just a placeholder... we'll make it better." % sys.argv[1])
+            raise ShotgunIOError("invalid option combination '%s'. The '%s' "\
+                "switch probably requires another switch to be provided.\n\n"\
+                "Try '%s --help' to see the valid options" % 
+                (sys.argv[1],sys.argv[1],os.path.basename(__file__)))
         else:
             parser.print_usage(sys.stderr)
             raise ShotgunIOError("At least one option is required. No options specified")
@@ -1079,7 +1065,7 @@ if __name__ == '__main__':
     # unimplemented errors
     except NotImplementedError, e:
         logging.error('This command is not yet implemented: %s' % e)
-        sys.exit(1)
+        sys.exit(0)
     
     sys.exit(0)
 
