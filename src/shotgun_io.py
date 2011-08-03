@@ -565,27 +565,27 @@ class ShotgunIOBase(object):
         return out
 
     def get_entities_from_file_path(self, scene_path):
-        """Attemps to match a Project and Shot name automatically from the scene 
-        file path based on regex definitions in the shotgun_io config.
+        # """Attemps to match a Project and Shot name automatically from the scene 
+        # file path based on regex definitions in the shotgun_io config.
 
-        This method is a good candidate for overriding in 
-        :class:`ShotgunIOCustom` since there's often varying logic that needs to
-        be implemented for each studio.
+        # This method is a good candidate for overriding in 
+        # :class:`ShotgunIOCustom` since there's often varying logic that needs to
+        # be implemented for each studio.
 
-        Currently just returns strings for project and shot which can then
-        be used to lookup their entity ids in Shotgun. Returns None if no match 
-        was found.
+        # Currently just returns strings for project and shot which can then
+        # be used to lookup their entity ids in Shotgun. Returns None if no match 
+        # was found.
 
-        .. warning:: This method is not implemented
+        # .. warning:: This method is not implemented
 
-        :param scene_path: full path to the scene path
-        :type entity_type: `str`
+        # :param scene_path: full path to the scene path
+        # :type entity_type: `str`
 
-        :raises: NotImplementedError
+        # :raises: NotImplementedError
 
-        :returns: tuple with project and shot 
-        :rtype: `tuple`
-        """
+        # :returns: tuple with project and shot 
+        # :rtype: `tuple`
+        # """
         raise NotImplementedError("This method isn't implemented")
         
         ret = None
@@ -863,6 +863,37 @@ class ShotgunIOBase(object):
         return self.output.format_output("movie_upload", {movie_field: result})
 
 
+    def delete_version(self, version_id):
+        """Delete existing Version entity in Shotgun with the provided Version 
+        id.
+
+        Deletes (or 'retires' in Shotgun lingo) the Version with id 
+        ``version_id``. Only useful for cases where a user cancels or dumps
+        a render job and the associated Version in Shotgun would be irrelevant.
+        Deleting the Version ensures there is no extra cruft lying around.
+
+
+        :param version_id: Shotgun id of the Version to be deleted.
+        :type version_data: `int`
+
+        :returns: `True` if the Version was deleted. `False` if no Version with 
+            id ``version_id`` exists
+
+        .. note:: if the ``version_id`` does not exist, the Shotgun API spits
+            out an error response to STDERR
+        """
+        self._shotgun_connect()
+        if not isinstance(version_id, int):
+            raise ShotgunIOError('version_id must be an integer')
+
+        try:
+            result = self._sg.delete('Version', version_id)
+        except shotgun_api3.Fault, e:
+            raise ShotgunIOError('Error deleting Version #%d: %s' \
+                % (version_id, e))
+        else:
+            return self.output.format_output("delete_version", result)
+
     def process_logfiles(self, logfiles):
         raise NotImplementedError("processing logfiles will be enabled before "\
             "release at least to not generate errors.")
@@ -910,7 +941,7 @@ def check_options(option, opt_str, value, parser):
     """
     exclusive_options = [
         'list', 'fields', 'create_version', 'update_version', 'statuses', 
-        'logfiles', 'templates', 'getconfig'
+        'logfiles', 'templates', 'getconfig', 'delete_version'
         ]
     boolean_options = [
         'fields', 'statuses', 'templates', 'getconfig', 'workflow'
@@ -941,6 +972,7 @@ def read_options():
     parser.add_option("-n", "--validate_user", type="string", default=None, help="test whether provided username is valid - returns user id when valid, nothing when invalid")
     parser.add_option("-C", "--create_version", type="string", default=None, action="callback", callback=check_options, help="create Version in Shotgun. Value must be a valid JSON encoded hash with required keys")
     parser.add_option("-U", "--update_version", type="string", default=None, action="callback", callback=check_options, help="update Version in Shotgun. Value must be a valid JSON encoded hash with at least a version_id key (for the Version to update)")
+    parser.add_option("-D", "--delete_version", type="int", default=None, action="callback", callback=check_options, help="delete Version in Shotgun. Value is an integer representing the Shotgun id of the Version to be deleted")
     parser.add_option("-f", "--fields", dest="fields", action="callback", callback=check_options, help="return a list of valid fields and field types on the Version entity for storing information.")
     parser.add_option("-t", "--statuses", dest="statuses", action="callback", callback=check_options, help="return a list of valid status values for Versions")
     parser.add_option("-x", "--logfiles", type="string", default=None, action="callback", callback=check_options, help="path to logfiles for processing")
@@ -1002,6 +1034,10 @@ def main():
     # update Version in Shotgun
     elif options.update_version:
         print io.update_version(options.update_version)
+
+    # delete Version in Shotgun (no ouput)
+    elif options.delete_version:
+        io.delete_version(options.delete_version)
 
     # process logfiles
     elif options.logfiles:

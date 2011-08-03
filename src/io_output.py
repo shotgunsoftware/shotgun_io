@@ -236,8 +236,13 @@ class OutputCmdLine (OutputDefault):
         out = vals['id']       
         return out
 
-
     def format_version_update(self, vals):
         out = vals['id']        
         return out
+
+    def format_delete_version(self, vals):
+        if vals is False:
+            # only get False here if Version exists but is already deleted
+            # otherwise shotgun_io would have already raised an exception
+            logging.warning('Version appears to have already been deleted.')
 
