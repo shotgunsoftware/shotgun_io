@@ -617,7 +617,8 @@ the Version status in Shotgun
     * ``0`` = job submitted (any state that implies the job is running or may run in the future. This would include paused jobs.)
     * ``1`` = job running (job has been started and is in progress)
     * ``2`` = job completed (job completed in full successfully without any errors or failed frames) 
-    * ``3`` = job failed (job has failed frames, was killed, had errors, or any other non-successful result status) 
+    * ``3`` = job failed (job has failed frames, had errors, or any other non-successful result status) 
+    * ``4`` = job aborted (job was cancelled/dumped by user) 
     
     no other value is valid
 
@@ -631,6 +632,7 @@ job_status  shotgun_io.conf setting
 ``1``       status_ip:
 ``2``       status_complete:
 ``3``       status_failed:
+``4``       status_aborted:
 ==========  =======================
 
 If your job submissions are showing up as "n/a", be sure you've adjusted these
@@ -646,6 +648,7 @@ values in your shotgun_io.conf file.
     {"job_status":"1"}
     {"job_status":"2"}
     {"job_status":"3"}
+    {"job_status":"4"}
 
 
 version_id

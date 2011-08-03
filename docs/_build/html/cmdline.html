@@ -709,7 +709,8 @@ the Version status in Shotgun</p>
 <li><tt class="docutils literal"><span class="pre">0</span></tt> = job submitted (any state that implies the job is running or may run in the future. This would include paused jobs.)</li>
 <li><tt class="docutils literal"><span class="pre">1</span></tt> = job running (job has been started and is in progress)</li>
 <li><tt class="docutils literal"><span class="pre">2</span></tt> = job completed (job completed in full successfully without any errors or failed frames)</li>
-<li><tt class="docutils literal"><span class="pre">3</span></tt> = job failed (job has failed frames, was killed, had errors, or any other non-successful result status)</li>
+<li><tt class="docutils literal"><span class="pre">3</span></tt> = job failed (job has failed frames, had errors, or any other non-successful result status)</li>
+<li><tt class="docutils literal"><span class="pre">4</span></tt> = job aborted (job was cancelled/dumped by user)</li>
 </ul>
 <p>no other value is valid</p>
 </div></blockquote>
@@ -738,6 +739,9 @@ file:</p>
 <tr><td><tt class="docutils literal"><span class="pre">3</span></tt></td>
 <td>status_failed:</td>
 </tr>
+<tr><td><tt class="docutils literal"><span class="pre">4</span></tt></td>
+<td>status_aborted:</td>
+</tr>
 </tbody>
 </table>
 <p>If your job submissions are showing up as &#8220;n/a&#8221;, be sure you&#8217;ve adjusted these
@@ -752,6 +756,7 @@ values in your shotgun_io.conf file.</p>
 <span class="p">{</span><span class="s">&quot;job_status&quot;</span><span class="p">:</span><span class="s">&quot;1&quot;</span><span class="p">}</span>
 <span class="p">{</span><span class="s">&quot;job_status&quot;</span><span class="p">:</span><span class="s">&quot;2&quot;</span><span class="p">}</span>
 <span class="p">{</span><span class="s">&quot;job_status&quot;</span><span class="p">:</span><span class="s">&quot;3&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s">&quot;job_status&quot;</span><span class="p">:</span><span class="s">&quot;4&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>

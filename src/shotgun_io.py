@@ -86,6 +86,7 @@ VERSION_STATUS_SUBMITTED = 0
 VERSION_STATUS_IP = 1
 VERSION_STATUS_COMPLETE = 2
 VERSION_STATUS_FAILED = 3
+VERSION_STATUS_ABORTED = 4
 # minimum fields required to create a Version in Shotgun. 
 REQUIRED_SG_VERSION_FIELDS = ['code','project','user']
 

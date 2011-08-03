@@ -35,7 +35,8 @@ class InputDefault(object):
             config.get('version_values', 'status_submitted'), 
             config.get('version_values', 'status_ip'), 
             config.get('version_values', 'status_complete'), 
-            config.get('version_values', 'status_failed')
+            config.get('version_values', 'status_failed'),
+            config.get('version_values', 'status_aborted')
         ]
         self.version_name_force_lowercase = config.getboolean('version_values', 'version_name_force_lowercase')
         self.version_name_replace_spaces = config.getboolean('version_values', 'version_name_replace_spaces')
