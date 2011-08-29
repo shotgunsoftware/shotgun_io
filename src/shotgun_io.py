@@ -269,6 +269,55 @@ class ShotgunIOBase(object):
         return out
  
 
+    def load_env_variables(self):
+        """checks local environment variables for existance of SG_IO_* values
+        and returns formatted key/value pairs.
+
+        export SG_IO_USER='{"type":"HumanUser", "id":123, "login":"kp"}'
+        export SG_IO_TASK='{"type":"Task", "id":234, "content":"Anim", "project":{"type":"Project","id":345,"name":"Demo Project"},"entity":{"type":"Shot","id":456,"name":"0010_0001"}}'
+        export SG_IO_VERSION_NAME='010_0001 / anim / kp'
+        export SG_IO_PROJECT='{"type":"Project", "id":123, "name":"Demo Project"}'
+        export SG_IO_ENTITY='{"type":"Shot", "id":123, "name":"010_0001"}'
+
+        :returns: Dictionary of key/value pairs representing Shotgun info
+        :rtype: `dict`
+
+        Example::
+
+            >>> io.load_env_variables()
+            {
+            'user': {'type':'HumanUser', 'id':123},
+            'task': {
+                        'type':'Task', 
+                        'id':234, 
+                        'content':'Anim', 
+                        'project': {'type':'Project', 'id':567},
+                        'entity': {'type':'Shot', 'id':678}
+                    },
+            'name': '010_0001 / anim / kp',
+            'project': {'type':'Project', 'id':345, 'name':'Demo Project'},
+            'entity': {'type':'Shot', 'id':456, 'name':'0010_0001'}
+            }
+        """
+        job_info = {}
+        if os.environ.has_key("SG_IO_USER"):
+            job_info['user'] = json.loads(os.environ.get('SG_IO_USER'))
+        if os.environ.has_key("SG_IO_TASK"):
+            job_info['task'] = json.loads(os.environ.get('SG_IO_TASK'))
+        if os.environ.has_key("SG_IO_VERSION_NAME"):
+            job_info['name'] = os.environ.get('SG_IO_VERSION_NAME')
+        if os.environ.has_key("SG_IO_PROJECT"):
+            job_info['project'] = json.loads(os.environ.get('SG_IO_PROJECT'))
+        if os.environ.has_key("SG_IO_ENTITY"):
+            job_info['shot'] = json.loads(os.environ.get('SG_IO_ENTITY'))
+        # if os.environ.has_key("SG_IO_IMAGE_PATH"):
+        job_info['image_path'] = os.environ.get('SG_IO_IMAGE_PATH')
+        out = self.output.format_output('env_variables', job_info)
+
+        return out
+
+
+
     def validate_user(self, username):
         """Checks if given username string is a valid active user in Shotgun. 
 
@@ -893,7 +942,7 @@ class ShotgunIOBase(object):
             raise ShotgunIOError('Error deleting Version #%d: %s' \
                 % (version_id, e))
         else:
-            return self.output.format_output("delete_version", result)
+            return self.output.format_output("version_delete", result)
 
     def process_logfiles(self, logfiles):
         raise NotImplementedError("processing logfiles will be enabled before "\
@@ -942,10 +991,10 @@ def check_options(option, opt_str, value, parser):
     """
     exclusive_options = [
         'list', 'fields', 'create_version', 'update_version', 'statuses', 
-        'logfiles', 'templates', 'getconfig', 'delete_version'
+        'logfiles', 'templates', 'getconfig', 'delete_version','env_vars'
         ]
     boolean_options = [
-        'fields', 'statuses', 'templates', 'getconfig', 'workflow'
+        'fields', 'statuses', 'templates', 'getconfig', 'workflow','env_vars'
         ]
 
     for o in exclusive_options:
@@ -980,6 +1029,7 @@ def read_options():
     parser.add_option("-v", "--version_id", type="int", default=None, help="Shotgun Version id required for -x (--logfiles) option to process logfiles")
     parser.add_option("-m", "--templates", dest="templates", action="callback", callback=check_options, help="return a list of Version name templates defined in shotgun_io.conf")
     parser.add_option("-w", "--workflow", dest="workflow", action="callback", callback=check_options, help="return the current workflow setting defined in the config (default is 'task')")
+    parser.add_option("-e", "--env", dest="env_vars", action="callback", callback=check_options, help="returns preset Shotgun vars if they are already decided by context")
     parser.add_option("--getconfig", dest="getconfig", action="callback", callback=check_options, help="display the current config values from shotgun_io.conf")
 
     return parser
@@ -995,6 +1045,9 @@ def main():
     io = ShotgunIO()
     io.input = io_input.InputCmdLine(io._config)
     io.output = io_output.OutputCmdLine()
+
+    if options.env_vars:
+        print io.load_env_variables()
 
     # list entities
     if options.list:
