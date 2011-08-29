@@ -439,8 +439,8 @@ class InputCmdLine(InputDefault):
                 v = int(value)
             except ValueError:
                 raise ValueError("Input data for 'job_status' must be an integer. (provided value: %s is a %s)" % (value, type(value)))            
-            if not v in range(0,4):
-                raise ValueError("Input data for 'job_status' must be an integer between 0 and 3. (provided value: %s)" % (value))        
+            if not v in range(0,len(self.version_statuses)):
+                raise ValueError("Input data for 'job_status' must be an integer between 0 and 4. (provided value: %s)" % (value))        
         self._shotgun_format_job_status(v) 
 
     def _input_format_total_render_time(self, value):
