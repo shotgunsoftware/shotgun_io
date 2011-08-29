@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 
-import sys
+import os, sys
 sys.path.append('./src')
 import shotgun_io
 import pprint
 
 if __name__ == "__main__":
 
+    print "testing with %s" % (sys.executable)
+    print "testing with %s" % (sys.prefix)
     io = shotgun_io.ShotgunIO()
     
     # get users
@@ -21,7 +23,7 @@ if __name__ == "__main__":
     #     'id': 4, 
     #     'name': 'Demo Project'
     # }]
-    # pprint.pprint(io.get_projects())
+    # pprint.pprint(io.get_entities('projects'))
 
     # get tasks for user
     # [{
@@ -47,12 +49,12 @@ if __name__ == "__main__":
     # }]
     # pprint.pprint(io.get_entities('assets', project_id=4))
 
-    # list assetsandshots
+    # list entities
     # [
     #   {'id': 6, 'name': 'Shot 5', 'type': 'Shot'},
     #   {'id': 3, 'name': 'Asset 1', 'type': 'Asset'}
     # ]
-    # pprint.pprint(io.get_entities('assetsandshots', project_id=4))
+    # pprint.pprint(io.get_entities('entities', project_id=4))
 
     # list fucknuts
     # shotgun_io.ShotgunIOError: entity_type value 'fucknuts' is invalid. Valid options are ['tasks', 'users', 'assetsandshots', 'shots', 'projects', 'assets']
@@ -67,15 +69,16 @@ if __name__ == "__main__":
     # pprint.pprint(io.validate_user('kp'))
 
     # list version fields
-    # pprint.pprint(io.get_version_fields())
-
-    # list version status values
     # {
     #     'checkbox': ['sg_frames_have_slate', 'sg_movie_has_slate'],
     #     'entity': ['entity', 'project', 'sg_task', 'task_template', 'user'],
     #     'float': ['sg_frames_aspect_ratio', 'sg_movie_aspect_ratio'],
     #     ...
     # }
+    # pprint.pprint(io.get_version_fields())
+
+    # list version status values
+    # ['na', 'qd', 'ren', 'abrt', 'fail', 'rev', 'vwd']
     # pprint.pprint(io.get_version_status_values())
 
     # getconfig
@@ -95,7 +98,7 @@ if __name__ == "__main__":
     # pprint.pprint(io.get_config())
     
     # getworkflow
-    # task | project_shot
+    # task | advanced
     # print io.get_workflow()
 
     # create version
