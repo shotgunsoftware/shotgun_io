@@ -106,7 +106,7 @@ VERSION_STATUS_ABORTED = 4
 # minimum fields required to create a Version in Shotgun. 
 REQUIRED_SG_VERSION_FIELDS = ['code','project','user']
 
-
+NON_ENTITY_LIST_VALUES = ['entities']
 
 
 
@@ -231,9 +231,8 @@ class ShotgunIOBase(object):
         :returns: True if valid. False if invalid.
         :rtype: `bool`
         """
-        non_entity_options = ['version_name_templates']
         if (entity_type in io_entity_queries.entity_queries.keys() or 
-            entity_type in non_entity_options):
+            entity_type in NON_ENTITY_LIST_VALUES):
             return True
         else:
             return False
@@ -532,7 +531,7 @@ class ShotgunIOBase(object):
 
         Example::
 
-            >>> print io.get_entities("tasks", user_id=55)
+            >>> io.get_entities("tasks", user_id=55)
             [{'content': 'Anm',
               'entity': {'id': 860, 'name': 'bunny_010_0010', 'type': 'Shot'},
               'id': 557,
@@ -543,12 +542,13 @@ class ShotgunIOBase(object):
         if not self._validate_list_option(entity_type):
             raise ShotgunIOError("entity_type value '%s' is invalid. Valid "\
                                  "options are %s" % 
-                                 (entity_type, io_entity_queries.entity_queries.keys()))
+                                 (entity_type, 
+                                 io_entity_queries.entity_queries.keys()+NON_ENTITY_LIST_VALUES))
         entities = []
 
-        # special cases: combine two calls and return combo
-        if entity_type == "assetsandshots":
-            for t in ['shots','assets']:
+        # advanced workflow: potentially run multiple queries
+        if entity_type == "entities":
+            for t in io_entity_queries.advanced_workflow_entities:
                 entities += self.get_entities(t, project_id=project_id,
                                               no_format=True)
         else:
@@ -596,39 +596,6 @@ class ShotgunIOBase(object):
         out = self.output.format_output(entity_type, entities)
         return out
 
-    def get_users(self):
-        """Retrieve a list of valid HumanUsers from Shotgun
- 
-        :returns: list of HumanUsers as dicts with keys ``id`` and ``name``
-        :rtype: `list`
-        """
-        users = self.get_entities('users')
-        out = self.output.format_output('users', users)
-        return out
-
-    def get_projects(self):
-        """Retrieve a list of valid Projects from Shotgun
- 
-        :returns: list of Projects as dicts with keys ``id`` and ``name``
-        :rtype: `list`
-        """
-        projects = self.get_entities('projects')
-        out = self.output.format_output('projects', projects)
-        return out
-
-    def get_tasks(self, user_id):
-        """Retrieve a list of valid Tasks from Shotgun for user
- 
-        :param user_id: Shotgun id of user
-        :type entity_type: `int`
-
-        :returns: list of Tasks as dicts with keys ``id``, ``project_id``, ``entity_type``, ``entity_id``, ``name``
-        :rtype: `list`
-        """
-        # check user_id is an int
-        tasks = self.get_entities('tasks', user_id)
-        out = self.output.format_output('tasks', tasks)
-        return out
 
     def get_entities_from_file_path(self, scene_path):
         # """Attemps to match a Project and Shot name automatically from the scene 
@@ -1066,13 +1033,14 @@ def main():
         print io.load_env_variables()
 
     # list entities
-    if options.list:
-        if not io._validate_list_option(options.list):
+    elif options.list:
+        if not io._validate_list_option(options.list) and options.list not in NON_ENTITY_LIST_VALUES:
             raise ShotgunIOError("--list value '%s' is invalid. Valid "\
                                  "options are %s" % 
                                  (options.list, 
-                                 io_entity_queries.entity_queries.keys()))
-        if io_entity_queries.entity_queries[options.list]['project_required'] and \
+                                 io_entity_queries.entity_queries.keys()+NON_ENTITY_LIST_VALUES))
+        if (options.list == 'entities' or \
+            io_entity_queries.entity_queries[options.list]['project_required']) and \
             options.project_id == None:
             raise ShotgunIOError("-l (--list) option '%s' requires a project id: -p (--project_id)" % options.list)
 

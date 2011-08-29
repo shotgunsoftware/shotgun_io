@@ -1,5 +1,7 @@
 """defines the default entity types, filters, fields, and order for the list
-methods for querying Shotgun for populating menus for artist submissions
+methods for querying Shotgun for populating menus for artist submissions. The
+keys define valid option values for the get_entities() method or the -l option
+on the command line
 """ 
 entity_queries = {
     'users': {
@@ -36,6 +38,14 @@ entity_queries = {
         'project_required': True,
         'user_required': False,
        },
+    'elements': {
+        'entity_type': 'Element',
+        'filters': [['sg_status_list', 'is_not', 'omt']],
+        'fields': ['id','code'],
+        'order': [{'field_name':'code','direction':'asc'}],
+        'project_required': True,
+        'user_required': False,
+       },
     'tasks': {
         'entity_type': 'Task',
         'filters': [['sg_status_list','is','ip']],
@@ -47,11 +57,13 @@ entity_queries = {
         'project_required': False,
         'user_required': True,
         },
-    'assetsandshots': {
-        'project_required': True,
-        'user_required': False,
-    },
 }
+
+"""Defines the list of entity types to use in the advanced workflow.
+Each value in the list below must exist as a key in the entity_queries
+dictionary above and define a valid query.
+"""
+advanced_workflow_entities = ['shots','assets','elements']
 
 """Defines the default query filter used by validate_user()
 """
