@@ -44,6 +44,10 @@ import logging
 import re
 import glob
 
+try:
+    import simplejson as json
+except ImportError:
+    import json
 # shotgun_io modules
 try:
     import io_entity_queries
