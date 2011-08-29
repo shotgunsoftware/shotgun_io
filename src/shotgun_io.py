@@ -73,9 +73,25 @@ __maintainer__ = "KP"
 __email__ = "kp@shotgunsoftware.com"
 __status__ = "Development"
 
-# setup logging
-log_format = "%(filename)s %(levelname)s: %(message)s"
-logging.basicConfig(format=log_format, level=logging.DEBUG)
+# LOGGING
+# ====================================
+class NullHandler(logging.Handler):
+    """a NOP Logging handler that does nothing.
+    """
+    def emit(self, record):
+        pass
+
+    def handle(self, record):
+        pass
+
+logging.basicConfig(level=logging.INFO,
+                    format="%(filename)s %(levelname)s: %(message)s" )
+# shut up shotgun_api3 log messages
+logging.getLogger('shotgun_api3').propagate = False
+logging.getLogger('shotgun_api3').addHandler(NullHandler())
+# setup our log
+logging.getLogger(__name__)
+
 
 # don't hang things up for more than 10 seconds if we can't reach Shotgun
 socket.setdefaulttimeout(10)
