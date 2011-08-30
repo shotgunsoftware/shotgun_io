@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -7,13 +6,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API usage &mdash; shotgun_io v0.9 documentation</title>
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <title>API usage &mdash; shotgun_io v0.9.5 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.9',
+        VERSION:     '0.9.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +21,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="shotgun_io v0.9 documentation" href="index.html" />
+    <link rel="top" title="shotgun_io v0.9.5 documentation" href="index.html" />
     <link rel="next" title="Integrating your company’s render manager" href="softwarecos.html" />
     <link rel="prev" title="Command line usage" href="cmdline.html" /> 
   </head>
@@ -42,7 +41,7 @@
         <li class="right" >
           <a href="cmdline.html" title="Command line usage"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">shotgun_io v0.9 documentation</a> &raquo;</li> 
+        <li><a href="index.html">shotgun_io v0.9.5 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -217,7 +216,7 @@ query fails</p>
 </tbody>
 </table>
 <p>Example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">io</span><span class="o">.</span><span class="n">get_entities</span><span class="p">(</span><span class="s">&quot;tasks&quot;</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="mi">55</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">io</span><span class="o">.</span><span class="n">get_entities</span><span class="p">(</span><span class="s">&quot;tasks&quot;</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="mi">55</span><span class="p">)</span>
 <span class="go">[{&#39;content&#39;: &#39;Anm&#39;,</span>
 <span class="go">  &#39;entity&#39;: {&#39;id&#39;: 860, &#39;name&#39;: &#39;bunny_010_0010&#39;, &#39;type&#39;: &#39;Shot&#39;},</span>
 <span class="go">  &#39;id&#39;: 557,</span>
@@ -260,56 +259,6 @@ instance</p>
 </tr>
 <tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><cite>int</cite></p>
 </td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="shotgun_io.ShotgunIOBase.get_projects">
-<tt class="descname">get_projects</tt><big>(</big><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_projects" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve a list of valid Projects from Shotgun</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of Projects as dicts with keys <tt class="docutils literal"><span class="pre">id</span></tt> and <tt class="docutils literal"><span class="pre">name</span></tt></td>
-</tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><cite>list</cite></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="shotgun_io.ShotgunIOBase.get_tasks">
-<tt class="descname">get_tasks</tt><big>(</big><em>user_id</em><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_tasks" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve a list of valid Tasks from Shotgun for user</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user_id</strong> &#8211; Shotgun id of user</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of Tasks as dicts with keys <tt class="docutils literal"><span class="pre">id</span></tt>, <tt class="docutils literal"><span class="pre">project_id</span></tt>, <tt class="docutils literal"><span class="pre">entity_type</span></tt>, <tt class="docutils literal"><span class="pre">entity_id</span></tt>, <tt class="docutils literal"><span class="pre">name</span></tt></td>
-</tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><cite>list</cite></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="shotgun_io.ShotgunIOBase.get_users">
-<tt class="descname">get_users</tt><big>(</big><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.get_users" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve a list of valid HumanUsers from Shotgun</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of HumanUsers as dicts with keys <tt class="docutils literal"><span class="pre">id</span></tt> and <tt class="docutils literal"><span class="pre">name</span></tt></td>
-</tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><cite>list</cite></td>
 </tr>
 </tbody>
 </table>
@@ -443,6 +392,45 @@ file.</p>
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">io</span><span class="o">.</span><span class="n">get_workflow</span><span class="p">()</span>
 <span class="go">task</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="shotgun_io.ShotgunIOBase.load_env_variables">
+<tt class="descname">load_env_variables</tt><big>(</big><big>)</big><a class="headerlink" href="#shotgun_io.ShotgunIOBase.load_env_variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks local environment variables for existance of SG_IO_* values
+and returns formatted key/value pairs.</p>
+<p>export SG_IO_USER=&#8217;{&#8220;type&#8221;:&#8221;HumanUser&#8221;, &#8220;id&#8221;:123, &#8220;login&#8221;:&#8221;kp&#8221;}&#8217;
+export SG_IO_TASK=&#8217;{&#8220;type&#8221;:&#8221;Task&#8221;, &#8220;id&#8221;:234, &#8220;content&#8221;:&#8221;Anim&#8221;, &#8220;project&#8221;:{&#8220;type&#8221;:&#8221;Project&#8221;,&#8221;id&#8221;:345,&#8221;name&#8221;:&#8221;Demo Project&#8221;},&#8221;entity&#8221;:{&#8220;type&#8221;:&#8221;Shot&#8221;,&#8221;id&#8221;:456,&#8221;name&#8221;:&#8221;0010_0001&#8221;}}&#8217;
+export SG_IO_VERSION_NAME=&#8216;010_0001 / anim / kp&#8217;
+export SG_IO_PROJECT=&#8217;{&#8220;type&#8221;:&#8221;Project&#8221;, &#8220;id&#8221;:123, &#8220;name&#8221;:&#8221;Demo Project&#8221;}&#8217;
+export SG_IO_ENTITY=&#8217;{&#8220;type&#8221;:&#8221;Shot&#8221;, &#8220;id&#8221;:123, &#8220;name&#8221;:&#8221;010_0001&#8221;}&#8217;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of key/value pairs representing Shotgun info</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><cite>dict</cite></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">io</span><span class="o">.</span><span class="n">load_env_variables</span><span class="p">()</span>
+<span class="go">{</span>
+<span class="go">&#39;user&#39;: {&#39;type&#39;:&#39;HumanUser&#39;, &#39;id&#39;:123},</span>
+<span class="go">&#39;task&#39;: {</span>
+<span class="go">            &#39;type&#39;:&#39;Task&#39;, </span>
+<span class="go">            &#39;id&#39;:234, </span>
+<span class="go">            &#39;content&#39;:&#39;Anim&#39;, </span>
+<span class="go">            &#39;project&#39;: {&#39;type&#39;:&#39;Project&#39;, &#39;id&#39;:567},</span>
+<span class="go">            &#39;entity&#39;: {&#39;type&#39;:&#39;Shot&#39;, &#39;id&#39;:678}</span>
+<span class="go">        },</span>
+<span class="go">&#39;name&#39;: &#39;010_0001 / anim / kp&#39;,</span>
+<span class="go">&#39;project&#39;: {&#39;type&#39;:&#39;Project&#39;, &#39;id&#39;:345, &#39;name&#39;:&#39;Demo Project&#39;},</span>
+<span class="go">&#39;entity&#39;: {&#39;type&#39;:&#39;Shot&#39;, &#39;id&#39;:456, &#39;name&#39;:&#39;0010_0001&#39;}</span>
+<span class="go">}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -588,7 +576,7 @@ entity in Shotgun. If the username is invalid, returns None.</p>
         <li class="right" >
           <a href="cmdline.html" title="Command line usage"
              >previous</a> |</li>
-        <li><a href="index.html">shotgun_io v0.9 documentation</a> &raquo;</li> 
+        <li><a href="index.html">shotgun_io v0.9.5 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

@@ -228,7 +228,7 @@ Get workflow
 
 .. function:: shotgun_io.py -w
 
-Returns the workflow config setting (``task`` or ``project_shot``)
+Returns the workflow config setting (``task`` or ``advanced``)
 
 This is a convenience method for determining which workflow a studio is using
 in order for render queues to determine what menu options to display to the

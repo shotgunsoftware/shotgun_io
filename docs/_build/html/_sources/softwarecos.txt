@@ -56,8 +56,12 @@ Inside the file there should be at least 2 settings:
 
 Example ``.shotgun`` file contents::
 
-    enabled=1
-    shotgun_io_path=/usr/local/etc/shotgun/shotgun_io/src
+    enabled 1
+    shotgun_io_bindir "/usr/local/etc/shotgun/shotgun_io/src"
+
+The key and values must be separated by whitespace (don't use ``=`` , ``:``, etc.). The 
+**shotgun_io_bindir** value must be a `double-quoted` path that points to the location of 
+the ``shotgun_io.py`` script.
 
 Handling additional variables
 -----------------------------
@@ -79,10 +83,10 @@ if you require the following additional variables
 Your vendor-specific file would be ``.shotgun_awesomesauce`` and would look like
 this::
 
-    ENABLED: 1
-    shotgunio_path: /usr/local/etc/shotgun/shotgun_io/src
-    favorite_color: orange
-    lucky_number: 21
+    enabled 1
+    shotgun_io_bindir: "/usr/local/etc/shotgun/shotgun_io/src"
+    favorite_color orange
+    lucky_number 21
     
 This overall structure lets studios to use multiple render management systems
 with Shotgun integration but keeps any additional variables required by other

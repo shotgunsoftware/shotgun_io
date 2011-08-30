@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -7,13 +6,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Integrating your company’s render manager &mdash; shotgun_io v0.9 documentation</title>
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <title>Integrating your company’s render manager &mdash; shotgun_io v0.9.5 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.9',
+        VERSION:     '0.9.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +21,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="shotgun_io v0.9 documentation" href="index.html" />
+    <link rel="top" title="shotgun_io v0.9.5 documentation" href="index.html" />
     <link rel="prev" title="API usage" href="api.html" /> 
   </head>
   <body>
@@ -38,7 +37,7 @@
         <li class="right" >
           <a href="api.html" title="API usage"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">shotgun_io v0.9 documentation</a> &raquo;</li> 
+        <li><a href="index.html">shotgun_io v0.9.5 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -96,9 +95,12 @@ integration cannot be enabled.</p>
 <li><strong>shotgun_io_path</strong>: the absolute path to the directory where <a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> lives.</li>
 </ul>
 <p>Example <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file contents:</p>
-<div class="highlight-python"><pre>enabled=1
-shotgun_io_path=/usr/local/etc/shotgun/shotgun_io/src</pre>
+<div class="highlight-python"><pre>enabled 1
+shotgun_io_bindir "/usr/local/etc/shotgun/shotgun_io/src"</pre>
 </div>
+<p>The key and values must be separated by whitespace (don&#8217;t use <tt class="docutils literal"><span class="pre">=</span></tt> , <tt class="docutils literal"><span class="pre">:</span></tt>, etc.). The
+<strong>shotgun_io_bindir</strong> value must be a <cite>double-quoted</cite> path that points to the location of
+the <tt class="docutils literal"><span class="pre">shotgun_io.py</span></tt> script.</p>
 <div class="section" id="handling-additional-variables">
 <h4>Handling additional variables<a class="headerlink" href="#handling-additional-variables" title="Permalink to this headline">¶</a></h4>
 <p>If you need to use additional settings aside from the default variables in
@@ -117,10 +119,10 @@ if you require the following additional variables</p>
 </ul>
 <p>Your vendor-specific file would be <tt class="docutils literal"><span class="pre">.shotgun_awesomesauce</span></tt> and would look like
 this:</p>
-<div class="highlight-python"><pre>ENABLED: 1
-shotgunio_path: /usr/local/etc/shotgun/shotgun_io/src
-favorite_color: orange
-lucky_number: 21</pre>
+<div class="highlight-python"><pre>enabled 1
+shotgun_io_bindir: "/usr/local/etc/shotgun/shotgun_io/src"
+favorite_color orange
+lucky_number 21</pre>
 </div>
 <p>This overall structure lets studios to use multiple render management systems
 with Shotgun integration but keeps any additional variables required by other
@@ -129,10 +131,6 @@ systems hidden.</p>
 </div>
 <div class="section" id="adding-shotgun-info-to-submit-windows">
 <h3>Adding Shotgun info to submit windows<a class="headerlink" href="#adding-shotgun-info-to-submit-windows" title="Permalink to this headline">¶</a></h3>
-<div class="admonition-todo admonition " id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">add a set of generic screens to show the desired UI and workflow.</p>
-</div>
 <p>There are only a couple of bits of Shotgun information that the artist will need
 to provide when submitting a job in order for the results to show up as a new
 Version entity in Shotgun.</p>
@@ -401,7 +399,7 @@ Versions in Shotgun, see the section <a class="reference internal" href="cmdline
         <li class="right" >
           <a href="api.html" title="API usage"
              >previous</a> |</li>
-        <li><a href="index.html">shotgun_io v0.9 documentation</a> &raquo;</li> 
+        <li><a href="index.html">shotgun_io v0.9.5 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

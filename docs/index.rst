@@ -5,6 +5,10 @@
 
 shotgun_io
 ======================================
+:Release: |release|
+:Date: |today|
+
+
 This software was originally developed by `Shotgun 
 Software <http://shotgunsoftware.com>`_ with support from `Greg Ercolano 
 <http://seriss.com/people/erco/>`_. 
