@@ -12,10 +12,10 @@ except ImportError:
     except ImportError:
         python_version = "%d.%d.%d" % (sys.version_info[0], sys.version_info[1], sys.version_info[2])
         msg = "No supported JSON module is installed. It's a standard module as of Python 2.6. If you are " \
-                "running an earlier version of Python (yours is v%s), you can download and install the "\
-                "simplejson module from http://pypi.python.org/pypi/simplejson. If you have a package "\
-                "manager on your system you can use something like `apt-get install python-simplejson` "\
-                "or if you have the setuptools module installed in Python, just type `easy_install simplejson`" % python_version
+              "running an earlier version of Python (yours is v%s), you can download and install the "\
+              "simplejson module from http://pypi.python.org/pypi/simplejson. If you have a package "\
+              "manager on your system you can use something like `apt-get install python-simplejson` "\
+              "or if you have the setuptools module installed in Python, just type `easy_install simplejson`" % python_version
         raise ImportError(msg)
 
 

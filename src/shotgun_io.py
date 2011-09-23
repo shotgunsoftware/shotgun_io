@@ -61,8 +61,8 @@ try:
     import shotgun_api3
 except ImportError, e:
     msg = "%s:\nThe Shotgun API is not installed. To install it, download the "\
-        "latest version from https://github.com/shotgunsoftware/python-api/downloads, "\
-        "extract the package and place the shotgun_api3.py file in this directory "\
+        "latest version from https://github.com/shotgunsoftware/python-api, "\
+        "extract the package and place it in this directory "\
         "or somewhere in your PYTHONPATH (more info on where to install modules "\
         "at http://docs.python.org/tutorial/modules.html#the-module-search-path)" % (e)
     logging.error(msg)
@@ -72,7 +72,7 @@ __author__ = "KP"
 __copyright__ = "Copyright 2011, Shotgun Software"
 __credits__ = ["Greg Ercolano", "Kennedy Behrman"]
 __license__ = "BSD"
-__version__ = "0.95"
+__version__ = "1.0.0 Beta 1"
 __maintainer__ = "KP"
 __email__ = "kp@shotgunsoftware.com"
 __status__ = "Development"
