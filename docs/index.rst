@@ -43,12 +43,12 @@ Documentation
 .. toctree::
     :maxdepth: 2
 
+    Installing <installation>
     Configuration <configuration>
     Customizing  <customizing>
     Command line usage <cmdline>
     Python api usage <api>
-    Integrating your render manager <softwarecos>
-
+    Adding Shotgun integration to your render manager software <softwarecos>
 
 
 

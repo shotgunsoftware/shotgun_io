@@ -6,13 +6,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Integrating your company’s render manager &mdash; shotgun_io v0.9.5 documentation</title>
+    <title>Adding Shotgun integration to your render manager software &mdash; shotgun_io v1.0.0b1 documentation</title>
     <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.9.5',
+        VERSION:     '1.0.0b1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -21,7 +21,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="shotgun_io v0.9.5 documentation" href="index.html" />
+    <link rel="top" title="shotgun_io v1.0.0b1 documentation" href="index.html" />
     <link rel="prev" title="API usage" href="api.html" /> 
   </head>
   <body>
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="api.html" title="API usage"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">shotgun_io v0.9.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">shotgun_io v1.0.0b1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -47,90 +47,17 @@
           <div class="body">
             
   <div class="section" id="module-shotgun_io">
-<span id="integrating-your-company-s-render-manager"></span><h1>Integrating your company&#8217;s render manager<a class="headerlink" href="#module-shotgun_io" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> is intended to be the hub for managing communication between
-render queue software and Shotgun. It wraps the Shotgun API to provide render
-specific commands and utilities to make integrating with Shotgun simple while
-allowing studios the flexibility to customize the integration without requiring
-them to touch any of the render queue code.</p>
-<p>Customizations such as Shotgun authentication information, naming conventions,
-etc. are all part of the <a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> package so you don&#8217;t need to worry
-about how to handle these types of configuration and customization options.</p>
-<p>Integrating with Shotgun involves the following steps:</p>
-<ul class="simple">
-<li>enabling/disabling Shotgun integration</li>
-<li>adding Shotgun-specific menu options to submit windows</li>
-<li>creating/updating Versions in Shotgun</li>
-<li>passing job log information to <strong>shotgun_io</strong> for any custom processing</li>
-</ul>
-<div class="section" id="enabling-shotgun-integration">
-<h2>Enabling Shotgun integration<a class="headerlink" href="#enabling-shotgun-integration" title="Permalink to this headline">¶</a></h2>
-<p>In order to use <a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a>, your software will need to know where it
-lives on the file system. This (and optionally other information) lives in the
-<tt class="docutils literal"><span class="pre">.shotgun</span></tt> file. The <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file can live wherever a studio wants it
-to be. Therefore, in order to find where the <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file lives, you can
-assume there is a <strong>SHOTGUN_CONFIG</strong> environment variable that points to the
-location of the file.</p>
-<div class="section" id="shotgun-config-environment-variable">
-<h3>SHOTGUN_CONFIG environment variable<a class="headerlink" href="#shotgun-config-environment-variable" title="Permalink to this headline">¶</a></h3>
-<p>Studios are responsible for setting up a <strong>SHOTGUN_CONFIG</strong> environment variable
-that points to the location of the <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file. Therefore, the first step
-for setting up integration is to look for this environment variable. If it
-doesn&#8217;t exist, integration cannot be enabled.</p>
-<p>If it does exist, it should be a single absolute path to an existing readable
-<tt class="docutils literal"><span class="pre">.shotgun</span></tt> file. The format should look something like any of the following:</p>
-<div class="highlight-python"><pre>SHOTGUN_CONFIG=/usr/local/etc/shotgun/.shotgun
-SHOTGUN_CONFIG=Z:\\fileserver\tools\.shotgun
-SHOTGUN_CONFIG=\\fileserver\tools\.shotgun</pre>
+<span id="adding-shotgun-integration-to-your-render-manager-software"></span><h1>Adding Shotgun integration to your render manager software<a class="headerlink" href="#module-shotgun_io" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This doc is incomplete.</p>
 </div>
-</div>
-<div class="section" id="shotgun-file">
-<h3>.shotgun file<a class="headerlink" href="#shotgun-file" title="Permalink to this headline">¶</a></h3>
-<p>If the environment variable exists, the next step is to test that the file
-exists and is readable. If the file does not exist or is not readable, the
-integration cannot be enabled.</p>
-<p>Inside the file there should be at least 2 settings:</p>
-<ul class="simple">
-<li><strong>enabled</strong>: valid options are <tt class="docutils literal"><span class="pre">0</span></tt> to indicate the integration is not enabled, or <tt class="docutils literal"><span class="pre">1</span></tt> to indicate the integration is enabled</li>
-<li><strong>shotgun_io_path</strong>: the absolute path to the directory where <a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> lives.</li>
-</ul>
-<p>Example <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file contents:</p>
-<div class="highlight-python"><pre>enabled 1
-shotgun_io_bindir "/usr/local/etc/shotgun/shotgun_io/src"</pre>
-</div>
-<p>The key and values must be separated by whitespace (don&#8217;t use <tt class="docutils literal"><span class="pre">=</span></tt> , <tt class="docutils literal"><span class="pre">:</span></tt>, etc.). The
-<strong>shotgun_io_bindir</strong> value must be a <cite>double-quoted</cite> path that points to the location of
-the <tt class="docutils literal"><span class="pre">shotgun_io.py</span></tt> script.</p>
-<div class="section" id="handling-additional-variables">
-<h4>Handling additional variables<a class="headerlink" href="#handling-additional-variables" title="Permalink to this headline">¶</a></h4>
-<p>If you need to use additional settings aside from the default variables in
-<tt class="docutils literal"><span class="pre">.shotgun</span></tt>, you may do so in a custom vendor-specific file named
-<tt class="docutils literal"><span class="pre">.shotgun_vendorname</span></tt>. Additional vendor-specific variables <em>cannot</em> be stored
-in the default <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file. Decide on what the standard suffix will be for your
-product and stick with it. For example, if your product name is &#8220;awesomesauce&#8221;,
-you would look for a file named <tt class="docutils literal"><span class="pre">.shotgun_awesomesauce</span></tt> in the location
-specified by the <strong>SHOTGUN_CONFIG</strong> environment_variable.</p>
-<p>It is up to you if you require a custom <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file or if you will use the
-standard one by default, and only use your custom one if it exists. For example,
-if you require the following additional variables</p>
-<ul class="simple">
-<li><strong>favorite_color</strong></li>
-<li><strong>lucky_number</strong></li>
-</ul>
-<p>Your vendor-specific file would be <tt class="docutils literal"><span class="pre">.shotgun_awesomesauce</span></tt> and would look like
-this:</p>
-<div class="highlight-python"><pre>enabled 1
-shotgun_io_bindir: "/usr/local/etc/shotgun/shotgun_io/src"
-favorite_color orange
-lucky_number 21</pre>
-</div>
-<p>This overall structure lets studios to use multiple render management systems
-with Shotgun integration but keeps any additional variables required by other
-systems hidden.</p>
-</div>
-</div>
+<p>Please read the <a class="reference internal" href="installation.html"><em>Installing shotgun_io</em></a> section prior to this section. It will explain
+how you setup and enable Shotgun integration. Then read on below to learn how
+to use <a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> to integrate with the submission process and get
+information in and out of Shotgun.</p>
 <div class="section" id="adding-shotgun-info-to-submit-windows">
-<h3>Adding Shotgun info to submit windows<a class="headerlink" href="#adding-shotgun-info-to-submit-windows" title="Permalink to this headline">¶</a></h3>
+<h2>Adding Shotgun info to submit windows<a class="headerlink" href="#adding-shotgun-info-to-submit-windows" title="Permalink to this headline">¶</a></h2>
 <p>There are only a couple of bits of Shotgun information that the artist will need
 to provide when submitting a job in order for the results to show up as a new
 Version entity in Shotgun.</p>
@@ -155,7 +82,7 @@ provided their username and validated it. Once their username is validated, the
 remaining fields should become enabled and where applicable, filled with the
 valid information provided by <a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a>.</p>
 <div class="section" id="username">
-<h4>Username<a class="headerlink" href="#username" title="Permalink to this headline">¶</a></h4>
+<h3>Username<a class="headerlink" href="#username" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><strong>field_type</strong>: textbox with a button labeled &#8220;Connect&#8221; to the right</li>
 </ul>
@@ -174,7 +101,7 @@ the Tasks for the user. This can be done with <a class="reference internal" href
 </div>
 </div>
 <div class="section" id="task">
-<h4>Task<a class="headerlink" href="#task" title="Permalink to this headline">¶</a></h4>
+<h3>Task<a class="headerlink" href="#task" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><strong>field_type</strong>: dropdown list</li>
 </ul>
@@ -204,7 +131,7 @@ Shotgun:</p>
 </ul>
 </div>
 <div class="section" id="version-name">
-<h4>Version Name<a class="headerlink" href="#version-name" title="Permalink to this headline">¶</a></h4>
+<h3>Version Name<a class="headerlink" href="#version-name" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><strong>field_type</strong>: editable dropdown list</li>
 </ul>
@@ -296,7 +223,7 @@ until the job is submitted so this is the one exception to that rule.</p>
 name value, selecting a new version name template should overwrite the value
 in the editable field.</p>
 <div class="section" id="version-numbering">
-<h5>Version numbering<a class="headerlink" href="#version-numbering" title="Permalink to this headline">¶</a></h5>
+<h4>Version numbering<a class="headerlink" href="#version-numbering" title="Permalink to this headline">¶</a></h4>
 <p>Version numbering is handled automatically by <a class="reference internal" href="#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a>. The studio
 admins are responsible for configuring their own installation&#8217;s version
 numbering scheme. Therefore you don&#8217;t need to care about that at all, which we
@@ -304,7 +231,7 @@ hope is nice.</p>
 </div>
 </div>
 <div class="section" id="description">
-<h4>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h4>
+<h3>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><strong>field_type</strong>: text box</li>
 </ul>
@@ -329,7 +256,6 @@ Versions in Shotgun, see the section <a class="reference internal" href="cmdline
 </div>
 </div>
 </div>
-</div>
 
 
           </div>
@@ -339,13 +265,7 @@ Versions in Shotgun, see the section <a class="reference internal" href="cmdline
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Integrating your company&#8217;s render manager</a><ul>
-<li><a class="reference internal" href="#enabling-shotgun-integration">Enabling Shotgun integration</a><ul>
-<li><a class="reference internal" href="#shotgun-config-environment-variable">SHOTGUN_CONFIG environment variable</a></li>
-<li><a class="reference internal" href="#shotgun-file">.shotgun file</a><ul>
-<li><a class="reference internal" href="#handling-additional-variables">Handling additional variables</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#">Adding Shotgun integration to your render manager software</a><ul>
 <li><a class="reference internal" href="#adding-shotgun-info-to-submit-windows">Adding Shotgun info to submit windows</a><ul>
 <li><a class="reference internal" href="#username">Username</a></li>
 <li><a class="reference internal" href="#task">Task</a></li>
@@ -354,8 +274,6 @@ Versions in Shotgun, see the section <a class="reference internal" href="cmdline
 </ul>
 </li>
 <li><a class="reference internal" href="#description">Description</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -399,7 +317,7 @@ Versions in Shotgun, see the section <a class="reference internal" href="cmdline
         <li class="right" >
           <a href="api.html" title="API usage"
              >previous</a> |</li>
-        <li><a href="index.html">shotgun_io v0.9.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">shotgun_io v1.0.0b1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

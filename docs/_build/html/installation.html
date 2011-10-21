@@ -1,0 +1,281 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installing shotgun_io &mdash; shotgun_io v1.0.0b1 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0.0b1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="shotgun_io v1.0.0b1 documentation" href="index.html" />
+    <link rel="next" title="Configuration" href="configuration.html" />
+    <link rel="prev" title="shotgun_io" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="configuration.html" title="Configuration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="shotgun_io"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">shotgun_io v1.0.0b1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-shotgun_io">
+<span id="installing-shotgun-io"></span><h1>Installing shotgun_io<a class="headerlink" href="#module-shotgun_io" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="softwarecos.html#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> is intended to be the hub for managing communication between
+render queue software and Shotgun. It wraps the Shotgun API to provide render
+specific commands and utilities to make integrating with Shotgun simple while
+allowing studios the flexibility to customize the integration without requiring
+them to touch any of the render queue code.</p>
+<p>Customizations such as Shotgun authentication information, naming conventions,
+etc. are all part of the <a class="reference internal" href="softwarecos.html#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> package so you don&#8217;t need to worry
+about how to handle these types of configuration and customization options.</p>
+<p>Integrating with Shotgun involves the following steps:</p>
+<ul class="simple">
+<li>enabling/disabling Shotgun integration</li>
+<li>adding Shotgun-specific menu options to submit windows</li>
+<li>creating/updating Versions in Shotgun</li>
+<li>passing job log information to <strong>shotgun_io</strong> for any custom processing</li>
+</ul>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="softwarecos.html#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> package can be installed anywhere on your machine
+provided that the following conditions are met:</p>
+<ol class="arabic simple">
+<li>Python (v2.4 up to v2.7) are installed</li>
+<li>The machine has network access to your Shotgun server (for API calls)</li>
+<li>The render queue manager can find and call shotgun_io from the command-line</li>
+</ol>
+<p>For the purposes of this document and other examples presented, we&#8217;ll assume
+you&#8217;ll want to install it inside <tt class="docutils literal"><span class="pre">/usr/local/shotgun</span></tt>:</p>
+<div class="highlight-python"><pre>$~ ls
+shotgun_io_v1.00b1.tar.gz
+
+$~ mkdir /usr/local/shotgun
+
+$~ tar -zxvf shotgun_io_v1.00b1.tar.gz -C /usr/local/shotgun
+x shotgun_io_v1.00b1/
+x shotgun_io_v1.00b1/docs/
+x shotgun_io_v1.00b1/docs/.buildinfo
+x shotgun_io_v1.00b1/docs/_sources/
+x shotgun_io_v1.00b1/docs/_sources/api.txt
+x shotgun_io_v1.00b1/docs/_sources/cmdline.txt
+x shotgun_io_v1.00b1/docs/_sources/configuration.txt
+x shotgun_io_v1.00b1/docs/_sources/customizing.txt
+x shotgun_io_v1.00b1/docs/_sources/index.txt
+x shotgun_io_v1.00b1/docs/_sources/softwarecos.txt
+x shotgun_io_v1.00b1/docs/_static/
+x shotgun_io_v1.00b1/docs/_static/basic.css
+x shotgun_io_v1.00b1/docs/_static/default.css
+x shotgun_io_v1.00b1/docs/_static/doctools.js
+x shotgun_io_v1.00b1/docs/_static/file.png
+x shotgun_io_v1.00b1/docs/_static/jquery.js
+x shotgun_io_v1.00b1/docs/_static/minus.png
+x shotgun_io_v1.00b1/docs/_static/nature.css
+x shotgun_io_v1.00b1/docs/_static/plus.png
+x shotgun_io_v1.00b1/docs/_static/pygments.css
+x shotgun_io_v1.00b1/docs/_static/searchtools.js
+x shotgun_io_v1.00b1/docs/_static/sidebar.js
+x shotgun_io_v1.00b1/docs/_static/underscore.js
+x shotgun_io_v1.00b1/docs/api.html
+x shotgun_io_v1.00b1/docs/cmdline.html
+x shotgun_io_v1.00b1/docs/configuration.html
+x shotgun_io_v1.00b1/docs/customizing.html
+x shotgun_io_v1.00b1/docs/genindex.html
+x shotgun_io_v1.00b1/docs/index.html
+x shotgun_io_v1.00b1/docs/objects.inv
+x shotgun_io_v1.00b1/docs/py-modindex.html
+x shotgun_io_v1.00b1/docs/search.html
+x shotgun_io_v1.00b1/docs/searchindex.js
+x shotgun_io_v1.00b1/docs/softwarecos.html
+x shotgun_io_v1.00b1/LICENSE
+x shotgun_io_v1.00b1/src/
+x shotgun_io_v1.00b1/src/io_entity_queries.py
+x shotgun_io_v1.00b1/src/io_entity_queries.pyc
+x shotgun_io_v1.00b1/src/io_input.py
+x shotgun_io_v1.00b1/src/io_input.pyc
+x shotgun_io_v1.00b1/src/io_output.py
+x shotgun_io_v1.00b1/src/io_output.pyc
+x shotgun_io_v1.00b1/src/shotgun_io.conf
+x shotgun_io_v1.00b1/src/shotgun_io.py
+
+$~ mv /usr/local/shotgun/shotgun_io_v1.00b1 /usr/local/shotgun/shotgun_io</pre>
+</div>
+</div>
+<div class="section" id="enabling-shotgun-integration">
+<h2>Enabling Shotgun integration<a class="headerlink" href="#enabling-shotgun-integration" title="Permalink to this headline">¶</a></h2>
+<p>In order to use <a class="reference internal" href="softwarecos.html#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a>, the render queue systems will need to know where it
+lives on the file system. This (and optionally other information) exists in the
+<tt class="docutils literal"><span class="pre">.shotgun</span></tt> file. The <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file can live wherever a studio wants it
+to be. Therefore, in order to find where the <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file lives, you can
+assume there is a <strong>SHOTGUN_CONFIG</strong> environment variable that points to the
+location of the file.</p>
+<div class="section" id="shotgun-config-environment-variable">
+<h3>SHOTGUN_CONFIG environment variable<a class="headerlink" href="#shotgun-config-environment-variable" title="Permalink to this headline">¶</a></h3>
+<p>Studios are responsible for setting up a <strong>SHOTGUN_CONFIG</strong> environment variable
+that points to the location of the <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file. Therefore, the first step
+for setting up integration is to look for this environment variable. If it
+doesn&#8217;t exist, integration cannot be enabled.</p>
+<p>If it does exist, it should be a single absolute path to an existing readable
+<tt class="docutils literal"><span class="pre">.shotgun</span></tt> file. The format should look something like any of the following:</p>
+<div class="highlight-python"><pre>SHOTGUN_CONFIG=/usr/local/etc/shotgun/.shotgun
+SHOTGUN_CONFIG=Z:\\fileserver\tools\.shotgun
+SHOTGUN_CONFIG=\\fileserver\tools\.shotgun</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Rush allows you to set this variable in the RushSiteSettings.py file as a convenience.</p>
+</div>
+</div>
+<div class="section" id="shotgun-file">
+<h3>.shotgun file<a class="headerlink" href="#shotgun-file" title="Permalink to this headline">¶</a></h3>
+<p>If the environment variable exists, the next step is to test that the <tt class="docutils literal"><span class="pre">.shotgun</span></tt>
+file exists and is readable. If the file does not exist or is not readable, the
+integration cannot be enabled.</p>
+<p>Inside the <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file there should be at least 2 settings:</p>
+<ul class="simple">
+<li><strong>enabled</strong>: valid options are <tt class="docutils literal"><span class="pre">0</span></tt> to indicate the integration is not enabled, or <tt class="docutils literal"><span class="pre">1</span></tt> to indicate the integration is enabled</li>
+<li><strong>shotgun_io_bindir</strong>: the absolute path to the directory where <a class="reference internal" href="softwarecos.html#module-shotgun_io" title="shotgun_io"><tt class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></tt></a> lives.</li>
+</ul>
+<p>Example <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file contents:</p>
+<div class="highlight-python"><pre>enabled 1
+shotgun_io_bindir "/usr/local/etc/shotgun/shotgun_io/src"</pre>
+</div>
+<p>The key and values must be separated by whitespace (don&#8217;t use <tt class="docutils literal"><span class="pre">=</span></tt> , <tt class="docutils literal"><span class="pre">:</span></tt>, etc.). The
+<strong>shotgun_io_bindir</strong> value must be a <cite>double-quoted</cite> path that points to the location of
+the <tt class="docutils literal"><span class="pre">shotgun_io.py</span></tt> script.</p>
+<div class="section" id="handling-additional-variables">
+<h4>Handling additional variables<a class="headerlink" href="#handling-additional-variables" title="Permalink to this headline">¶</a></h4>
+<p>If you need to use additional settings aside from the default variables in
+<tt class="docutils literal"><span class="pre">.shotgun</span></tt>, you may do so in a custom vendor-specific file named
+<tt class="docutils literal"><span class="pre">.shotgun_vendorname</span></tt>. Additional vendor-specific variables <em>cannot</em> be stored
+in the default <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file. Decide on what the standard suffix will be for your
+product and stick with it. For example, if your product name is &#8220;awesomesauce&#8221;,
+you would look for a file named <tt class="docutils literal"><span class="pre">.shotgun_awesomesauce</span></tt> in the location
+specified by the <strong>SHOTGUN_CONFIG</strong> environment_variable.</p>
+<p>It is up to you if you require a custom <tt class="docutils literal"><span class="pre">.shotgun</span></tt> file or if you will use the
+standard one by default, and only use your custom one if it exists. For example,
+if you require the following additional variables</p>
+<ul class="simple">
+<li><strong>favorite_color</strong></li>
+<li><strong>lucky_number</strong></li>
+</ul>
+<p>Your vendor-specific file would be <tt class="docutils literal"><span class="pre">.shotgun_awesomesauce</span></tt> and would look like
+this:</p>
+<div class="highlight-python"><pre>enabled 1
+shotgun_io_bindir "/usr/local/etc/shotgun/shotgun_io/src"
+favorite_color orange
+lucky_number 21</pre>
+</div>
+<p>This overall structure lets studios to use multiple render management systems
+with Shotgun integration but keeps any additional variables required by other
+systems hidden.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installing shotgun_io</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#enabling-shotgun-integration">Enabling Shotgun integration</a><ul>
+<li><a class="reference internal" href="#shotgun-config-environment-variable">SHOTGUN_CONFIG environment variable</a></li>
+<li><a class="reference internal" href="#shotgun-file">.shotgun file</a><ul>
+<li><a class="reference internal" href="#handling-additional-variables">Handling additional variables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">shotgun_io</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="configuration.html"
+                        title="next chapter">Configuration</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/installation.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="configuration.html" title="Configuration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="shotgun_io"
+             >previous</a> |</li>
+        <li><a href="index.html">shotgun_io v1.0.0b1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Shotgun Software.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>
