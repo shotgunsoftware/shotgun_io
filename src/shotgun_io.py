@@ -1,14 +1,6 @@
 #!/usr/bin/env python
-"""
-Provides interaction with Shotgun specific for render queue integrations.
-
-ShotgunIO facilitates the creation and updating of Version entities in Shotgun.
-It manages communication for listing entities in Shotgun for constructing job 
-submission UIs, handles input and output formatting, and validation for creating
-and updating Versions in Shotgun with render job specific information. 
-"""
 # ---------------------------------------------------------------------------------------------
-# Copyright (c) 2009-2011, Shotgun Software Inc
+# Copyright (c) 2009-2016, Shotgun Software Inc
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -34,6 +26,15 @@ and updating Versions in Shotgun with render job specific information.
 # CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+"""
+Provides interaction with Shotgun specific for render queue integrations.
+
+ShotgunIO facilitates the creation and updating of Version entities in Shotgun.
+It manages communication for listing entities in Shotgun for constructing job 
+submission UIs, handles input and output formatting, and validation for creating
+and updating Versions in Shotgun with render job specific information. 
+"""
 
 import sys
 import os
@@ -69,13 +70,13 @@ except ImportError, e:
     sys.exit(1)
 
 __author__ = "KP"
-__copyright__ = "Copyright 2011, Shotgun Software"
-__credits__ = ["Greg Ercolano", "Kennedy Behrman"]
+__copyright__ = "Copyright 2016, Shotgun Software"
+__credits__ = ["Kevin Porterfield", "Greg Ercolano", "Kennedy Behrman"]
 __license__ = "BSD"
-__version__ = "1.0.0 Beta 1"
+__version__ = "1.0.0"
 __maintainer__ = "KP"
 __email__ = "kp@shotgunsoftware.com"
-__status__ = "Development"
+__status__ = "Production"
 
 # LOGGING
 # ====================================
