@@ -37,6 +37,11 @@ Additionally, :mod:`shotgun_io` enables studios to customize the way the integra
 functions to match their specific workflow through configuration options or 
 more advanced method overrides.
 
+.. note::
+  This provides integration with Shotgun Version entities. As is, it does not provide any
+  level of integration with `Shotgun Toolkit <https://support.shotgunsoftware.com/hc/en-us/articles/219039788>`_ 
+  or deal at all with Published Files.
+
 Documentation
 -------------
 

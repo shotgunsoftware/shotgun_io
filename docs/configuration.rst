@@ -27,15 +27,15 @@ The url location of your Shotgun server::
 
 script_name
 ===========
-The script name used for API access. For more information, see `Setting up
-Shotgun for API Access <https://github.com/shotgunsoftware/python-api/wiki/Setting-Up-Shotgun-for-API-Access>`_::
+The script name used for API access. For more information, see the `Script Based Authentication <http://developer.shotgunsoftware.com/python-api/authentication.html#script-based-authentication>`_ section of the Python API docs::
 
     script_name: shotgun_io
 
 application_key
 ===============
-The 40 character hex application key used for API access. For more information, 
-see `Setting up Shotgun for API Access <https://github.com/shotgunsoftware/python-api/wiki/Setting-Up-Shotgun-for-API-Access>`_::
+The hex application key used for API access. For more information, 
+see the `Script Based Authentication <http://developer.shotgunsoftware.com/python-api/authentication.html#script-based-authentication>`_ 
+section of the Python API docs::
 
     application_key: 12345abcdef8992841c5045bbd404c6833c169f1
 
