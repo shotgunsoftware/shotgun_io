@@ -1,0 +1,1143 @@
+
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Command line usage &mdash; shotgun_io v1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="shotgun_io v1.0.0 documentation" href="index.html"/>
+        <link rel="next" title="API usage" href="api.html"/>
+        <link rel="prev" title="Customizing shotgun_io" href="customizing.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+    <a href='http://developer.shotgunsoftware.com'>
+    
+        <img style='width: 191px;
+                height: 60px;
+                margin: 2px;
+                border-radius: 0px;
+                padding: 0px;'
+            src='_static/logo_sg@2x.png'/>
+    
+    </a>
+    
+
+          
+            <a href="index.html" class="icon icon-home"> shotgun_io
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customizing.html">Customizing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Command line usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#available-commands">Available Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#list-entities">List entities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#available-entity-types">Available entity types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#additional-switches">Additional switches</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#return-values">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-version-fields">Get Version fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#validate-user">Validate user</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-workflow">Get workflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-version-status-values">Get Version status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-version-name-templates">Get Version name templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-config-values">Get config values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-version">Create Version</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Return Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#required-fields">Required Fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#valid-fields-and-formatting">Valid fields and formatting</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#update-version">Update Version</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Return Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Required Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#delete-version">Delete Version</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Return Values</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#process-logfiles">Process logfiles</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Python api usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="softwarecos.html">Adding Shotgun integration to your render manager software</a></li>
+</ul>
+
+            
+          
+       
+    <div style='margin-top: 50px;
+                margin-left: 10px;
+                margin-right: 10px;
+                padding: 10px; 
+                color: #b3b3b3; 
+                font-size: 70%;
+                border-radius: 3px;
+                background-color: #444;
+                line-height: 18px;
+                '>    
+    <style>
+        a.custom_post_menu { display: inline; 
+                             padding: 0px; 
+                             text-decoration: underline; }
+    </style>
+
+    <b>shotgun_io</b> v1.0.0.<br>
+    
+    For more information, please visit
+    <a class=custom_post_menu href='https://support.shotgunsoftware.com/home'>Shotgun Support</a>.
+    The code associated with this documentation can be found 
+    <a class=custom_post_menu href='https://github.com/shotgunsoftware/shotgun_io'>here</a>.
+
+    </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">shotgun_io</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Command line usage</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="command-line-usage">
+<h1>Command line usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal"><span class="pre">shotgun_io</span></code> supports a simple command line interface.</p>
+<p>All normal output is sent to STDOUT and exits with a return code of <code class="docutils literal"><span class="pre">0</span></code>.
+Any errors that are generated are send to STDERR and the script will exit with a
+return code of <code class="docutils literal"><span class="pre">1</span></code>.</p>
+<div class="section" id="available-commands">
+<h2>Available Commands<a class="headerlink" href="#available-commands" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="list-entities">
+<h3>List entities<a class="headerlink" href="#list-entities" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">-l</span> <span class="pre">--list</span></code></p>
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py -l &lt;entity_type&gt; [-u &lt;user_id&gt; [-p &lt;project_id&gt;]]</code></dt>
+<dd></dd></dl>
+
+<p>Returns a list of entities from Shotgun of the specified type. This is primarily
+used for populating a submit menu. For example, when an artist is submitting a job for a
+specific Task, you would use this command to get the list of Tasks to populate
+the menu with.</p>
+<p>Some of the entity types require additional information for context. For example,
+to list Tasks, you will also need to provide the id of the user to get tasks
+for: <code class="docutils literal"><span class="pre">shotgun_io.py</span> <span class="pre">-l</span> <span class="pre">tasks</span> <span class="pre">-u</span> <span class="pre">55</span></code>.</p>
+<p>However, other entity types require no context and can be retrieved with no
+additional information: <code class="docutils literal"><span class="pre">shotgun_io.py</span> <span class="pre">-l</span> <span class="pre">projects</span></code></p>
+<div class="section" id="available-entity-types">
+<h4>Available entity types<a class="headerlink" href="#available-entity-types" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">users</span></code></li>
+<li><code class="docutils literal"><span class="pre">projects</span></code></li>
+<li><code class="docutils literal"><span class="pre">shots</span></code> <em>requires project id</em> <code class="docutils literal"><span class="pre">-p</span></code></li>
+<li><code class="docutils literal"><span class="pre">assets</span></code> <em>requires project id</em> <code class="docutils literal"><span class="pre">-p</span></code></li>
+<li><code class="docutils literal"><span class="pre">tasks</span></code> <em>requires user id</em> <code class="docutils literal"><span class="pre">-u</span></code></li>
+<li><code class="docutils literal"><span class="pre">shotsandassets</span></code> <em>requires user id</em> <code class="docutils literal"><span class="pre">-u</span></code></li>
+</ul>
+</div>
+<div class="section" id="additional-switches">
+<h4>Additional switches<a class="headerlink" href="#additional-switches" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">-p</span> <span class="pre">--project_id</span></code></dt>
+<dd><p class="first last">project id for listing entity types that require a project id for context</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">-u</span> <span class="pre">--user_id</span></code></dt>
+<dd><p class="first last">user id for listing entity types that require a user id for context</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="return-values">
+<h4>Return values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h4>
+<p>It can be assumed when parsing the output from any of these <code class="docutils literal"><span class="pre">-l</span></code> commands that
+the leftmost output is unique identifier information like ids etc. used for
+creating and updating Shotgun information. Anything to the right of the first
+whitespace is display information only (ie. Project names, Task names, etc.)</p>
+<p>Generally the values returned are in the format <code class="docutils literal"><span class="pre">id</span> <span class="pre">name</span></code> where <code class="docutils literal"><span class="pre">id</span></code> is the
+Shotgun id of the entity and <code class="docutils literal"><span class="pre">name</span></code> is the display name. The <code class="docutils literal"><span class="pre">id</span></code> is what you
+need to store for creating and updating Version values in Shotgun. There is a
+single space separating the <code class="docutils literal"><span class="pre">id</span></code> and the <code class="docutils literal"><span class="pre">name</span></code>.</p>
+<p>The exception to the general format is the output for Tasks. Since there are several
+pieces of information provided in a Task, the format is
+<code class="docutils literal"><span class="pre">task_id,project_id,entity_type,entity_id</span> <span class="pre">project_name</span> <span class="pre">|</span> <span class="pre">entity</span> <span class="pre">name</span> <span class="pre">|</span> <span class="pre">task</span> <span class="pre">name</span></code>
+Again, there is a single space separating unique identifiers from the display name</p>
+<p><strong>General Example</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ shotgun_io.py -l projects
+65 Demo Animation Project
+66 Awesome VFX Project
+70 Test Project 1
+</pre></div>
+</div>
+<p><strong>General Output Breakdown</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">70</span> <span class="n">Test</span> <span class="n">Project</span> <span class="mi">1</span>
+\<span class="o">/|</span>\<span class="n">____________</span><span class="o">/</span>
+<span class="mi">1</span> <span class="mi">2</span>      <span class="mi">3</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li>Project id</li>
+<li>Space delimiting id output and display output</li>
+<li>Project name</li>
+</ol>
+<p><strong>Task Example</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ shotgun_io.py -l tasks -u 39
+55,4,Asset,3 Demo Project | Asset 1 | Rig
+134,4,Asset,620 Demo Project | Asset 10 | Rig
+138,4,Asset,621 Demo Project | Asset 11 | Rig
+142,4,Asset,622 Demo Project | Asset 12 | Rig
+146,4,Asset,623 Demo Project | Asset 13 | Rig
+</pre></div>
+</div>
+<p><strong>Task Output Breakdown</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">147</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="n">Asset</span><span class="p">,</span><span class="mi">623</span> <span class="n">Demo</span> <span class="n">Project</span> <span class="o">|</span> <span class="n">Asset</span> <span class="mi">13</span> <span class="o">|</span> <span class="n">Surface</span> <span class="n">Prep</span>
+\<span class="n">_</span><span class="o">/</span> <span class="o">|</span> \<span class="n">___</span><span class="o">/</span> \<span class="n">_</span><span class="o">/|</span>\<span class="n">___________</span><span class="o">/</span>  \<span class="n">______</span><span class="o">/</span>   \<span class="n">__________</span><span class="o">/</span>
+ <span class="mi">1</span>  <span class="mi">2</span>   <span class="mi">3</span>    <span class="mi">4</span> <span class="mi">5</span>      <span class="mi">6</span>            <span class="mi">7</span>           <span class="mi">8</span>
+                \<span class="n">____________________________________</span><span class="o">/</span>
+                                  <span class="mi">9</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li>Task id</li>
+<li>Project id</li>
+<li>Entity type</li>
+<li>Entity id</li>
+<li>Space delimiting id output and display output</li>
+<li>Project name</li>
+<li>Entity name</li>
+<li>Task name</li>
+<li>Complete Task name with Project and Entity context for menu</li>
+</ol>
+</div>
+</div>
+<div class="section" id="get-version-fields">
+<h3>Get Version fields<a class="headerlink" href="#get-version-fields" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">-f</span> <span class="pre">--fields</span></code></p>
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py -f</code></dt>
+<dd></dd></dl>
+
+<p>Returns a formatted list of internal field names for the Version entity in Shotgun.
+Fields are categorized by the field type and any internal fields that are not
+writeable are omitted. Field types are enclosed in <code class="docutils literal"><span class="pre">[]</span></code>&#8216;s and followed by
+field names that belong to that field type, one per line. Field type groups
+are then separated by a single blank line</p>
+<p>This can be useful for validating user input when configuring the integration.
+For example, say a user if configuring the frames_path field which expects
+text input. They specify a field name of <code class="docutils literal"><span class="pre">'sg_foo'</span></code>. This command lets you
+see that <code class="docutils literal"><span class="pre">sg_foo</span></code> won&#8217;t be a valid field for this type of information. Better
+yet, if you use menus, then you can filter out the invalid field data types
+from the list.</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ shotgun_io.py -f
+[date_time]
+sg_render_timestamp
+
+[checkbox]
+sg_frames_have_slate
+sg_movie_has_slate
+
+[url]
+sg_file
+sg_link_to_frames
+sg_link_to_movie
+sg_uploaded_movie
+
+[text]
+code
+description
+frame_range
+sg_department
+sg_job_id
+sg_path_to_frames
+sg_path_to_movie
+
+[image]
+image
+
+[float]
+sg_frames_aspect_ratio
+sg_movie_aspect_ratio
+
+[list]
+sg_version_type
+
+[number]
+frame_count
+sg_avg_frame_time
+sg_first_frame
+sg_last_frame
+sg_total_render_time
+
+[entity]
+entity
+project
+sg_steve
+sg_task
+task_template
+user
+
+[multi_entity]
+notes
+playlists
+sg_storyboard_link
+task_sg_versions_tasks
+tasks
+
+[date]
+sg_render_datestamp
+
+[tag_list]
+tag_list
+
+[status_list]
+sg_status_list
+</pre></div>
+</div>
+</div>
+<div class="section" id="validate-user">
+<h3>Validate user<a class="headerlink" href="#validate-user" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">-n</span> <span class="pre">--validate_user</span></code></p>
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py -n &lt;username&gt;</code></dt>
+<dd></dd></dl>
+
+<p>Validates the Shotgun username and returns the corresponding user id.</p>
+<p>Useful for verifying the provided username is valid. The returned user id can be
+used to query for the valid Tasks for that user and can be saved to assign the
+artist to a Version created after the job.</p>
+<p>When user is valid:</p>
+<ul class="simple">
+<li><strong>STDOUT</strong>: Shotgun HumanUser id</li>
+<li><strong>STDERR</strong>: Nothing</li>
+<li><strong>Exit code</strong>: 0</li>
+</ul>
+<p>When user is invalid:</p>
+<ul class="simple">
+<li><strong>STDOUT</strong>: Nothing</li>
+<li><strong>STDERR</strong>: Error message</li>
+<li><strong>Exit code</strong>: 1</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ shotgun_io.py -u stewie
+34
+
+$ shotgun_io.py -u brian
+shotgun_io.py ERROR: User &#39;brian&#39; is invalid.
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-workflow">
+<h3>Get workflow<a class="headerlink" href="#get-workflow" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">-w</span> <span class="pre">--workflow</span></code></p>
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py -w</code></dt>
+<dd></dd></dl>
+
+<p>Returns the workflow config setting (<code class="docutils literal"><span class="pre">task</span></code> or <code class="docutils literal"><span class="pre">advanced</span></code>)</p>
+<p>This is a convenience method for determining which workflow a studio is using
+in order for render queues to determine what menu options to display to the
+artist in submit windows.</p>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ shotgun_io.py -w
+task
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-version-status-values">
+<h3>Get Version status values<a class="headerlink" href="#get-version-status-values" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">-t</span> <span class="pre">--statuses</span></code></p>
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py -t</code></dt>
+<dd></dd></dl>
+
+<p>Returns a list of valid status code values for Version entities.</p>
+<p>This can be useful for validating user input when configuring the integration.
+Often there are config settings defining what status to set for a Version when
+certain events occur (job submitted, job started, job complete, job failed).
+Any status value specified must be valid and in this list.</p>
+<p>You can also minimize user error by using this command to populate a dropdown
+list to eliminate the possibilities of invalid input and typos.</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ shotgun_io.py -t
+na
+renq
+renip
+renf
+rev
+vwd
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-version-name-templates">
+<h3>Get Version name templates<a class="headerlink" href="#get-version-name-templates" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">-m</span> <span class="pre">--templates</span></code></p>
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py -m</code></dt>
+<dd></dd></dl>
+
+<p>Returns a list of Version name templates defined in the config file. These
+are used to populate the default name templates menu item. The first value
+is the default and should be applied to the Version name immediately. If the
+first value is &#8216;&#8217; then there is no default specified.</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ shotgun_io.py -m
+${project}_${shot}_${task}
+${project}/${shot}/${task}/${user}
+${project} ${shot} ${task} ${jobid}
+${shot}_${task} ${jobid}
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-config-values">
+<h3>Get config values<a class="headerlink" href="#get-config-values" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">--getconfig</span></code></p>
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py --getconfig</code></dt>
+<dd></dd></dl>
+
+<p>Returns a list of current config values for shotgun_io categorized in sections.
+Section names are listed in <code class="docutils literal"><span class="pre">[]</span></code>&#8216;s followed by config settings for that section.
+The key/value pair settings are formatted as <code class="docutils literal"><span class="pre">key:</span> <span class="pre">value</span></code>. There is a blank
+line following the last setting in each section.</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ shotgun_io.py --getconfig
+[shotgun]
+url: https://awesomesauce.shotgunstudio.com
+application_key: 0123456789abcdef3e5db48065c79672c352cffd
+script_name: render_queue
+
+[version_values]
+version_name_templates: ,${project}_${shot}_${task}, ${project}/${shot}/${task}/${user}, ${project} ${shot} ${task} ${jobid}, ${shot}_${task} ${jobid}
+version_name_space_token: _
+status_submitted: queued
+version_name_force_lowercase: yes
+version_name_replace_spaces: yes
+version_numbering: task
+version_number_format: _v%03d
+status_ip: ren
+scenefile_path_regexes: ^/\w*/\w*/\w*/\w*/(\w*)/(\w*), ^/\w*/\w*/something/\w*/(\w*)/(\w*)
+status_failed: fail
+status_complete: rev
+
+[version_fields]
+job_status: sg_status_list
+project: project
+frames_path: sg_link_to_frames
+shot: entity
+job_id: sg_job_id
+total_render_time: sg_total_render_time
+avg_frame_time: sg_avg_frame_time
+frame_count: frame_count
+last_frame: sg_last_frame
+task: sg_task
+movie_path: sg_link_to_movie
+user: user
+upload_movie: no
+first_frame: sg_first_frame
+frame_range: frame_range
+name: code
+
+[shotgun_io]
+custom_module:
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-version">
+<h3>Create Version<a class="headerlink" href="#create-version" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">-C</span> <span class="pre">--create_version</span></code></p>
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py -C &lt;version_info&gt;</code></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py -C /path/to/version_info.json</code></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py -C &lt;&lt;EOF &lt;version_info&gt; EOF</code></dt>
+<dd></dd></dl>
+
+<p>Creates a new Version in Shotgun from the <code class="docutils literal"><span class="pre">version_info</span></code> key/value pairs.
+Validation happens automatically and if successful, the command returns the id
+of the newly created Version.</p>
+<p><code class="docutils literal"><span class="pre">version_info</span></code> is either a JSON formatted string of key/value pairs or the path
+to a file that contains a JSON formatted string of key/value pairs. The key/value
+pairs represent the field/value for the information to be contained in the Version.
+Invalid keys will be silently ignored regardless of their data. Invalid data will
+generate an error if it is for a valid key.</p>
+<div class="section" id="id1">
+<h4>Return Values<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Returns exit code <code class="docutils literal"><span class="pre">0</span></code> on success with Version id <cite>int</cite> value on STDOUT.</li>
+<li>Returns exit code <code class="docutils literal"><span class="pre">1</span></code> on failure with error message on STDERR. Nothing on STDOUT.</li>
+</ul>
+</div>
+<div class="section" id="required-fields">
+<h4>Required Fields<a class="headerlink" href="#required-fields" title="Permalink to this headline">¶</a></h4>
+<p>When creating a Version, the following fields are <em>required</em>:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">name</span></code></li>
+<li><code class="docutils literal"><span class="pre">project</span></code></li>
+<li><code class="docutils literal"><span class="pre">user</span></code></li>
+</ul>
+</div>
+<div class="section" id="valid-fields-and-formatting">
+<span id="valid-fields"></span><h4>Valid fields and formatting<a class="headerlink" href="#valid-fields-and-formatting" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="user">
+<h5>user<a class="headerlink" href="#user" title="Permalink to this headline">¶</a></h5>
+<p>Shotgun id of the user (HumanUser) submitting the job. It must begin with a
+valid non-negative integer value corresponding to the id of a valid HumanUser
+(Person) record in Shotgun. It may have additional text following the id value
+but must have a single space separating the id and any text following.
+Any text following the id will be ignored but is allowed for logging and debugging
+purposes.</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>int</cite> (<cite>str</cite>)</li>
+<li><strong>required on create?</strong>: yes</li>
+<li><strong>required on update?</strong>: no</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;user&quot;</span><span class="p">:</span><span class="s2">&quot;522&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;user&quot;</span><span class="p">:</span><span class="s2">&quot;164 (fred)&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;user&quot;</span><span class="p">:</span><span class="s2">&quot;23 kp(KevinPorterfield)&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;user&quot;</span><span class="p">:</span><span class="s2">&quot;33 sarah#animationdepartment&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="task">
+<h5>task<a class="headerlink" href="#task" title="Permalink to this headline">¶</a></h5>
+<p>Shotgun id of the Task the Version is linked to. It must begin with a valid
+non-negative integer value corresponding to the id of a valid Task record in Shotgun.
+It may have additional text following the id value but must have a single space
+separating the id and any text following. Any text following the id will be ignored
+but is allowed for logging and debugging purposes.</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>int</cite> (<cite>str</cite>)</li>
+<li><strong>required on create?</strong>: no</li>
+<li><strong>required on update?</strong>: no</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;task&quot;</span><span class="p">:</span><span class="s2">&quot;2983&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;task&quot;</span><span class="p">:</span><span class="s2">&quot;164 (DemoProject|100_010|Animation)&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;task&quot;</span><span class="p">:</span><span class="s2">&quot;23 kpLighting_200_034[DemoProject]&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="project">
+<h5>project<a class="headerlink" href="#project" title="Permalink to this headline">¶</a></h5>
+<p>Shotgun id of the Project in Shotgun the Version is linked to. It must begin with
+a valid non-negative integer value corresponding to the Shotgun id of a valid
+Project record in Shotgun. It may have additional text following the id value
+but must have a single space separating the id and any text following. Any text
+following the id will be ignored but is allowed for logging and debugging
+purposes.</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>int</cite> (<cite>str</cite>)</li>
+<li><strong>required on create?</strong>: yes</li>
+<li><strong>required on update?</strong>: no</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;project&quot;</span><span class="p">:</span><span class="s2">&quot;4&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;project&quot;</span><span class="p">:</span><span class="s2">&quot;4 Demo Project&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;project&quot;</span><span class="p">:</span><span class="s2">&quot;23 demo (Demo Project)&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="shot">
+<h5>shot<a class="headerlink" href="#shot" title="Permalink to this headline">¶</a></h5>
+<p>Shot or Asset this Shotgun Version is linked to. It must begin with a valid
+enabled Shotgun entity type string (currently <code class="docutils literal"><span class="pre">Asset</span></code> or <code class="docutils literal"><span class="pre">Shot</span></code>) in CamelCase
+format. A single forward slash must immediately follow the entity type string.
+A valid non-negative integer value corresponding to the Shotgun id of the entity
+type record in Shotgun must immediately follow the forward slash. It may have
+additional text following the initial mandatory data but must have a single space
+separating the mandatory data and any text following. Any text following the
+mandatory data will be ignored but is allowed for logging and debugging purposes.</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>str</cite>/<cite>int</cite> (<cite>str</cite>)</li>
+<li><strong>required on create?</strong>: yes</li>
+<li><strong>required on update?</strong>: no</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;shot&quot;</span><span class="p">:</span><span class="s2">&quot;Shot/164&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;shot&quot;</span><span class="p">:</span><span class="s2">&quot;Shot/164 100_010&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;shot&quot;</span><span class="p">:</span><span class="s2">&quot;Shot/164 DemoProject 100_010 ip&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;shot&quot;</span><span class="p">:</span><span class="s2">&quot;Asset/2332&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;shot&quot;</span><span class="p">:</span><span class="s2">&quot;Asset/2332 (FloorSpike)&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="name">
+<h5>name<a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h5>
+<p>Name of the Version entity in Shotgun. It&#8217;s highly recommended to be a string
+that describes the Project, Shot/Asset, Task (if available), and an incremental
+value. This allows Versions to be easily identifiable in Shotgun just by name.
+If a hierarchical format is provided, it is also recommended to list the info in
+increasingly specific order (ie. Project then Shot, then Task, etc.)</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>str</cite></li>
+<li><strong>required on create?</strong>: yes</li>
+<li><strong>required on update?</strong>: no</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;demo_project_100_010_anim_v1&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;DemoProject/100_010/Animation/sarah_v1&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;demo_project_100_010_anim_v1job_id12345&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="description">
+<h5>description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h5>
+<p>Description field for the Version record in Shotgun to contain any arbitrary
+text.</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>str</cite></li>
+<li><strong>required on create?</strong>: no</li>
+<li><strong>required on update?</strong>: no</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;still working on trying toget the penetration fixed, but all other notes are addressed.&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;think this is the one&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="first-frame">
+<h5>first_frame<a class="headerlink" href="#first-frame" title="Permalink to this headline">¶</a></h5>
+<p>The lowest frame number rendered by the job. The value should be a non-padded
+<cite>int</cite>. Negative numbers are okay.</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>int</cite></li>
+<li><strong>required on create?</strong>: no</li>
+<li><strong>required on update?</strong>: no</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;first_frame&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;first_frame&quot;</span><span class="p">:</span><span class="s2">&quot;23&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;first_frame&quot;</span><span class="p">:</span><span class="s2">&quot;-5&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="last-frame">
+<h5>last_frame<a class="headerlink" href="#last-frame" title="Permalink to this headline">¶</a></h5>
+<p>The highest frame number rendered by the job. The value should be a non-padded
+<cite>int</cite>. Negative numbers are okay.</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>int</cite></li>
+<li><strong>required on create?</strong>: no</li>
+<li><strong>required on update?</strong>: no</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;last_frame&quot;</span><span class="p">:</span><span class="s2">&quot;100&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;last_frame&quot;</span><span class="p">:</span><span class="s2">&quot;123&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;last_frame&quot;</span><span class="p">:</span><span class="s2">&quot;-3&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="frame-count">
+<h5>frame_count<a class="headerlink" href="#frame-count" title="Permalink to this headline">¶</a></h5>
+<p>The complete number of frames rendered by the job according to the <code class="docutils literal"><span class="pre">frame_range</span></code>.
+The value should be a non-padded positive <cite>int</cite>.</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>int</cite></li>
+<li><strong>required on create?</strong>: no</li>
+<li><strong>required on update?</strong>: no</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;frame_count&quot;</span><span class="p">:</span><span class="s2">&quot;100&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;frame_count&quot;</span><span class="p">:</span><span class="s2">&quot;50&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;frame_count&quot;</span><span class="p">:</span><span class="s2">&quot;5&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="frame-range">
+<h5>frame_range<a class="headerlink" href="#frame-range" title="Permalink to this headline">¶</a></h5>
+<p>String representation of what frames were rendered in the job. Must be in
+ascending numeric order. Multiple formats are supported. Combinations of formats
+must be separated by a single space. Spaces not allowed except when separating
+frame range formats. All frame values in the formats must be non-padded integer
+values.</p>
+<ul>
+<li><p class="first"><strong>data_type</strong>: <cite>int</cite></p>
+</li>
+<li><p class="first"><strong>required on create?</strong>: no</p>
+</li>
+<li><p class="first"><strong>required on update?</strong>: no</p>
+</li>
+<li><dl class="first docutils">
+<dt>standard syntax</dt>
+<dd><p class="first last"><code class="docutils literal"><span class="pre">first_frame-last_frame</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>standard syntax with offset</dt>
+<dd><p class="first last"><code class="docutils literal"><span class="pre">first_frame-last_frame,offset</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>single frame sequences</dt>
+<dd><p class="first last"><code class="docutils literal"><span class="pre">first_frame</span> <span class="pre">another_frame</span> <span class="pre">another_frame</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;frame_range&quot;</span><span class="p">:</span><span class="s2">&quot;1-100&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;frame_range&quot;</span><span class="p">:</span><span class="s2">&quot;1-100,2&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;frame_range&quot;</span><span class="p">:</span><span class="s2">&quot;1 23 55 59 123&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;frame_range&quot;</span><span class="p">:</span><span class="s2">&quot;1-100 200-300&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;frame_range&quot;</span><span class="p">:</span><span class="s2">&quot;1-100,2200-300 355&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;frame_range&quot;</span><span class="p">:</span><span class="s2">&quot;24 100-130,2 201 250-300&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="frames-path">
+<h5>frames_path<a class="headerlink" href="#frames-path" title="Permalink to this headline">¶</a></h5>
+<p>Full path to the rendered images output from the job. Must be absolute path. Use
+sequence notation placing # in the path to designate the frame number. Multiple
+paths may be specified but each path must appear on its own new line. May contain
+spaces in the pathname for Windows paths (but not recommended).</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>str</cite></li>
+<li><strong>required on create?</strong>: no</li>
+<li><strong>required on update?</strong>: no</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;frames_path&quot;</span><span class="p">:</span><span class="s2">&quot;/server/path/to/frames.#.exr&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;frames_path&quot;</span><span class="p">:</span><span class="s2">&quot;//otherserver/path/to/frames.low.#.jpg&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;frames_path&quot;</span><span class="p">:</span><span class="s2">&quot;F:/path/to/SubDirectory/frames.#.tif&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;frames_path&quot;</span><span class="p">:</span><span class="s2">&quot;//sillyserver/showfoo/path/to/frames.left.#.jpg&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;frames_path&quot;</span><span class="p">:</span><span class="s2">&quot;//sillyserver/showfoo/path/to/frames.right.#.jpg&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="movie-path">
+<h5>movie_path<a class="headerlink" href="#movie-path" title="Permalink to this headline">¶</a></h5>
+<p>Full absolute path to the proxy movie output from the job. The path may contain
+spaces in the pathname for Windows paths (but not recommended).</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>str</cite></li>
+<li><strong>required on create?</strong>: no</li>
+<li><strong>required on update?</strong>: no</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;movie_path&quot;</span><span class="p">:</span><span class="s2">&quot;/server/path/to/movie.mov&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;movie_path&quot;</span><span class="p">:</span><span class="s2">&quot;//otherserver/path/to/movie.low.mov&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;movie_path&quot;</span><span class="p">:</span><span class="s2">&quot;F:/path/to/SubDirectory/movie.mp4&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="job-id">
+<h5>job_id<a class="headerlink" href="#job-id" title="Permalink to this headline">¶</a></h5>
+<p>Render job id as defined by the render queue manager. Spaces are okay.</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>str</cite></li>
+<li><strong>required on create?</strong>: yes</li>
+<li><strong>required on update?</strong>: yes</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;job_id&quot;</span><span class="p">:</span><span class="s2">&quot;12345&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;job_id&quot;</span><span class="p">:</span><span class="s2">&quot;saratoga.123&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;job_id&quot;</span><span class="p">:</span><span class="s2">&quot;job rdfshadow.34fca90b11&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="job-status">
+<h5>job_status<a class="headerlink" href="#job-status" title="Permalink to this headline">¶</a></h5>
+<p>Numeric representation of the status of the render job used to translate to
+the Version status in Shotgun</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">0</span></code> = job submitted (any state that implies the job is running or may run in the future. This would include paused jobs.)</li>
+<li><code class="docutils literal"><span class="pre">1</span></code> = job running (job has been started and is in progress)</li>
+<li><code class="docutils literal"><span class="pre">2</span></code> = job completed (job completed in full successfully without any errors or failed frames)</li>
+<li><code class="docutils literal"><span class="pre">3</span></code> = job failed (job has failed frames, had errors, or any other non-successful result status)</li>
+<li><code class="docutils literal"><span class="pre">4</span></code> = job aborted (job was cancelled/dumped by user)</li>
+</ul>
+<p>no other value is valid</p>
+</div></blockquote>
+<p>The values of this field map to corresponding settings in the shotgun_io.conf
+file:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">job_status</th>
+<th class="head">shotgun_io.conf setting</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">0</span></code></td>
+<td>status_submitted:</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">1</span></code></td>
+<td>status_ip:</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">2</span></code></td>
+<td>status_complete:</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">3</span></code></td>
+<td>status_failed:</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">4</span></code></td>
+<td>status_aborted:</td>
+</tr>
+</tbody>
+</table>
+<p>If your job submissions are showing up as &#8220;n/a&#8221;, be sure you&#8217;ve adjusted these
+values in your shotgun_io.conf file.</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>int</cite></li>
+<li><strong>required on create?</strong>: no</li>
+<li><strong>required on update?</strong>: no</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;job_status&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;job_status&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;job_status&quot;</span><span class="p">:</span><span class="s2">&quot;2&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;job_status&quot;</span><span class="p">:</span><span class="s2">&quot;3&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;job_status&quot;</span><span class="p">:</span><span class="s2">&quot;4&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="version-id">
+<h5>version_id<a class="headerlink" href="#version-id" title="Permalink to this headline">¶</a></h5>
+<p><em>Not allowed in create</em>
+Id of the Version to update as defined by Shotgun. Must be a non-padded positive
+integer and may not be blank.</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>int</cite></li>
+<li><strong>required on create?</strong>: no <em>not allowed</em></li>
+<li><strong>required on update?</strong>: yes</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;version_id&quot;</span><span class="p">:</span><span class="s2">&quot;12&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;version_id&quot;</span><span class="p">:</span><span class="s2">&quot;4567&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="total-render-time">
+<h5>total_render_time<a class="headerlink" href="#total-render-time" title="Permalink to this headline">¶</a></h5>
+<p>Total wall clock time in seconds from the time the job started to the time the
+job completed. Must be a non-padded positive integer.</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>int</cite></li>
+<li><strong>required on create?</strong>: no</li>
+<li><strong>required on update?</strong>: no</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;total_render_time&quot;</span><span class="p">:</span><span class="s2">&quot;120&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;total_render_time&quot;</span><span class="p">:</span><span class="s2">&quot;4567&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="avg-frame-time">
+<h5>avg_frame_time<a class="headerlink" href="#avg-frame-time" title="Permalink to this headline">¶</a></h5>
+<p>Average wall clock time per frame in seconds from the time the frame
+started to the time the frame completed. Must be a non-padded positive integer.</p>
+<ul class="simple">
+<li><strong>data_type</strong>: <cite>int</cite></li>
+<li><strong>required on create?</strong>: no</li>
+<li><strong>required on update?</strong>: no</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;avg_frame_time&quot;</span><span class="p">:</span><span class="s2">&quot;12&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="update-version">
+<h3>Update Version<a class="headerlink" href="#update-version" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">-U</span> <span class="pre">--update_version</span></code></p>
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py -U &lt;version_info&gt;</code></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py -U /path/to/version_info.json</code></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py -U &lt;&lt;EOF &lt;version_info&gt; EOF</code></dt>
+<dd></dd></dl>
+
+<p>Updates an existing Version in Shotgun from the <code class="docutils literal"><span class="pre">version_info</span></code> key/value pairs.
+Validation happens automatically and if successful, the command returns the id
+of the newly created Version.</p>
+<p><code class="docutils literal"><span class="pre">version_info</span></code> is either a JSON formatted string of key/value pairs or the path
+to a file that contains a JSON formatted string of key/value pairs. The key/value
+pairs represent the field/value for the information to be contained in the Version.
+Invalid keys will be silently ignored regardless of their data. Invalid data will
+generate an error if it is for a valid key.</p>
+<p>For valid fields and formatting, these are the same as the -C option, see
+<a class="reference internal" href="#valid-fields"><span class="std std-ref">Valid fields and formatting</span></a> above.</p>
+<div class="section" id="id2">
+<h4>Return Values<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Returns exit code <code class="docutils literal"><span class="pre">0</span></code> on success with Version id <cite>int</cite> value on STDOUT.</li>
+<li>Returns exit code <code class="docutils literal"><span class="pre">1</span></code> on failure with error message on STDERR. Nothing on STDOUT.</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h4>Required Fields<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<p>When updating a Version, the following fields are <em>required</em> in the
+<code class="docutils literal"><span class="pre">version_info</span></code> JSON string:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">version_id</span></code></li>
+</ul>
+</div>
+</div>
+<div class="section" id="delete-version">
+<h3>Delete Version<a class="headerlink" href="#delete-version" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">-D</span> <span class="pre">--delete_version</span></code></p>
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py -D &lt;version_id&gt;</code></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py --delete_version &lt;version_id&gt;</code></dt>
+<dd></dd></dl>
+
+<p>Deletes an existing Version in Shotgun with the id <code class="docutils literal"><span class="pre">version_id</span></code>.</p>
+<p>This command doesn not have any output by default. A warning is issued to STDERR
+if the Version exists but is <em>already</em> deleted, but will still return a <code class="docutils literal"><span class="pre">0</span></code>
+exit code.</p>
+<div class="section" id="id4">
+<h4>Return Values<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Returns exit code <code class="docutils literal"><span class="pre">0</span></code> on success if Version was deleted or the Version was already deleted.</li>
+<li>Returns exit code <code class="docutils literal"><span class="pre">1</span></code> on failure with error message on STDERR if the Version with <code class="docutils literal"><span class="pre">version_id</span></code> does not exist. Nothing on STDOUT.</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ shotgun_io.py -D 123
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="process-logfiles">
+<h3>Process logfiles<a class="headerlink" href="#process-logfiles" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">-x</span> <span class="pre">--logfiles</span></code></p>
+<dl class="function">
+<dt>
+<code class="descname">shotgun_io.py -x /path/to/logfiles/for/job -v &lt;version_id&gt;</code></dt>
+<dd></dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">requires the additional <code class="docutils literal"><span class="pre">-v</span></code> switch for the <code class="docutils literal"><span class="pre">version_id</span></code> value.</p>
+</div>
+<p>This command should always be run at the successful completion of every job. It
+will call any additional processing methods that are enabled for the vendor&#8217;s
+software. This may do nothing, or may do lots of things.</p>
+<p>Shotgun may provide additional functionality through this hook which will be
+maintained by Shotgun. In addition, individual studios may also hook into this
+call to enable additional custom processing they require.</p>
+<p>Because of the &#8220;black box&#8221; nature of this command, vendors do not need to concern
+themselves with the output or response of it. You can simply issue the command
+and trust that anything else that is going to happen is out of your hands :)</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="API usage" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="customizing.html" class="btn btn-neutral" title="Customizing shotgun_io" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Autodesk.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'v1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+ 
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-2114792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+</body>
+</html>

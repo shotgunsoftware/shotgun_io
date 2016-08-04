@@ -1,0 +1,331 @@
+
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>shotgun_io &mdash; shotgun_io v1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="shotgun_io v1.0.0 documentation" href="#"/>
+        <link rel="next" title="Installing shotgun_io" href="installation.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+    <a href='http://developer.shotgunsoftware.com'>
+    
+        <img style='width: 191px;
+                height: 60px;
+                margin: 2px;
+                border-radius: 0px;
+                padding: 0px;'
+            src='_static/logo_sg@2x.png'/>
+    
+    </a>
+    
+
+          
+            <a href="#" class="icon icon-home"> shotgun_io
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customizing.html">Customizing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cmdline.html">Command line usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Python api usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="softwarecos.html">Adding Shotgun integration to your render manager software</a></li>
+</ul>
+
+            
+          
+       
+    <div style='margin-top: 50px;
+                margin-left: 10px;
+                margin-right: 10px;
+                padding: 10px; 
+                color: #b3b3b3; 
+                font-size: 70%;
+                border-radius: 3px;
+                background-color: #444;
+                line-height: 18px;
+                '>    
+    <style>
+        a.custom_post_menu { display: inline; 
+                             padding: 0px; 
+                             text-decoration: underline; }
+    </style>
+
+    <b>shotgun_io</b> v1.0.0.<br>
+    
+    For more information, please visit
+    <a class=custom_post_menu href='https://support.shotgunsoftware.com/home'>Shotgun Support</a>.
+    The code associated with this documentation can be found 
+    <a class=custom_post_menu href='https://github.com/shotgunsoftware/shotgun_io'>here</a>.
+
+    </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">shotgun_io</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="#">Docs</a> &raquo;</li>
+      
+    <li>shotgun_io</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="shotgun-io">
+<h1>shotgun_io<a class="headerlink" href="#shotgun-io" title="Permalink to this headline">¶</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Release:</th><td class="field-body">v1.0.0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Date:</th><td class="field-body">Aug 03, 2016</td>
+</tr>
+</tbody>
+</table>
+<p>This software was originally developed by <a class="reference external" href="http://shotgunsoftware.com">Shotgun
+Software</a> with support from <a class="reference external" href="http://seriss.com/people/erco/">Greg Ercolano</a>.</p>
+<p>This software is provided under the BSD License that can be found in the LICENSE
+file or here: <a class="reference external" href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.org/licenses/bsd-license.php</a></p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The purpose of <a class="reference internal" href="softwarecos.html#module-shotgun_io" title="shotgun_io"><code class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></code></a> is to provide a simplified wrapper around the
+Shotgun API to facilitate integrating render queues with Shotgun. By removing
+the Shotgun-specific code from the render queue itself, it requires less effort
+for vendors to add support for the integration, and makes it easy for studios
+to configure and update the integration piece independently of their render
+queue system. <a class="reference internal" href="softwarecos.html#module-shotgun_io" title="shotgun_io"><code class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></code></a> is the &#8220;go-between&#8221; sitting in the middle of your
+Shotgun instance and your render queue system.</p>
+<p>Should Shotgun add new features to it&#8217;s product, the render queue companies are
+not burdoned with going back and re-implementing lots of new hooks and code to
+take advantage of them, rather shotgun_io can be updated by a studio and will
+automatically be able to take advantage of new features while still communicating
+the same way with the render queue systems as it always did.</p>
+<p>Additionally, <a class="reference internal" href="softwarecos.html#module-shotgun_io" title="shotgun_io"><code class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></code></a> enables studios to customize the way the integration
+functions to match their specific workflow through configuration options or
+more advanced method overrides.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This provides integration with Shotgun Version entities. As is, it does not provide any
+level of integration with <a class="reference external" href="https://support.shotgunsoftware.com/hc/en-us/articles/219039788">Shotgun Toolkit</a>
+or deal at all with Published Files.</p>
+</div>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#enabling-shotgun-integration">Enabling Shotgun integration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#installation-of-the-config-file">Installation of the config file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#shotgun-server-settings">Shotgun server settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#version-fields">Version fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#version-values">Version values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#advanced">Advanced</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="customizing.html">Customizing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="customizing.html#enabling-your-custom-module">Enabling your custom module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cmdline.html">Command line usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cmdline.html#available-commands">Available Commands</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Python api usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#shotgunio-factory">ShotgunIO Factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#shotguniobase-class">ShotgunIOBase Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#shotgunioerror-class">ShotgunIOError Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="softwarecos.html">Adding Shotgun integration to your render manager software</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="softwarecos.html#adding-shotgun-info-to-submit-windows">Adding Shotgun info to submit windows</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installing shotgun_io" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Autodesk.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'v1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+ 
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-2114792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+</body>
+</html>

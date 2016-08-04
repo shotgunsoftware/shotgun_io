@@ -1,0 +1,416 @@
+
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installing shotgun_io &mdash; shotgun_io v1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="shotgun_io v1.0.0 documentation" href="index.html"/>
+        <link rel="next" title="Configuration" href="configuration.html"/>
+        <link rel="prev" title="shotgun_io" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+    <a href='http://developer.shotgunsoftware.com'>
+    
+        <img style='width: 191px;
+                height: 60px;
+                margin: 2px;
+                border-radius: 0px;
+                padding: 0px;'
+            src='_static/logo_sg@2x.png'/>
+    
+    </a>
+    
+
+          
+            <a href="index.html" class="icon icon-home"> shotgun_io
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enabling-shotgun-integration">Enabling Shotgun integration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#shotgun-config-environment-variable">SHOTGUN_CONFIG environment variable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#shotgun-file">.shotgun file</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#handling-additional-variables">Handling additional variables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customizing.html">Customizing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cmdline.html">Command line usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Python api usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="softwarecos.html">Adding Shotgun integration to your render manager software</a></li>
+</ul>
+
+            
+          
+       
+    <div style='margin-top: 50px;
+                margin-left: 10px;
+                margin-right: 10px;
+                padding: 10px; 
+                color: #b3b3b3; 
+                font-size: 70%;
+                border-radius: 3px;
+                background-color: #444;
+                line-height: 18px;
+                '>    
+    <style>
+        a.custom_post_menu { display: inline; 
+                             padding: 0px; 
+                             text-decoration: underline; }
+    </style>
+
+    <b>shotgun_io</b> v1.0.0.<br>
+    
+    For more information, please visit
+    <a class=custom_post_menu href='https://support.shotgunsoftware.com/home'>Shotgun Support</a>.
+    The code associated with this documentation can be found 
+    <a class=custom_post_menu href='https://github.com/shotgunsoftware/shotgun_io'>here</a>.
+
+    </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">shotgun_io</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Installing shotgun_io</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-shotgun_io">
+<span id="installing-shotgun-io"></span><h1>Installing shotgun_io<a class="headerlink" href="#module-shotgun_io" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="softwarecos.html#module-shotgun_io" title="shotgun_io"><code class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></code></a> is intended to be the hub for managing communication between
+render queue software and Shotgun. It wraps the Shotgun API to provide render
+specific commands and utilities to make integrating with Shotgun simple while
+allowing studios the flexibility to customize the integration without requiring
+them to touch any of the render queue code.</p>
+<p>Customizations such as Shotgun authentication information, naming conventions,
+etc. are all part of the <a class="reference internal" href="softwarecos.html#module-shotgun_io" title="shotgun_io"><code class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></code></a> package so you don&#8217;t need to worry
+about how to handle these types of configuration and customization options.</p>
+<p>Integrating with Shotgun involves the following steps:</p>
+<ul class="simple">
+<li>enabling/disabling Shotgun integration</li>
+<li>adding Shotgun-specific menu options to submit windows</li>
+<li>creating/updating Versions in Shotgun</li>
+<li>passing job log information to <strong>shotgun_io</strong> for any custom processing</li>
+</ul>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="softwarecos.html#module-shotgun_io" title="shotgun_io"><code class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></code></a> package can be installed anywhere on your machine
+provided that the following conditions are met:</p>
+<ol class="arabic simple">
+<li>Python (v2.4 up to v2.7) are installed</li>
+<li>The machine has network access to your Shotgun server (for API calls)</li>
+<li>The render queue manager can find and call shotgun_io from the command-line</li>
+</ol>
+<p>For the purposes of this document and other examples presented, we&#8217;ll assume
+you&#8217;ll want to install it inside <code class="docutils literal"><span class="pre">/usr/local/shotgun</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$~ ls
+shotgun_io_v1.00b1.tar.gz
+
+$~ mkdir /usr/local/shotgun
+
+$~ tar -zxvf shotgun_io_v1.00b1.tar.gz -C /usr/local/shotgun
+x shotgun_io_v1.00b1/
+x shotgun_io_v1.00b1/docs/
+x shotgun_io_v1.00b1/docs/.buildinfo
+x shotgun_io_v1.00b1/docs/_sources/
+x shotgun_io_v1.00b1/docs/_sources/api.txt
+x shotgun_io_v1.00b1/docs/_sources/cmdline.txt
+x shotgun_io_v1.00b1/docs/_sources/configuration.txt
+x shotgun_io_v1.00b1/docs/_sources/customizing.txt
+x shotgun_io_v1.00b1/docs/_sources/index.txt
+x shotgun_io_v1.00b1/docs/_sources/softwarecos.txt
+x shotgun_io_v1.00b1/docs/_static/
+x shotgun_io_v1.00b1/docs/_static/basic.css
+x shotgun_io_v1.00b1/docs/_static/default.css
+x shotgun_io_v1.00b1/docs/_static/doctools.js
+x shotgun_io_v1.00b1/docs/_static/file.png
+x shotgun_io_v1.00b1/docs/_static/jquery.js
+x shotgun_io_v1.00b1/docs/_static/minus.png
+x shotgun_io_v1.00b1/docs/_static/nature.css
+x shotgun_io_v1.00b1/docs/_static/plus.png
+x shotgun_io_v1.00b1/docs/_static/pygments.css
+x shotgun_io_v1.00b1/docs/_static/searchtools.js
+x shotgun_io_v1.00b1/docs/_static/sidebar.js
+x shotgun_io_v1.00b1/docs/_static/underscore.js
+x shotgun_io_v1.00b1/docs/api.html
+x shotgun_io_v1.00b1/docs/cmdline.html
+x shotgun_io_v1.00b1/docs/configuration.html
+x shotgun_io_v1.00b1/docs/customizing.html
+x shotgun_io_v1.00b1/docs/genindex.html
+x shotgun_io_v1.00b1/docs/index.html
+x shotgun_io_v1.00b1/docs/objects.inv
+x shotgun_io_v1.00b1/docs/py-modindex.html
+x shotgun_io_v1.00b1/docs/search.html
+x shotgun_io_v1.00b1/docs/searchindex.js
+x shotgun_io_v1.00b1/docs/softwarecos.html
+x shotgun_io_v1.00b1/LICENSE
+x shotgun_io_v1.00b1/src/
+x shotgun_io_v1.00b1/src/io_entity_queries.py
+x shotgun_io_v1.00b1/src/io_entity_queries.pyc
+x shotgun_io_v1.00b1/src/io_input.py
+x shotgun_io_v1.00b1/src/io_input.pyc
+x shotgun_io_v1.00b1/src/io_output.py
+x shotgun_io_v1.00b1/src/io_output.pyc
+x shotgun_io_v1.00b1/src/shotgun_io.conf
+x shotgun_io_v1.00b1/src/shotgun_io.py
+
+$~ mv /usr/local/shotgun/shotgun_io_v1.00b1 /usr/local/shotgun/shotgun_io
+</pre></div>
+</div>
+</div>
+<div class="section" id="enabling-shotgun-integration">
+<h2>Enabling Shotgun integration<a class="headerlink" href="#enabling-shotgun-integration" title="Permalink to this headline">¶</a></h2>
+<p>In order to use <a class="reference internal" href="softwarecos.html#module-shotgun_io" title="shotgun_io"><code class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></code></a>, the render queue systems will need to know where it
+lives on the file system. This (and optionally other information) exists in the
+<code class="docutils literal"><span class="pre">.shotgun</span></code> file. The <code class="docutils literal"><span class="pre">.shotgun</span></code> file can live wherever a studio wants it
+to be. Therefore, in order to find where the <code class="docutils literal"><span class="pre">.shotgun</span></code> file lives, you can
+assume there is a <strong>SHOTGUN_CONFIG</strong> environment variable that points to the
+location of the file.</p>
+<div class="section" id="shotgun-config-environment-variable">
+<h3>SHOTGUN_CONFIG environment variable<a class="headerlink" href="#shotgun-config-environment-variable" title="Permalink to this headline">¶</a></h3>
+<p>Studios are responsible for setting up a <strong>SHOTGUN_CONFIG</strong> environment variable
+that points to the location of the <code class="docutils literal"><span class="pre">.shotgun</span></code> file. Therefore, the first step
+for setting up integration is to look for this environment variable. If it
+doesn&#8217;t exist, integration cannot be enabled.</p>
+<p>If it does exist, it should be a single absolute path to an existing readable
+<code class="docutils literal"><span class="pre">.shotgun</span></code> file. The format should look something like any of the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">SHOTGUN_CONFIG</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">shotgun</span><span class="o">/.</span><span class="n">shotgun</span>
+<span class="n">SHOTGUN_CONFIG</span><span class="o">=</span><span class="n">Z</span><span class="p">:</span>\\<span class="n">fileserver</span>\<span class="n">tools</span>\<span class="o">.</span><span class="n">shotgun</span>
+<span class="n">SHOTGUN_CONFIG</span><span class="o">=</span>\\<span class="n">fileserver</span>\<span class="n">tools</span>\<span class="o">.</span><span class="n">shotgun</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Rush allows you to set this variable in the RushSiteSettings.py file as a convenience.</p>
+</div>
+</div>
+<div class="section" id="shotgun-file">
+<h3>.shotgun file<a class="headerlink" href="#shotgun-file" title="Permalink to this headline">¶</a></h3>
+<p>If the environment variable exists, the next step is to test that the <code class="docutils literal"><span class="pre">.shotgun</span></code>
+file exists and is readable. If the file does not exist or is not readable, the
+integration cannot be enabled.</p>
+<p>Inside the <code class="docutils literal"><span class="pre">.shotgun</span></code> file there should be at least 2 settings:</p>
+<ul class="simple">
+<li><strong>enabled</strong>: valid options are <code class="docutils literal"><span class="pre">0</span></code> to indicate the integration is not enabled, or <code class="docutils literal"><span class="pre">1</span></code> to indicate the integration is enabled</li>
+<li><strong>shotgun_io_bindir</strong>: the absolute path to the directory where <a class="reference internal" href="softwarecos.html#module-shotgun_io" title="shotgun_io"><code class="xref py py-mod docutils literal"><span class="pre">shotgun_io</span></code></a> lives.</li>
+</ul>
+<p>Example <code class="docutils literal"><span class="pre">.shotgun</span></code> file contents:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">enabled</span> <span class="mi">1</span>
+<span class="n">shotgun_io_bindir</span> <span class="s2">&quot;/usr/local/etc/shotgun/shotgun_io/src&quot;</span>
+</pre></div>
+</div>
+<p>The key and values must be separated by whitespace (don&#8217;t use <code class="docutils literal"><span class="pre">=</span></code> , <code class="docutils literal"><span class="pre">:</span></code>, etc.). The
+<strong>shotgun_io_bindir</strong> value must be a <cite>double-quoted</cite> path that points to the location of
+the <code class="docutils literal"><span class="pre">shotgun_io.py</span></code> script.</p>
+<div class="section" id="handling-additional-variables">
+<h4>Handling additional variables<a class="headerlink" href="#handling-additional-variables" title="Permalink to this headline">¶</a></h4>
+<p>If you need to use additional settings aside from the default variables in
+<code class="docutils literal"><span class="pre">.shotgun</span></code>, you may do so in a custom vendor-specific file named
+<code class="docutils literal"><span class="pre">.shotgun_vendorname</span></code>. Additional vendor-specific variables <em>cannot</em> be stored
+in the default <code class="docutils literal"><span class="pre">.shotgun</span></code> file. Decide on what the standard suffix will be for your
+product and stick with it. For example, if your product name is &#8220;awesomesauce&#8221;,
+you would look for a file named <code class="docutils literal"><span class="pre">.shotgun_awesomesauce</span></code> in the location
+specified by the <strong>SHOTGUN_CONFIG</strong> environment_variable.</p>
+<p>It is up to you if you require a custom <code class="docutils literal"><span class="pre">.shotgun</span></code> file or if you will use the
+standard one by default, and only use your custom one if it exists. For example,
+if you require the following additional variables</p>
+<ul class="simple">
+<li><strong>favorite_color</strong></li>
+<li><strong>lucky_number</strong></li>
+</ul>
+<p>Your vendor-specific file would be <code class="docutils literal"><span class="pre">.shotgun_awesomesauce</span></code> and would look like
+this:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">enabled</span> <span class="mi">1</span>
+<span class="n">shotgun_io_bindir</span> <span class="s2">&quot;/usr/local/etc/shotgun/shotgun_io/src&quot;</span>
+<span class="n">favorite_color</span> <span class="n">orange</span>
+<span class="n">lucky_number</span> <span class="mi">21</span>
+</pre></div>
+</div>
+<p>This overall structure lets studios to use multiple render management systems
+with Shotgun integration but keeps any additional variables required by other
+systems hidden.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="configuration.html" class="btn btn-neutral float-right" title="Configuration" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="shotgun_io" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Autodesk.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'v1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+ 
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-2114792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+</body>
+</html>
